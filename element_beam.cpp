@@ -20,7 +20,8 @@ Element_Beam::~Element_Beam()
 }
 double Element_Beam::length()const 
 {
-	return (j - i).norm();
+	Eigen::Vector2d a(j.x(), j.y()), b(i.x(), i.y());
+	return (a - b).norm();
 }
 Eigen::Matrix4d Element_Beam::element_stiffness()const
 {
@@ -32,4 +33,12 @@ Eigen::Matrix4d Element_Beam::element_stiffness()const
 		{6*l	,2*pow(l,2),	-6*l,4*pow(l,2)},
 	};
 	return (E * I / pow(l, 3) * M1);
+}
+int Element_Beam::inum()const
+{
+	return i.z();
+}
+int Element_Beam::jnum()const
+{
+	return j.z();
 }

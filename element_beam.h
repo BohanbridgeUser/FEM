@@ -3,6 +3,7 @@
 #define _ELEMENT_BEAM_H_
 #include <iostream>
 #include <eigen3/Eigen/Eigen>
+#include <cmath>
 class Element_Beam 
 {
 	private:
@@ -14,7 +15,7 @@ class Element_Beam
 		double I;
 		double h;
 		double b;
-		void calI() { I = 1 / 12 * pow(h, 3) * b; }
+		void calI() { I = (1.0 / 12.0 * pow(h, 3) * b); }
 	public:
 		Element_Beam(Node i, Node j, double e_ = 0, double h_ = 0.0, double b_ = 0.0);
 		Element_Beam(double xi, double yi, double xj, double yj, double i_, double j_, double e_ = 0.0, double h_ = 0.0, double b_ = 0.0);
@@ -24,6 +25,8 @@ class Element_Beam
 		double length() const;
 		Eigen::Matrix4d element_stiffness() const;
 		static int showcount() { return ecount; }
+		int inum()const;
+		int jnum()const;
 };
 
 #endif
