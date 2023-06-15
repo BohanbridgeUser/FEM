@@ -1,0 +1,3 @@
+/home/zbh/Desktop/FEM/build/CMakeFiles/main.dir
+/home/zbh/Desktop/FEM/build/CMakeFiles/edit_cache.dir
+/home/zbh/Desktop/FEM/build/CMakeFiles/rebuild_cache.dir

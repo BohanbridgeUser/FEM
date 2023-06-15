@@ -1,8 +1,7 @@
-#pragma once
 #ifndef _ELEMENT_BEAM_H_
 #define _ELEMENT_BEAM_H_
 #include <iostream>
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Eigen>
 #include <cmath>
 class Element_Beam 
 {

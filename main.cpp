@@ -1,5 +1,5 @@
 #include <iostream>
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Eigen>
 #include <cmath>
 #include "element_beam.h"
 #include <fstream>
@@ -13,24 +13,23 @@ Eigen::MatrixXd assemble_stifness(const std::vector<Element_Beam*> elements)
 	for (auto i = elements.begin(); i != elements.end(); ++i) {
 		int ni = (*i)->inum();
 		int nj = (*i)->jnum();
-		std::cout << "ni:" << ni << '\t' << "nj:" << nj << std::endl;
 		Eigen::Matrix4d elem_stif = (*i)->element_stiffness();
-		std::cout << elem_stif << std::endl;
 		for (int k = 0; k < 4; ++k) {
 			for (int l = 0; l < 4; ++l) {
 				return_Matrix(2 * ni + k, 2 * ni + l) += elem_stif(0 + k, 0 + l);
 			}
 		}
 	}
+	std::cout << "Matrix Assembleed\n";
 	return return_Matrix;
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
 	/* 
 	TL   : the total length of beam
-	   L    : the length of element
+	L    : the length of element
 	ele_num : the number of element
 	*/
 	double TL = 500.0, L = 10.0;
@@ -50,9 +49,7 @@ int main()
 		elements.push_back(newelement);
 	}
 	Eigen::MatrixXd assem_stifness = assemble_stifness(elements);
-	std::cout << std::endl << assem_stifness.rows() << std::endl;
-	//std::cout << "Stiffness_Matrix:\n " << assem_stifness << std::endl;
-	
+
 	/* constrain penalty function method */
 	/* this question constrain i = 0 and j = 1000 */
 	double alpha = E * (1.0 / 12.0 * pow(h, 3) * b) * 100000 /pow(L,3);
@@ -60,13 +57,25 @@ int main()
 	assem_stifness(1, 1) += alpha;
 	assem_stifness((ele_num + 1) * 2 - 2, (ele_num + 1) * 2 - 2) += alpha;
 	assem_stifness((ele_num + 1) * 2 - 1, (ele_num + 1) * 2 - 1) += alpha;
-	Eigen::VectorXd F((ele_num + 1) * 2 - 4);
-	F.setZero((ele_num + 1) * 2 - 4);
+	std::cout << "Constrained\n";
+
+	/* Node Force */
+	Eigen::VectorXd F((ele_num + 1) * 2);
+	F.setZero((ele_num + 1) * 2);
 	F(ele_num) = -400;
+
+	/* Matrix Solver */
+	std::cout << "Matrix Invert\n";
 	auto inverse_stifness = assem_stifness.inverse();
+
+	/* D = K.inv * F */
 	Eigen::VectorXd U((ele_num + 1) * 2 - 4);
+	std::cout << "Solve D\n";
+	std::cout << inverse_stifness.cols() << " " << inverse_stifness.rows() << std::endl;
+	std::cout << F.cols() <<' ' << F.rows() << std:: endl;
 	U = inverse_stifness * F;
 
+	std::cout << "Solve D Done\n";
 	/* direct elimination */
 	//Eigen::MatrixXd new_stifness = assem_stifness.block(2, 2, (ele_num+1)*2-4, (ele_num + 1) * 2 -4);
 	////std::cout << new_stifness << std::endl;
