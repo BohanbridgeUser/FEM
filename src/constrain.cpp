@@ -11,6 +11,7 @@ Constrain::Constrain(char* filename)
     Con_value2 = nullptr;
     file.open(filename,ios::in);
     if (file.is_open()) {
+        cout << "\nConstrain open successfully!\n";
         file >> csum;
         Con_Node = new int[csum];
         Con_value1 = new double[csum];
