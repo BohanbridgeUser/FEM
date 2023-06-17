@@ -16,5 +16,6 @@ INCLUDE_DIRECTORIES(./include)
 # GENERATE SHARED LIBRARY
 # ADD_LIBRARY(BasicFun SHARED src/BasicFun.cpp)
 # LINK_DIRECTORIES(./build)
-ADD_EXECUTABLE(main main.cpp src/element_beam.cpp)
+# ADD_EXECUTABLE(main main.cpp src/element_beam.cpp)
 # TARGET_LINK_LIBRARIES(main libBasicFun.so)
+ADD_EXECUTABLE(test test.cpp src/node.cpp src/element.cpp src/force.cpp)
