@@ -1,6 +1,5 @@
-CMakeFiles/main.dir/src/element_beam.cpp.o: \
- /home/zbh/Desktop/FEM/src/element_beam.cpp /usr/include/stdc-predef.h \
- /home/zbh/Desktop/FEM/./include/element_beam.h \
+CMakeFiles/test.dir/test.cpp.o: /home/zbh/Desktop/FEM/test.cpp \
+ /usr/include/stdc-predef.h /home/zbh/Desktop/FEM/include/node.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -144,7 +143,12 @@ CMakeFiles/main.dir/src/element_beam.cpp.o: \
  /usr/include/c++/11/bits/locale_facets.tcc \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
- /usr/include/c++/11/bits/istream.tcc /usr/include/Eigen/Eigen \
+ /usr/include/c++/11/bits/istream.tcc /usr/include/c++/11/fstream \
+ /usr/include/c++/11/bits/codecvt.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+ /usr/include/c++/11/bits/fstream.tcc \
+ /home/zbh/Desktop/FEM/include/element.h /usr/include/Eigen/Eigen \
  /usr/include/Eigen/Dense /usr/include/Eigen/Core \
  /usr/include/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/Eigen/src/Core/util/Macros.h /usr/include/c++/11/cmath \
@@ -446,4 +450,14 @@ CMakeFiles/main.dir/src/element_beam.cpp.o: \
  /usr/include/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
- /usr/include/c++/11/bits/list.tcc
+ /usr/include/c++/11/bits/list.tcc /home/zbh/Desktop/FEM/include/node.h \
+ /home/zbh/Desktop/FEM/include/force.h \
+ /home/zbh/Desktop/FEM/include/element.h /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
+ /usr/include/c++/11/bits/unique_ptr.h \
+ /usr/include/c++/11/bits/shared_ptr.h \
+ /usr/include/c++/11/bits/shared_ptr_base.h \
+ /usr/include/c++/11/ext/concurrence.h \
+ /usr/include/c++/11/bits/shared_ptr_atomic.h \
+ /usr/include/c++/11/backward/auto_ptr.h
