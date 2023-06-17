@@ -1,5 +1,6 @@
 # This is a structural FEM solver.
 # Please read this doc before using.  
+# This solver can only be used for plane elements now. I will keep improving it in the future. 
 <br>
 <br>
 
