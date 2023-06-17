@@ -5,6 +5,7 @@
 class Node{
         friend class Element;
         friend class Force;
+        friend class solver;
     public:
         struct node
         { 

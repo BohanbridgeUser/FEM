@@ -129,6 +129,30 @@ test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
 .PHONY : test/fast
 
+src/constrain.o: src/constrain.cpp.o
+.PHONY : src/constrain.o
+
+# target to build an object file
+src/constrain.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/constrain.cpp.o
+.PHONY : src/constrain.cpp.o
+
+src/constrain.i: src/constrain.cpp.i
+.PHONY : src/constrain.i
+
+# target to preprocess a source file
+src/constrain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/constrain.cpp.i
+.PHONY : src/constrain.cpp.i
+
+src/constrain.s: src/constrain.cpp.s
+.PHONY : src/constrain.s
+
+# target to generate assembly for a file
+src/constrain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/constrain.cpp.s
+.PHONY : src/constrain.cpp.s
+
 src/element.o: src/element.cpp.o
 .PHONY : src/element.o
 
@@ -201,6 +225,30 @@ src/node.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/node.cpp.s
 .PHONY : src/node.cpp.s
 
+src/solver.o: src/solver.cpp.o
+.PHONY : src/solver.o
+
+# target to build an object file
+src/solver.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/solver.cpp.o
+.PHONY : src/solver.cpp.o
+
+src/solver.i: src/solver.cpp.i
+.PHONY : src/solver.i
+
+# target to preprocess a source file
+src/solver.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/solver.cpp.i
+.PHONY : src/solver.cpp.i
+
+src/solver.s: src/solver.cpp.s
+.PHONY : src/solver.s
+
+# target to generate assembly for a file
+src/solver.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/src/solver.cpp.s
+.PHONY : src/solver.cpp.s
+
 test.o: test.cpp.o
 .PHONY : test.o
 
@@ -234,6 +282,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... src/constrain.o"
+	@echo "... src/constrain.i"
+	@echo "... src/constrain.s"
 	@echo "... src/element.o"
 	@echo "... src/element.i"
 	@echo "... src/element.s"
@@ -243,6 +294,9 @@ help:
 	@echo "... src/node.o"
 	@echo "... src/node.i"
 	@echo "... src/node.s"
+	@echo "... src/solver.o"
+	@echo "... src/solver.i"
+	@echo "... src/solver.s"
 	@echo "... test.o"
 	@echo "... test.i"
 	@echo "... test.s"

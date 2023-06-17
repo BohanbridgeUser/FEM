@@ -56,8 +56,8 @@ q represent the stress.
 The Constrain class has method that can generate constrain from "Constrain.txt" file and constrain object in the following format.
 ```
 Csum CTYPE
-Nnum1 x y z
-Nnum2 x y z
+Nnum1 x y
+Nnum2 x y
 ...
 ```
 Csum represents numbers of constrain.\

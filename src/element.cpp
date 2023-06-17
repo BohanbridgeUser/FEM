@@ -7,16 +7,6 @@ Eigen::MatrixXd Element::element_triangle::B = Eigen::Matrix<double,3,6>::Zero()
 int Element::element_triangle::stressorstrain = 0;
 Node* Element::element_triangle::epnode = nullptr;
 
-double Element::element_triangle::area() 
-{   
-    double a = 0.0;
-    Node::node temp{0,0,0,0};
-    temp = temp.crossproduct(epnode->pnode[Node1],epnode->pnode[Node2]);
-    temp = temp + temp.crossproduct(epnode->pnode[Node2],epnode->pnode[Node3]);
-    temp = temp + temp.crossproduct(epnode->pnode[Node3],epnode->pnode[Node1]);
-    a = temp.norm();
-    return a;
-}
 Element::Element(char* filename,Node* pn)
 {
     using std::cout;
@@ -36,7 +26,6 @@ Element::Element(char* filename,Node* pn)
             std::cerr << "Element Number Wrong\n";
             exit(0);
         } else {
-            int etype;
             file >> etype;
             switch (etype){
                 case 1:
@@ -44,12 +33,14 @@ Element::Element(char* filename,Node* pn)
                     pele_b = new element_beam[elenum];
                     for (int i=0;i<elenum;++i) {
                         file >> pele_b[i].enumber;
-                        file >> pele_b[i].Node1;
-                        file >> pele_b[i].Node2;
+                        pele_b[i].NodeN = new int[2];
+                        for (int j=0;j<2;++j) {
+                            file >> pele_b[i].NodeN[j];
+                            pele_b[i].NodeN[j]--;
+                        }
                         cout << "Element: ";
                         cout << pele_b[i].enumber << endl;
-                        cout << pele_b[i].Node1 << endl;
-                        cout << pele_b[i].Node2 << endl;
+                        for (int j=0;j<2;++j) cout <<  pele_b[i].NodeN[j] << endl;
                     }
                     break;
                 case 2:
@@ -72,14 +63,14 @@ Element::Element(char* filename,Node* pn)
                     pele_t->B_set();
                     for (int i=0;i<elenum;++i) {
                         file >> pele_t[i].enumber;
-                        file >> pele_t[i].Node1;
-                        file >> pele_t[i].Node2;
-                        file >> pele_t[i].Node3;
+                        pele_t[i].NodeN = new int[3];
+                        for (int j=0;j<3;++j) {
+                            file >> pele_t[i].NodeN[j];
+                            pele_t[i].NodeN[j]--;
+                        }
                         cout << "\nElement: ";
                         cout << pele_t[i].enumber << ' ';
-                        cout << pele_t[i].Node1 << ' ';
-                        cout << pele_t[i].Node2 << ' ';
-                        cout << pele_t[i].Node3 << endl;
+                        for (int j=0;j<3;++j) cout << pele_t[i].NodeN[j] << endl;
                         pele_t[i].J_set();
                         pele_t[i].Ke_set();
                     }
@@ -89,16 +80,14 @@ Element::Element(char* filename,Node* pn)
                     pele_q = new element_quadrangle[elenum];
                     for (int i=0;i<elenum;++i) {
                         file >> pele_q[i].enumber;
-                        file >> pele_q[i].Node1;
-                        file >> pele_q[i].Node2;
-                        file >> pele_q[i].Node3;
-                        file >> pele_q[i].Node4;
+                        pele_q[i].NodeN = new int[4];
+                        for (int j=0;j<4;++j) {
+                            file >> pele_q[i].NodeN[j];
+                            pele_q[i].NodeN[j]--;
+                        }
                         cout << "Element: " ;
                         cout << pele_q[i].enumber << endl;
-                        cout << pele_q[i].Node1 << endl;
-                        cout << pele_q[i].Node2 << endl;
-                        cout << pele_q[i].Node3 << endl;
-                        cout << pele_q[i].Node4 << endl;
+                        for (int j=0;j<4;++j) cout << pele_q[i].NodeN[j] << endl;
                     }
                     break;
                 default:
@@ -155,9 +144,9 @@ bool Element::element_triangle::J_set()
     t << bi,bj,bm,
          ci,cj,cm;
     Eigen::MatrixXd r(3,2);
-    r << epnode->pnode[Node1-1].x,epnode->pnode[Node1-1].y,
-         epnode->pnode[Node2-1].x,epnode->pnode[Node2-1].y,
-         epnode->pnode[Node3-1].x,epnode->pnode[Node3-1].y;
+    r << epnode->pnode[NodeN[0]].x,epnode->pnode[NodeN[0]].y,
+         epnode->pnode[NodeN[1]].x,epnode->pnode[NodeN[1]].y,
+         epnode->pnode[NodeN[2]].x,epnode->pnode[NodeN[2]].y;
     J = fabs((t * r).determinant());
     return true;
 }
@@ -167,4 +156,32 @@ bool Element::element_triangle::Ke_set()
     Ke = B.transpose() * D * B * t * J / 2.0;
     std::cout << Ke << std::endl;
     return true;
+}
+Eigen::MatrixXd Element::assemble_stiffness()
+{
+    switch (etype) {
+        case 1:
+            break;
+        case 2:
+            std::cout << "2\n";
+            stiffness.resize(2*nodenum,2*nodenum);
+            for (int i=0;i<elenum;++i) {
+                for (int j=0;j<3;++j) {
+                    for (int k=0;k<3;k++) {
+                        stiffness((pele_t[i].NodeN[j])*2,pele_t[i].NodeN[k]*2)
+                            += pele_t[i].Ke(j*2,k*2);
+                        stiffness((pele_t[i].NodeN[j])*2+1,pele_t[i].NodeN[k]*2+1)
+                            += pele_t[i].Ke(j*2+1,k*2+1);
+                    }
+                }
+            }
+            std::cout << "Matrix of stiffness: " << std::endl;
+            std::cout << stiffness << std::endl;
+            break;
+        case 3:
+            break;
+        default:
+            break;
+    }
+    return stiffness;
 }

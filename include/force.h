@@ -4,6 +4,7 @@
 #include "element.h"
 #include <memory>
 class Force{
+          friend class solver;
     public:
        struct triangle_f
        {
@@ -11,6 +12,7 @@ class Force{
        };
        struct triangle_s
        {
+            static int fsum;
             int elenum;
             int node1,node2;
             int sftype;
@@ -22,8 +24,11 @@ class Force{
        double g;
        triangle_f* ptf;
        triangle_s* pts;
+       Eigen::VectorXd assemble_f;
+
        Force(char* filename, Element& ele_build);
        ~Force();
+       Eigen::VectorXd assemble_force(Element& ele_build);
 };
 
 #endif

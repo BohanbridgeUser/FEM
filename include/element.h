@@ -8,6 +8,7 @@
 class Element
 {
         friend class Force;
+        friend class solver;
     public:
         int etype;
         double E;
@@ -17,8 +18,15 @@ class Element
         struct element_beam 
         {
             int enumber;
-            int Node1;
-            int Node2;
+            int* NodeN;
+            element_beam():enumber(0),NodeN(nullptr)
+            {
+                
+            }
+            ~element_beam()
+            {
+                delete NodeN;
+            }
         };
         struct element_triangle
         {
@@ -30,9 +38,7 @@ class Element
             static Node* epnode;
             /* Nodes are counter clock wise direction */
             int enumber;
-            int Node1;
-            int Node2;
-            int Node3;
+            int* NodeN;
             double J;
             Eigen::MatrixXd Ke;
 
@@ -40,7 +46,6 @@ class Element
             bool B_set();
             bool J_set();
             bool Ke_set();
-            double area();
         };
         struct element_quadrangle
         {
@@ -48,22 +53,18 @@ class Element
             static Eigen::Matrix3d D;
             static double t;
             int enumber;
-            int Node1;
-            int Node2;
-            int Node3;
-            int Node4;
+            int* NodeN;
         };
         /* other element type can add here*/
         
         element_beam* pele_b;
         element_quadrangle* pele_q;
         element_triangle* pele_t;
+        Eigen::MatrixXd stiffness;
 
         Element(char* filename, Node* pn);
         ~Element();
         Eigen::MatrixXd assemble_stiffness();
-    private:
-        double area(const int& ele)const;
 };
 
 

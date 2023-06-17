@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/test.dir/test.cpp.o CMakeFiles/test.dir/src/node.cpp.o CMakeFiles/test.dir/src/element.cpp.o CMakeFiles/test.dir/src/force.cpp.o -o test 
+/usr/bin/c++ CMakeFiles/test.dir/test.cpp.o CMakeFiles/test.dir/src/node.cpp.o CMakeFiles/test.dir/src/element.cpp.o CMakeFiles/test.dir/src/force.cpp.o CMakeFiles/test.dir/src/constrain.cpp.o CMakeFiles/test.dir/src/solver.cpp.o -o test 

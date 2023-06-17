@@ -1,5 +1,7 @@
-CMakeFiles/test.dir/test.cpp.o: /home/zbh/Desktop/FEM/test.cpp \
- /usr/include/stdc-predef.h /home/zbh/Desktop/FEM/include/node.h \
+CMakeFiles/test.dir/src/constrain.cpp.o: \
+ /home/zbh/Desktop/FEM/src/constrain.cpp /usr/include/stdc-predef.h \
+ /home/zbh/Desktop/FEM/src/../include/constrain.h \
+ /home/zbh/Desktop/FEM/src/../include/../include/element.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -147,8 +149,7 @@ CMakeFiles/test.dir/test.cpp.o: /home/zbh/Desktop/FEM/test.cpp \
  /usr/include/c++/11/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
- /usr/include/c++/11/bits/fstream.tcc \
- /home/zbh/Desktop/FEM/include/element.h /usr/include/Eigen/Eigen \
+ /usr/include/c++/11/bits/fstream.tcc /usr/include/Eigen/Eigen \
  /usr/include/Eigen/Dense /usr/include/Eigen/Core \
  /usr/include/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/Eigen/src/Core/util/Macros.h /usr/include/c++/11/cmath \
@@ -450,19 +451,5 @@ CMakeFiles/test.dir/test.cpp.o: /home/zbh/Desktop/FEM/test.cpp \
  /usr/include/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
- /usr/include/c++/11/bits/list.tcc /home/zbh/Desktop/FEM/include/node.h \
- /home/zbh/Desktop/FEM/include/force.h \
- /home/zbh/Desktop/FEM/include/element.h /usr/include/c++/11/memory \
- /usr/include/c++/11/bits/stl_raw_storage_iter.h \
- /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
- /usr/include/c++/11/bits/unique_ptr.h \
- /usr/include/c++/11/bits/shared_ptr.h \
- /usr/include/c++/11/bits/shared_ptr_base.h \
- /usr/include/c++/11/ext/concurrence.h \
- /usr/include/c++/11/bits/shared_ptr_atomic.h \
- /usr/include/c++/11/backward/auto_ptr.h \
- /home/zbh/Desktop/FEM/include/constrain.h \
- /home/zbh/Desktop/FEM/include/../include/element.h \
- /home/zbh/Desktop/FEM/include/solver.h \
- /home/zbh/Desktop/FEM/include/force.h \
- /home/zbh/Desktop/FEM/include/constrain.h
+ /usr/include/c++/11/bits/list.tcc \
+ /home/zbh/Desktop/FEM/src/../include/../include/node.h
