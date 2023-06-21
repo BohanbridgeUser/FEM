@@ -22,8 +22,8 @@ Force::Force(char* filename, Element& ele_build)
             double A = ele_build.pele_t[i].J / 2.0;
             ptf[i].Pf << 0,1,0,1,0,1;
             ptf[i].Pf *= -1.0 / 3.0 * y * g * Element::element_triangle::t * A;
-            cout << "Pf Input: "<< endl;
-            cout << ptf[i].Pf << endl;
+            //cout << "Pf Input: "<< endl;
+            //cout << ptf[i].Pf << endl;
         }
         cout << endl;
         pts = new triangle_s[triangle_s::fsum];
@@ -37,19 +37,26 @@ Force::Force(char* filename, Element& ele_build)
             pts[i].node2--;
             file >> pts[i].q;
             double l = (ele_build.pele_t->epnode->pnode[pts[i].node1 -1] - ele_build.pele_t->epnode->pnode[pts[i].node2 -1]).norm();
+            std::cout << pts[i].sftype<< std::endl;
             switch (pts[i].sftype){
                 case 0:
                     pts[i].Ps << 0,1,0,1,0,0;
                     pts[i].Ps *= 1 / 2.0 * pts[i].q * l * ele_build.pele_t->t;
+                    break;                
                 case 1:
                     pts[i].Ps << 0,1,0,1,0,0;
+                    //std::cout << pts[i].Ps << std::endl;
                     pts[i].Ps *= -1 / 2.0 * pts[i].q * l * ele_build.pele_t->t;
+                    //std::cout << pts[i].Ps << std::endl;
+                    break;
                 case 2:
                     pts[i].Ps << 1,0,1,0,0,0;
                     pts[i].Ps *= 1 / 2.0 * pts[i].q * l * ele_build.pele_t->t;
+                    break;
                 case 3:
                     pts[i].Ps << 1,0,1,0,0,0;
                     pts[i].Ps *= -1 / 2.0 * pts[i].q * l * ele_build.pele_t->t;
+                    break;
                 default:
                     break;
             }
