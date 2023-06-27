@@ -22,8 +22,8 @@ Force::Force(char* filename, Element& ele_build)
             double A = ele_build.pele_t[i].J / 2.0;
             ptf[i].Pf << 0,1,0,1,0,1;
             ptf[i].Pf *= -1.0 / 3.0 * y * g * Element::element_triangle::t * A;
-            //cout << "Pf Input: "<< endl;
-            //cout << ptf[i].Pf << endl;
+            cout << "Pf Input: "<< endl;
+            cout << ptf[i].Pf << endl;
         }
         cout << endl;
         pts = new triangle_s[triangle_s::fsum];
@@ -94,5 +94,6 @@ Eigen::VectorXd Force::assemble_force(Element& ele_build)
     }
     std::cout << "\nAssemble_force: " <<std::endl;
     std::cout << assemble_f << std::endl;
+    std::cout << "sum: " << assemble_f.sum() << std::endl;
     return assemble_f;
 }

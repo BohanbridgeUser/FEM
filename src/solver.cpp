@@ -3,7 +3,7 @@
 Eigen::VectorXd Solver::displacement(Element& ele, Force& f, Constrain& con)
 {
     dis.resize(2 * ele.nodenum);
-    double a = 1e5;
+    double a = 1e7;
     for (int i=0;i<con.csum;++i) {
         ele.stiffness(con.Con_Node[i]*2,con.Con_Node[i]*2) *= a;
         ele.stiffness(con.Con_Node[i]*2+1,con.Con_Node[i]*2+1) *= a;

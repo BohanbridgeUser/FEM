@@ -177,6 +177,11 @@ Eigen::MatrixXd Element::assemble_stiffness()
             }
             std::cout << "Matrix of stiffness: " << std::endl;
             std::cout << stiffness << std::endl;
+            for (int i=0;i<2*nodenum;++i) {
+                for (int j=0;j<2*nodenum;++j) {
+                    if (stiffness(i,j) != 0) std::cout << stiffness(i,j) << std::endl;
+                }
+            }
             break;
         case 3:
             break;
