@@ -1,9 +1,9 @@
-# This is a structural FEM solver.
-# Please read this doc before using.  
-# This solver can only be used for plane elements now. I will keep improving it in the future. 
-<br>
-<br>
-
+***
+# BH Structural FEM Solver
+![Static Badge](https://img.shields.io/badge/FEM-Solver-green)
+![Static Badge](https://img.shields.io/badge/Language-C%2B%2B17-red)
+![Static Badge](https://img.shields.io/badge/Frame-Kratos-blue)\
+A structural FEM Solver developed by Bohan Zhang. The code framework for this finite element program is based on the Kratos multi-physics software framework.
 # Input
 ***
 The Node class has method that can input nodes from `Nodes.txt`  files in the following format.
