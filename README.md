@@ -3,9 +3,47 @@
 ![Static Badge](https://img.shields.io/badge/FEM-Solver-green)
 ![Static Badge](https://img.shields.io/badge/Language-C%2B%2B17-red)
 ![Static Badge](https://img.shields.io/badge/Frame-Kratos-blue)\
-A structural FEM Solver developed by Bohan Zhang. The code framework for this finite element program is based on the Kratos multi-physics software framework.
-# Input
-***
+A structural FEM Solver developed by Bohan Zhang. The code framework for this finite element program is based on the Kratos multi-physics software framework. Currently, this FEM solver is only used for structural analysis, so the framework has been simplified. And the data structure is also adjusted for performance considerations.
+
+- [BH Structural FEM Solver](#bh-structural-fem-solver)
+  - [Framework](#framework)
+  - [Basic Tools](#basic-tools)
+    - [Geometry](#geometry)
+    - [LinearSolver](#linearsolver)
+    - [DataContainers](#datacontainers)
+    - [Vector and Matrix](#vector-and-matrix)
+    - [Quadrature](#quadrature)
+  - [Base Finite Element](#base-finite-element)
+    - [Node](#node)
+    - [Properties](#properties)
+    - [Element](#element)
+    - [Condition](#condition)
+    - [Dof](#dof)
+- [Get start](#get-start)
+  - [Input](#input)
+
+## Framework
+The framework of this solver has two layers, basic Tools and base finite element. Basic tools consists of geometry, linearsolver, datacontainers, vector, quadrature and matrix.
+base finite element consists of node, properties, element, condition and dof.
+Two layers structure is shown beblow.
+![Two layers structure](pic/pic1.jpg)
+
+## Basic Tools
+### Geometry
+### LinearSolver
+### DataContainers
+### Vector and Matrix
+### Quadrature
+## Base Finite Element
+### Node
+### Properties
+### Element
+### Condition
+### Dof
+
+
+# Get start
+## Input
 The Node class has method that can input nodes from `Nodes.txt`  files in the following format.
 ```
 Nsum
