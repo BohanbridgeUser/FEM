@@ -1,0 +1,32 @@
+[
+{
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test.cpp",
+  "file": "G:/COMPUTER/FEM/test.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\node.cpp.obj -c G:\\COMPUTER\\FEM\\src\\node.cpp",
+  "file": "G:/COMPUTER/FEM/src/node.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\element.cpp.obj -c G:\\COMPUTER\\FEM\\src\\element.cpp",
+  "file": "G:/COMPUTER/FEM/src/element.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\force.cpp.obj -c G:\\COMPUTER\\FEM\\src\\force.cpp",
+  "file": "G:/COMPUTER/FEM/src/force.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\constrain.cpp.obj -c G:\\COMPUTER\\FEM\\src\\constrain.cpp",
+  "file": "G:/COMPUTER/FEM/src/constrain.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\solver.cpp.obj -c G:\\COMPUTER\\FEM\\src\\solver.cpp",
+  "file": "G:/COMPUTER/FEM/src/solver.cpp"
+}
+]
