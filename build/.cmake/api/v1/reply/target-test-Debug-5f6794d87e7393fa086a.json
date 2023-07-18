@@ -2,10 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "test.exe"
-		},
-		{
-			"path" : "test.pdb"
+			"path" : "test"
 		}
 	],
 	"backtrace" : 1,
@@ -45,17 +42,14 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g"
-				},
-				{
-					"fragment" : "-std=gnu++11"
+					"fragment" : "-g -std=gnu++11"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 2,
-					"path" : "G:/COMPUTER/FEM/./include"
+					"path" : "/home/zbh/Desktop/FEM/./include"
 				}
 			],
 			"language" : "CXX",
@@ -90,16 +84,12 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
-			},
-			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
-				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
 	"name" : "test",
-	"nameOnDisk" : "test.exe",
+	"nameOnDisk" : "test",
 	"paths" : 
 	{
 		"build" : ".",

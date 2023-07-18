@@ -1,32 +1,38 @@
 [
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test.cpp",
-  "file": "G:/COMPUTER/FEM/test.cpp"
+  "directory": "/home/zbh/Desktop/FEM/build",
+  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/test.cpp.o -c /home/zbh/Desktop/FEM/test.cpp",
+  "file": "/home/zbh/Desktop/FEM/test.cpp",
+  "output": "CMakeFiles/test.dir/test.cpp.o"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\node.cpp.obj -c G:\\COMPUTER\\FEM\\src\\node.cpp",
-  "file": "G:/COMPUTER/FEM/src/node.cpp"
+  "directory": "/home/zbh/Desktop/FEM/build",
+  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/node.cpp.o -c /home/zbh/Desktop/FEM/src/node.cpp",
+  "file": "/home/zbh/Desktop/FEM/src/node.cpp",
+  "output": "CMakeFiles/test.dir/src/node.cpp.o"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\element.cpp.obj -c G:\\COMPUTER\\FEM\\src\\element.cpp",
-  "file": "G:/COMPUTER/FEM/src/element.cpp"
+  "directory": "/home/zbh/Desktop/FEM/build",
+  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/element.cpp.o -c /home/zbh/Desktop/FEM/src/element.cpp",
+  "file": "/home/zbh/Desktop/FEM/src/element.cpp",
+  "output": "CMakeFiles/test.dir/src/element.cpp.o"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\force.cpp.obj -c G:\\COMPUTER\\FEM\\src\\force.cpp",
-  "file": "G:/COMPUTER/FEM/src/force.cpp"
+  "directory": "/home/zbh/Desktop/FEM/build",
+  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/force.cpp.o -c /home/zbh/Desktop/FEM/src/force.cpp",
+  "file": "/home/zbh/Desktop/FEM/src/force.cpp",
+  "output": "CMakeFiles/test.dir/src/force.cpp.o"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\constrain.cpp.obj -c G:\\COMPUTER\\FEM\\src\\constrain.cpp",
-  "file": "G:/COMPUTER/FEM/src/constrain.cpp"
+  "directory": "/home/zbh/Desktop/FEM/build",
+  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/constrain.cpp.o -c /home/zbh/Desktop/FEM/src/constrain.cpp",
+  "file": "/home/zbh/Desktop/FEM/src/constrain.cpp",
+  "output": "CMakeFiles/test.dir/src/constrain.cpp.o"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/test.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\test.dir\\src\\solver.cpp.obj -c G:\\COMPUTER\\FEM\\src\\solver.cpp",
-  "file": "G:/COMPUTER/FEM/src/solver.cpp"
+  "directory": "/home/zbh/Desktop/FEM/build",
+  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/solver.cpp.o -c /home/zbh/Desktop/FEM/src/solver.cpp",
+  "file": "/home/zbh/Desktop/FEM/src/solver.cpp",
+  "output": "CMakeFiles/test.dir/src/solver.cpp.o"
 }
 ]
