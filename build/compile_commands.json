@@ -1,38 +1,7 @@
 [
 {
-  "directory": "/home/zbh/Desktop/FEM/build",
-  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/test.cpp.o -c /home/zbh/Desktop/FEM/test.cpp",
-  "file": "/home/zbh/Desktop/FEM/test.cpp",
-  "output": "CMakeFiles/test.dir/test.cpp.o"
-},
-{
-  "directory": "/home/zbh/Desktop/FEM/build",
-  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/node.cpp.o -c /home/zbh/Desktop/FEM/src/node.cpp",
-  "file": "/home/zbh/Desktop/FEM/src/node.cpp",
-  "output": "CMakeFiles/test.dir/src/node.cpp.o"
-},
-{
-  "directory": "/home/zbh/Desktop/FEM/build",
-  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/element.cpp.o -c /home/zbh/Desktop/FEM/src/element.cpp",
-  "file": "/home/zbh/Desktop/FEM/src/element.cpp",
-  "output": "CMakeFiles/test.dir/src/element.cpp.o"
-},
-{
-  "directory": "/home/zbh/Desktop/FEM/build",
-  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/force.cpp.o -c /home/zbh/Desktop/FEM/src/force.cpp",
-  "file": "/home/zbh/Desktop/FEM/src/force.cpp",
-  "output": "CMakeFiles/test.dir/src/force.cpp.o"
-},
-{
-  "directory": "/home/zbh/Desktop/FEM/build",
-  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/constrain.cpp.o -c /home/zbh/Desktop/FEM/src/constrain.cpp",
-  "file": "/home/zbh/Desktop/FEM/src/constrain.cpp",
-  "output": "CMakeFiles/test.dir/src/constrain.cpp.o"
-},
-{
-  "directory": "/home/zbh/Desktop/FEM/build",
-  "command": "/usr/bin/c++  -I/home/zbh/Desktop/FEM/./include -g -std=gnu++11 -o CMakeFiles/test.dir/src/solver.cpp.o -c /home/zbh/Desktop/FEM/src/solver.cpp",
-  "file": "/home/zbh/Desktop/FEM/src/solver.cpp",
-  "output": "CMakeFiles/test.dir/src/solver.cpp.o"
+  "directory": "G:/COMPUTER/FEM/build",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/LOTUS.dir/includes_CXX.rsp -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\LOTUS.dir\\test\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\test.cpp",
+  "file": "G:/COMPUTER/FEM/test/test.cpp"
 }
 ]
