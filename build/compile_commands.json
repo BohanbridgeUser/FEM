@@ -1,7 +1,7 @@
 [
 {
   "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/LOTUS.dir/includes_CXX.rsp -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\LOTUS.dir\\test\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\test.cpp",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/LOTUS.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\LOTUS.dir\\test\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\test.cpp",
   "file": "G:/COMPUTER/FEM/test/test.cpp"
 }
 ]

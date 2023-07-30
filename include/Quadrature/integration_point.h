@@ -8,7 +8,15 @@ class Integration_Point:public Point<3>
     public:
         // @ Constructor {
         /* Default */
-        Integration_Point(const double& xi, const double& yi=0.0, const double& zi=0.0, const double& w):Point<TDimension>(xi,yi,zi)
+        Integration_Point()
+        {
+            
+        }
+        Integration_Point(const Integration_Point& another):Point<3>(another),mWeight(another.mWeight)
+        {
+
+        }
+        Integration_Point(const double& xi, const double& yi=0.0, const double& zi=0.0, const double& w = 0.0):Point<3>(xi,yi,zi)
         ,mWeight(w)
         {
 

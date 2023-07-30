@@ -4,6 +4,7 @@
 #include "geometry_dimension.h"
 #include "../Container/points_container.h"
 #include "geometry_data.h"
+#include "../Quadrature/integration_point.h"
 #include <vector>
 #include <array>
 #include <memory>
@@ -11,18 +12,37 @@ template<class DimensionType>
 class Geometry 
 {
     public:
+        // @ Define { 
         enum class GeometryType {
             Line,
             Triangle,
-            Quadrangle,
+            Quadrilateral,
             Tetrahedron,
             Hexahedron
         };
-
         LOTUS_POINTER_DEFINE(Geometry)
-
         using PointType = Point<DimensionType::D>;
-        //using Geometry_Data = Geometry_Data<DimensionType>;
+
+        // @ Integration Points Define
+        typedef Integration_Point<3> IntegrationPointType;
+        typedef std::vector<IntegrationPointType> IntegrationPointsVector;
+        typedef std::array<IntegrationPointsVector, 
+                            static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)>
+                                IntegrationPointsContainerType;
+        
+        // @ ShapeFunctionValueContainer Define
+        typedef std::array<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>,
+                                static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)> 
+                                    ShapeFunctionsValueContainerType;
+
+        // @ First derivatives/gradients
+        typedef std::vector<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> >
+                            ShapeFunctionsGradientsType;
+        typedef std::array<ShapeFunctionsGradientsType,
+                                static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)> 
+                                    ShapeFunctionsGradientsContainerType;
+        //}
+
         // @ Constructor { 
             Geometry()
             {
@@ -61,14 +81,19 @@ class Geometry
         //}
 
         // @ Utility { 
-            static int GetType()
+            // static int GetType()
+            // {
+            //     return 0;
+            // }
+            int GetPointsNum()const
             {
-                return 0;
+                return pPoints.size();
             }
         //}
     private:
         Points_Container<PointType> pPoints;
-        Geometry_Data<DimensionType> pGeometryData;
+        // static const Geometry_Data pGeometryData;
+        // static const Geometry_Dimension pDimensiont;
 };
 
 #endif

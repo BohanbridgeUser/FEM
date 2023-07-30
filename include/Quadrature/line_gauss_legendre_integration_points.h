@@ -4,11 +4,11 @@
 #include "../Geometry/Point.h"
 #include "integration_point.h"
 #include <array>
-class Gauss_Legendre_Integration_Points1
+class Line_Gauss_Legendre_Integration_Points1
 {
     public:
     
-        LOTUS_POINTER_DEFINE(Gauss_Legendre_Integration_Points1)
+        LOTUS_POINTER_DEFINE(Line_Gauss_Legendre_Integration_Points1)
         typedef Integration_Point<1> IntegrationPointsType;
         typedef std::array<IntegrationPointsType,1> IntegrationPointArray; 
         
@@ -25,10 +25,10 @@ class Gauss_Legendre_Integration_Points1
     }    
 };
 
-class Gauss_Legendre_Integration_Points2
+class Line_Gauss_Legendre_Integration_Points2
 {
     public:
-        LOTUS_POINTER_DEFINE(Gauss_Legendre_Integration_Points2)
+        LOTUS_POINTER_DEFINE(Line_Gauss_Legendre_Integration_Points2)
         typedef Integration_Point<1> IntegrationPointsType;
         typedef std::array<IntegrationPointsType, 2 > IntegrationPointArray; 
 
@@ -46,10 +46,10 @@ class Gauss_Legendre_Integration_Points2
         return array_integration_array;
     }    
 };
-class Gauss_Legendre_Integration_Points3
+class Line_Gauss_Legendre_Integration_Points3
 {
     public:
-        LOTUS_POINTER_DEFINE(Gauss_Legendre_Integration_Points2)
+        LOTUS_POINTER_DEFINE(Line_Gauss_Legendre_Integration_Points2)
         typedef Integration_Point<1> IntegrationPointsType;
         typedef std::array<IntegrationPointsType, 3 > IntegrationPointArray; 
     public:
@@ -67,10 +67,10 @@ class Gauss_Legendre_Integration_Points3
         return array_integration_array;
     }    
 };
-class Gauss_Legendre_Integration_Points4
+class Line_Gauss_Legendre_Integration_Points4
 {
     public:
-        LOTUS_POINTER_DEFINE(Gauss_Legendre_Integration_Points2)
+        LOTUS_POINTER_DEFINE(Line_Gauss_Legendre_Integration_Points2)
         typedef Integration_Point<1> IntegrationPointsType;
         typedef std::array<IntegrationPointsType, 4> IntegrationPointArray; 
 
@@ -90,10 +90,10 @@ class Gauss_Legendre_Integration_Points4
         return array_integration_array;
     }    
 };
-class Gauss_Legendre_Integration_Points5
+class Line_Gauss_Legendre_Integration_Points5
 {
     public:
-        LOTUS_POINTER_DEFINE(Gauss_Legendre_Integration_Points2)
+        LOTUS_POINTER_DEFINE(Line_Gauss_Legendre_Integration_Points2)
         typedef Integration_Point<1> IntegrationPointsType;
         typedef std::array<IntegrationPointsType, 5> IntegrationPointArray; 
 

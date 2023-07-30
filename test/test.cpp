@@ -6,11 +6,15 @@
 #include "../include/Geometry/geometry.h"
 #include "../include/Geometry/line.h"
 #include "../include/Geometry/triangle.h"
-#include "../include/Geometry/quadrangle.h"
+#include "../include/Geometry/quadrilateral.h"
 #include "../include/Geometry/tetrahedron.h"
 #include "../include/Geometry/hexahedron.h"
 #include "../include/Container/geometry_container.h"
 #include "../include/Geometry/geometry_data.h"
+#include "../include/Quadrature/integration_point.h"
+#include "../include/Quadrature/line_gauss_legendre_integration_points.h"
+#include "../include/Quadrature/quadrature.h"
+#include "../include/Quadrature/quadrilateral_gauss_legendre_integration_points.h"
 #include <iostream>
 #include <vector>
 int main()
@@ -80,10 +84,10 @@ int main()
 //}
 
 // @ Quadrangle Test { 
-    cout << "**********Quadrangle Test**********\n";
-    Quadrangle<Dimension<3> > Qua1(P_C);
-    Quadrangle<Dimension<3> > Qua2(P_C);
-    Quadrangle<Dimension<3> > Qua3(P_C);
+    cout << "**********Quadrilateral Test**********\n";
+    Quadrilateral<Dimension<3> > Qua1(P_C);
+    Quadrilateral<Dimension<3> > Qua2(P_C);
+    Quadrilateral<Dimension<3> > Qua3(P_C);
     cout << Qua1.GetType() << ' '<< Qua1.GetID() << endl;
     cout << Qua2.GetType() << ' '<< Qua2.GetID() << endl;
     cout << Qua3.GetType() << ' '<< Qua3.GetID() << endl;
@@ -131,7 +135,7 @@ int main()
     cout << T_C.size()<< endl;
 
     cout << "**********Geometry_Constainer<Quadrangle> Test**********\n";
-    Geometry_Container<Quadrangle<Dimension<3> > > Q_C;
+    Geometry_Container<Quadrilateral<Dimension<3> > > Q_C;
     Q_C.insert(Qua1);
     Q_C.insert(Qua2);
     Q_C.insert(Qua3);
@@ -159,6 +163,22 @@ int main()
         cout << Hex_C.at(i).GetID() << endl;
     }
     cout << Hex_C.size()<< endl;
+
+    cout << "**********Jacobian Test**********\n";
+    Point<3> QP1(3.0,0.0,0.0);
+    Point<3> QP2(6.0,0.0,0.0);
+    Point<3> QP3(6.0,3.0,0.0);
+    Point<3> QP4(3.0,3.0,0.0);
+    Points_Container<Point<3> > QP_C;
+    QP_C.InsertPoint(QP1);
+    QP_C.InsertPoint(QP2);
+    QP_C.InsertPoint(QP3);
+    QP_C.InsertPoint(QP4);
+    Quadrilateral<Dimension<3> > Q(QP_C);
+    int IntegrationPointsNum = Quadrilateral_Gauss_Legendre_Integration_Points1::IntegrationPointsNumber();
+    Quadrilateral<Dimension<3> >::JacobiansContainer J_C(IntegrationPointsNum);
+    Q.Jacobians(J_C,Geometry_Data::IntegrationMethod::Gauss_Legendre_1);
+    cout << J_C[0];
 // }
 
     return 0;
