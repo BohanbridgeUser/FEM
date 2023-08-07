@@ -116,41 +116,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named LOTUS
+# Target rules for targets named GEOMETRY_TSET
 
 # Build rule for target.
-LOTUS: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 LOTUS
-.PHONY : LOTUS
+GEOMETRY_TSET: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 GEOMETRY_TSET
+.PHONY : GEOMETRY_TSET
 
 # fast build rule for target.
-LOTUS/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/build
-.PHONY : LOTUS/fast
+GEOMETRY_TSET/fast:
+	$(MAKE) $(MAKESILENT) -f test\geometry_test\CMakeFiles\GEOMETRY_TSET.dir\build.make test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/build
+.PHONY : GEOMETRY_TSET/fast
 
-test/test.obj: test/test.cpp.obj
-.PHONY : test/test.obj
+#=============================================================================
+# Target rules for targets named MODEL_TSET
 
-# target to build an object file
-test/test.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/test/test.cpp.obj
-.PHONY : test/test.cpp.obj
+# Build rule for target.
+MODEL_TSET: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 MODEL_TSET
+.PHONY : MODEL_TSET
 
-test/test.i: test/test.cpp.i
-.PHONY : test/test.i
-
-# target to preprocess a source file
-test/test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/test/test.cpp.i
-.PHONY : test/test.cpp.i
-
-test/test.s: test/test.cpp.s
-.PHONY : test/test.s
-
-# target to generate assembly for a file
-test/test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/test/test.cpp.s
-.PHONY : test/test.cpp.s
+# fast build rule for target.
+MODEL_TSET/fast:
+	$(MAKE) $(MAKESILENT) -f test\model_test\CMakeFiles\MODEL_TSET.dir\build.make test/model_test/CMakeFiles/MODEL_TSET.dir/build
+.PHONY : MODEL_TSET/fast
 
 # Help Target
 help:
@@ -160,10 +149,8 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... LOTUS
-	@echo ... test/test.obj
-	@echo ... test/test.i
-	@echo ... test/test.s
+	@echo ... GEOMETRY_TSET
+	@echo ... MODEL_TSET
 .PHONY : help
 
 

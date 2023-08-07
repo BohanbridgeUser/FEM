@@ -1,3 +1,10 @@
-G:/COMPUTER/FEM/build/CMakeFiles/LOTUS.dir
 G:/COMPUTER/FEM/build/CMakeFiles/edit_cache.dir
 G:/COMPUTER/FEM/build/CMakeFiles/rebuild_cache.dir
+G:/COMPUTER/FEM/build/test/CMakeFiles/edit_cache.dir
+G:/COMPUTER/FEM/build/test/CMakeFiles/rebuild_cache.dir
+G:/COMPUTER/FEM/build/test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir
+G:/COMPUTER/FEM/build/test/geometry_test/CMakeFiles/edit_cache.dir
+G:/COMPUTER/FEM/build/test/geometry_test/CMakeFiles/rebuild_cache.dir
+G:/COMPUTER/FEM/build/test/model_test/CMakeFiles/MODEL_TSET.dir
+G:/COMPUTER/FEM/build/test/model_test/CMakeFiles/edit_cache.dir
+G:/COMPUTER/FEM/build/test/model_test/CMakeFiles/rebuild_cache.dir

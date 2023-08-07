@@ -8,12 +8,13 @@
 #include <vector>
 #include <array>
 #include <memory>
-template<class DimensionType>
+template<class TPointType>
 class Geometry 
 {
     public:
-        // @ Define { 
-        enum class GeometryType {
+        ///@ Define { 
+        enum class Geometry_Type {
+            Origin,
             Line,
             Triangle,
             Quadrilateral,
@@ -21,7 +22,7 @@ class Geometry
             Hexahedron
         };
         LOTUS_POINTER_DEFINE(Geometry)
-        using PointType = Point<DimensionType::D>;
+        typedef TPointType PointType;
 
         // @ Integration Points Define
         typedef Integration_Point<3> IntegrationPointType;
@@ -43,29 +44,38 @@ class Geometry
                                     ShapeFunctionsGradientsContainerType;
         //}
 
-        // @ Constructor { 
+        ///@ Life Circle 
+        ///@{ 
+        // Constructor  
             Geometry()
             {
                std::vector<PointType> pPoints;
+               number++;
+               ID = number;
             }    
+            Geometry(const int& id,Points_Container<PointType>& Points):pPoints(Points),ID(id)
+            {
+               number++;
+            }
             Geometry(Points_Container<PointType>& Points):pPoints(Points)
             {
-
+               number++;
+               ID = number;
             }
-            Geometry(const Geometry<DimensionType>& another):pPoints(another.pPoints)
+            Geometry(const Geometry<TPointType>& another):pPoints(another.pPoints)
             {
-
+               number++;
+               ID = number;
             }
-        //}
-
-        // @ Destructor { 
+        // Destructor {
             ~Geometry()
             {
-                
+                if (number>0) number--;
             }    
-        //}
+        ///@}
 
-        // @ Access { 
+        ///@name Access 
+        ///@{
             PointType& GetValue(int index)
             {
                 return pPoints.GetValue(index);
@@ -78,22 +88,39 @@ class Geometry
             {
                 return pPoints;
             }
-        //}
+            int& GetID()
+            {
+                return ID;
+            }
+            int GetID() const
+            {
+                return ID;
+            }
+            static Geometry_Type GetType()
+            {
+                return GeometryType;
+            }
+        ///@}
 
-        // @ Utility { 
+        ///@ Utility { 
             // static int GetType()
             // {
             //     return 0;
             // }
             int GetPointsNum()const
             {
-                return pPoints.size();
+                return pPoints.GetPointsNum();
             }
         //}
+    protected:
+        int ID;
     private:
         Points_Container<PointType> pPoints;
-        // static const Geometry_Data pGeometryData;
-        // static const Geometry_Dimension pDimensiont;
-};
 
+        static Geometry_Type GeometryType; 
+        static int number;
+        static const Geometry_Data mGeometry_Data;
+};
+template<typename TPointType> int Geometry<TPointType>::number = 0;
+template<typename TPointType> typename Geometry<TPointType>::Geometry_Type Geometry<TPointType>::GeometryType = Geometry_Type::Origin;
 #endif

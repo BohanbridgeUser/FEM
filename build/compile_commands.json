@@ -1,7 +1,17 @@
 [
 {
-  "directory": "G:/COMPUTER/FEM/build",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/LOTUS.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\LOTUS.dir\\test\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\test.cpp",
-  "file": "G:/COMPUTER/FEM/test/test.cpp"
+  "directory": "G:/COMPUTER/FEM/build/test/geometry_test",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/GEOMETRY_TSET.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\GEOMETRY_TSET.dir\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\geometry_test\\test.cpp",
+  "file": "G:/COMPUTER/FEM/test/geometry_test/test.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build/test/model_test",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/MODEL_TSET.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\MODEL_TSET.dir\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\model_test\\test.cpp",
+  "file": "G:/COMPUTER/FEM/test/model_test/test.cpp"
+},
+{
+  "directory": "G:/COMPUTER/FEM/build/test/model_test",
+  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/MODEL_TSET.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\MODEL_TSET.dir\\__\\__\\src\\node_data.cpp.obj -c G:\\COMPUTER\\FEM\\src\\node_data.cpp",
+  "file": "G:/COMPUTER/FEM/src/node_data.cpp"
 }
 ]

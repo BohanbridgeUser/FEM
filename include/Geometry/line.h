@@ -5,36 +5,36 @@
 
 // @ This file define class Line that consists of two point
 // .1 —————— .2
-template <typename DimensionType>
-class Line : public Geometry<DimensionType>
+template <typename TPointType>
+class Line : public Geometry<TPointType>
 {
     public:
         // @ Define {
-        LOTUS_POINTER_DEFINE(Line<DimensionType>)
-        typedef Point<DimensionType::D> PointType;
+        LOTUS_POINTER_DEFINE(Line<TPointType>)
+        typedef TPointType PointType;
         typedef std::array<int,3> EdgeType;
         //}
 
         //@ Constructor { 
-        Line():Geometry<DimensionType>()
+        Line():Geometry<PointType>()
         {
             
         }
-        Line(PointType& p1, PointType& p2):Geometry<DimensionType>()
+        Line(PointType& p1, PointType& p2):Geometry<PointType>()
         {
             std::vector<PointType> t;
             t.push_back(p1);t.push_back(p2);
             Points_Container<PointType> p_c(t);
-            Geometry<DimensionType>::pPointsVector() = p_c;
+            Geometry<PointType>::pPointsVector() = p_c;
             number++;
             ID = number;
         }
-        Line(Points_Container<PointType>& Points):Geometry<DimensionType>(Points)
+        Line(Points_Container<PointType>& Points):Geometry<PointType>(Points)
         {
             number++;
             ID = number;
         }
-        Line(const Line& another):Geometry<DimensionType>(another)
+        Line(const Line& another):Geometry<PointType>(another)
         {
             number++;
             ID = number;
@@ -55,19 +55,19 @@ class Line : public Geometry<DimensionType>
         }
         PointType& GetPoint1()
         {
-            return Geometry<DimensionType>::pPointsVector().GetValue(0);
+            return Geometry<PointType>::pPointsVector().GetValue(0);
         }
         PointType GetPoint1()const
         {
-            return Geometry<DimensionType>::pPointsVector().GetValue(0);
+            return Geometry<PointType>::pPointsVector().GetValue(0);
         }
         PointType& GetPoint2() 
         {
-            return Geometry<DimensionType>::pPointsVector().GetValue(1);
+            return Geometry<PointType>::pPointsVector().GetValue(1);
         }
         PointType GetPoint2() const
         {
-            return Geometry<DimensionType>::pPointsVector().GetValue(1);
+            return Geometry<PointType>::pPointsVector().GetValue(1);
         }
         //}
 
@@ -78,12 +78,12 @@ class Line : public Geometry<DimensionType>
         }
         static int GetType()
         {
-            return (int)Geometry<DimensionType>::GeometryType::Line;
+            return (int)Geometry<PointType>::GeometryType::Line;
         }    
         //}
     private:
         int ID;
         static int number;
 };
-template<typename DimensionType> int Line<DimensionType>:: number = 0;
+template<typename PointType> int Line<PointType>:: number = 0;
 #endif

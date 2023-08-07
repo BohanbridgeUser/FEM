@@ -3,13 +3,13 @@
 #include "geometry.h"
 #include "../Container/geometry_container.h"
 #include "Point.h"
-template <typename DimensionType>
-class Hexahedron:public Geometry<DimensionType>
+template <typename TPointType>
+class Hexahedron:public Geometry<TPointType>
 {
     public:
         // @ Define { 
-        LOTUS_POINTER_DEFINE(Hexahedron<DimensionType>)
-        typedef Point<DimensionType::D> PointType;
+        LOTUS_POINTER_DEFINE(Hexahedron<TPointType>)
+        typedef TPointType PointType;
         typedef std::vector<PointType> PointsVectorType;
         typedef Points_Container<PointType> PointsContainer;    
         //}
@@ -19,16 +19,16 @@ class Hexahedron:public Geometry<DimensionType>
         {
             number++;
         }
-        Hexahedron(PointsContainer& points):Geometry<DimensionType>(points)
+        Hexahedron(PointsContainer& points):Geometry<TPointType>(points)
         {
             number++;
             ID = number;
         }
-        Hexahedron(const int& F,PointsContainer& points):Geometry<DimensionType>(points),ID(F)
+        Hexahedron(const int& F,PointsContainer& points):Geometry<TPointType>(points),ID(F)
         {
             number++;
         }
-        Hexahedron(const Hexahedron<DimensionType>& another):Geometry<DimensionType>(another)
+        Hexahedron(const Hexahedron<TPointType>& another):Geometry<TPointType>(another)
         {
             ID = ++number;
         }
@@ -48,12 +48,12 @@ class Hexahedron:public Geometry<DimensionType>
         }
         static int GetType()
         {
-            return (int)Geometry<DimensionType>::GeometryType::Hexahedron;
+            return (int)Geometry<TPointType>::GeometryType::Hexahedron;
         }
         //}
     private:
         int ID;
         static int number;
 };
-template<typename DimensionType> int Hexahedron<DimensionType>::number = 0;
+template<typename TPointType> int Hexahedron<TPointType>::number = 0;
 #endif

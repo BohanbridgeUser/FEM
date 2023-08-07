@@ -13,19 +13,19 @@
 //      |      `\
 //      |        `\  
 //      .0 - - - - .1
-template<typename DimensionType>
-class Triangle:public Geometry<DimensionType>
+template<typename TPointType>
+class Triangle:public Geometry<TPointType>
 {
     public:
         // @ Define { 
-        LOTUS_POINTER_DEFINE(Triangle<DimensionType>)  
-        typedef Point<DimensionType::D> PointType;
+        LOTUS_POINTER_DEFINE(Triangle<TPointType>)  
+        typedef TPointType PointType;
         typedef std::vector<PointType> PointsVectorType;
         typedef Points_Container<PointType> PointsContainer;
         //}
 
         // @ Constructor { 
-        Triangle():Geometry<DimensionType>()
+        Triangle():Geometry<TPointType>()
         {
             number++;
         }
@@ -37,19 +37,19 @@ class Triangle:public Geometry<DimensionType>
             t.push_back(p1);
             t.push_back(p2);
             t.push_back(p3);
-            Points_Container<DimensionType> t_c(t);
-            Geometry<DimensionType>::pPointsVector() = t_c;
+            Points_Container<TPointType> t_c(t);
+            Geometry<TPointType>::pPointsVector() = t_c;
         }
-        Triangle(PointsContainer& points):Geometry<DimensionType>(points)
+        Triangle(PointsContainer& points):Geometry<TPointType>(points)
         {
             number++;
             ID = number;
         }
-        Triangle(const int& F,PointsContainer& points):Geometry<DimensionType>(points),ID(F)
+        Triangle(const int& F,PointsContainer& points):Geometry<TPointType>(points),ID(F)
         {
             number++;
         }
-        Triangle(const Triangle<DimensionType>& another):Geometry<DimensionType>(another)
+        Triangle(const Triangle<TPointType>& another):Geometry<TPointType>(another)
         {
             ID = ++number;
         }
@@ -69,7 +69,7 @@ class Triangle:public Geometry<DimensionType>
         }
         static int GetType()
         {
-            return (int)Geometry<DimensionType>::GeometryType::Triangle;
+            return (int)Geometry<TPointType>::GeometryType::Triangle;
         }
         //}
     private:
@@ -77,5 +77,5 @@ class Triangle:public Geometry<DimensionType>
         static int number;
 };
 
-template<typename DimensionType> int Triangle<DimensionType>::number = 0;
+template<typename TPointType> int Triangle<TPointType>::number = 0;
 #endif

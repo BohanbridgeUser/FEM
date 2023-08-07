@@ -7,8 +7,10 @@ template<int TDimension>
 class Point:public Vector<TDimension>
 {
     public:
-
+    // @ Define { 
     LOTUS_POINTER_DEFINE(Point<TDimension>)
+    static int D;
+    //}
 
     // @ Constructor {
         /* Default */
@@ -147,6 +149,8 @@ class Point:public Vector<TDimension>
     private:
         int ID;
         static int number;
+        
 };
 template<int TDimension> int Point<TDimension>::number = 0;
+template<int TDimension> int Point<TDimension>::D = TDimension;
 #endif

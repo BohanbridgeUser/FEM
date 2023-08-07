@@ -33,6 +33,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.25.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.25.3/CMakeRCCompiler.cmake"
   "CMakeFiles/3.25.3/CMakeSystem.cmake"
+  "G:/COMPUTER/FEM/test/CMakeLists.txt"
+  "G:/COMPUTER/FEM/test/geometry_test/CMakeLists.txt"
+  "G:/COMPUTER/FEM/test/model_test/CMakeLists.txt"
   )
 
 # The corresponding makefile is:
@@ -44,9 +47,13 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/geometry_test/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/model_test/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/LOTUS.dir/DependInfo.cmake"
+  "test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/DependInfo.cmake"
+  "test/model_test/CMakeFiles/MODEL_TSET.dir/DependInfo.cmake"
   )

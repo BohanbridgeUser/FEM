@@ -8,8 +8,8 @@ class Geometry_Container
 {
     public:
         LOTUS_POINTER_DEFINE(Geometry_Container<TGeometryType>)
-        typedef std::unordered_map<decltype(std::declval<TGeometryType>().GetType()), TGeometryType* ,std::hash<int> > ContainerType;
-        typedef decltype(std::declval<TGeometryType>().GetType()) Key_Type;
+        typedef std::unordered_map<int, TGeometryType* ,std::hash<int> > ContainerType;
+        typedef int Key_Type;
         // @ Constructor { 
         Geometry_Container()
         {

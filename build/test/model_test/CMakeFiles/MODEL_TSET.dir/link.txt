@@ -1,0 +1,3 @@
+D:\CMAKE\CLIENT\bin\cmake.exe -E rm -f CMakeFiles\MODEL_TSET.dir/objects.a
+C:\MINGW64-NEW\w64devkit\bin\ar.exe qc CMakeFiles\MODEL_TSET.dir/objects.a @CMakeFiles\MODEL_TSET.dir\objects1
+C:\MINGW64-NEW\w64devkit\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\MODEL_TSET.dir/objects.a -Wl,--no-whole-archive -o MODEL_TSET.exe -Wl,--out-implib,libMODEL_TSET.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\MODEL_TSET.dir\linkLibs.rsp

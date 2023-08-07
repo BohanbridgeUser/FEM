@@ -62,42 +62,116 @@ CMAKE_BINARY_DIR = G:\COMPUTER\FEM\build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/LOTUS.dir/all
+all: test/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: test/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/LOTUS.dir/clean
+clean: test/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/LOTUS.dir
+# Directory level rules for directory test
+
+# Recursive "all" directory target.
+test/all: test/geometry_test/all
+test/all: test/model_test/all
+.PHONY : test/all
+
+# Recursive "preinstall" directory target.
+test/preinstall: test/geometry_test/preinstall
+test/preinstall: test/model_test/preinstall
+.PHONY : test/preinstall
+
+# Recursive "clean" directory target.
+test/clean: test/geometry_test/clean
+test/clean: test/model_test/clean
+.PHONY : test/clean
+
+#=============================================================================
+# Directory level rules for directory test/geometry_test
+
+# Recursive "all" directory target.
+test/geometry_test/all: test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/all
+.PHONY : test/geometry_test/all
+
+# Recursive "preinstall" directory target.
+test/geometry_test/preinstall:
+.PHONY : test/geometry_test/preinstall
+
+# Recursive "clean" directory target.
+test/geometry_test/clean: test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/clean
+.PHONY : test/geometry_test/clean
+
+#=============================================================================
+# Directory level rules for directory test/model_test
+
+# Recursive "all" directory target.
+test/model_test/all: test/model_test/CMakeFiles/MODEL_TSET.dir/all
+.PHONY : test/model_test/all
+
+# Recursive "preinstall" directory target.
+test/model_test/preinstall:
+.PHONY : test/model_test/preinstall
+
+# Recursive "clean" directory target.
+test/model_test/clean: test/model_test/CMakeFiles/MODEL_TSET.dir/clean
+.PHONY : test/model_test/clean
+
+#=============================================================================
+# Target rules for target test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir
 
 # All Build rule for target.
-CMakeFiles/LOTUS.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=G:\COMPUTER\FEM\build\CMakeFiles --progress-num=1,2 "Built target LOTUS"
-.PHONY : CMakeFiles/LOTUS.dir/all
+test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/all:
+	$(MAKE) $(MAKESILENT) -f test\geometry_test\CMakeFiles\GEOMETRY_TSET.dir\build.make test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/depend
+	$(MAKE) $(MAKESILENT) -f test\geometry_test\CMakeFiles\GEOMETRY_TSET.dir\build.make test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=G:\COMPUTER\FEM\build\CMakeFiles --progress-num=1,2 "Built target GEOMETRY_TSET"
+.PHONY : test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/LOTUS.dir/rule: cmake_check_build_system
+test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start G:\COMPUTER\FEM\build\CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/LOTUS.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start G:\COMPUTER\FEM\build\CMakeFiles 0
-.PHONY : CMakeFiles/LOTUS.dir/rule
+.PHONY : test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/rule
 
 # Convenience name for target.
-LOTUS: CMakeFiles/LOTUS.dir/rule
-.PHONY : LOTUS
+GEOMETRY_TSET: test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/rule
+.PHONY : GEOMETRY_TSET
 
 # clean rule for target.
-CMakeFiles/LOTUS.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\LOTUS.dir\build.make CMakeFiles/LOTUS.dir/clean
-.PHONY : CMakeFiles/LOTUS.dir/clean
+test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test\geometry_test\CMakeFiles\GEOMETRY_TSET.dir\build.make test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/clean
+.PHONY : test/geometry_test/CMakeFiles/GEOMETRY_TSET.dir/clean
+
+#=============================================================================
+# Target rules for target test/model_test/CMakeFiles/MODEL_TSET.dir
+
+# All Build rule for target.
+test/model_test/CMakeFiles/MODEL_TSET.dir/all:
+	$(MAKE) $(MAKESILENT) -f test\model_test\CMakeFiles\MODEL_TSET.dir\build.make test/model_test/CMakeFiles/MODEL_TSET.dir/depend
+	$(MAKE) $(MAKESILENT) -f test\model_test\CMakeFiles\MODEL_TSET.dir\build.make test/model_test/CMakeFiles/MODEL_TSET.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=G:\COMPUTER\FEM\build\CMakeFiles --progress-num=3,4,5 "Built target MODEL_TSET"
+.PHONY : test/model_test/CMakeFiles/MODEL_TSET.dir/all
+
+# Build rule for subdir invocation for target.
+test/model_test/CMakeFiles/MODEL_TSET.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start G:\COMPUTER\FEM\build\CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/model_test/CMakeFiles/MODEL_TSET.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start G:\COMPUTER\FEM\build\CMakeFiles 0
+.PHONY : test/model_test/CMakeFiles/MODEL_TSET.dir/rule
+
+# Convenience name for target.
+MODEL_TSET: test/model_test/CMakeFiles/MODEL_TSET.dir/rule
+.PHONY : MODEL_TSET
+
+# clean rule for target.
+test/model_test/CMakeFiles/MODEL_TSET.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test\model_test\CMakeFiles\MODEL_TSET.dir\build.make test/model_test/CMakeFiles/MODEL_TSET.dir/clean
+.PHONY : test/model_test/CMakeFiles/MODEL_TSET.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

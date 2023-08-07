@@ -2,13 +2,13 @@
 #define _TETRAHEDROM_H_
 #include "geometry.h"
 #include "../Container/geometry_container.h"
-template<typename DimensionType>
-class Tetrahedron:public Geometry<DimensionType>
+template<typename TPointType>
+class Tetrahedron:public Geometry<TPointType>
 {
     public:
         // @ Define { 
-        LOTUS_POINTER_DEFINE(Tetrahedron<DimensionType>)
-        typedef Point<DimensionType::D> PointType;
+        LOTUS_POINTER_DEFINE(Tetrahedron<TPointType>)
+        typedef TPointType PointType;
         typedef std::vector<PointType> PointsVectorType;
         typedef Points_Container<PointType> PointsContainer;
         //}
@@ -18,16 +18,16 @@ class Tetrahedron:public Geometry<DimensionType>
         {
             number++;
         }
-        Tetrahedron(PointsContainer& points):Geometry<DimensionType>(points)
+        Tetrahedron(PointsContainer& points):Geometry<TPointType>(points)
         {
             number++;
             ID = number;
         }
-        Tetrahedron(const int& F,PointsContainer& points):Geometry<DimensionType>(points),ID(F)
+        Tetrahedron(const int& F,PointsContainer& points):Geometry<TPointType>(points),ID(F)
         {
             number++;
         }
-        Tetrahedron(const Tetrahedron<DimensionType>& another):Geometry<DimensionType>(another)
+        Tetrahedron(const Tetrahedron<TPointType>& another):Geometry<TPointType>(another)
         {
             ID = ++number;
         }
@@ -47,12 +47,12 @@ class Tetrahedron:public Geometry<DimensionType>
         }
         static int GetType()
         {
-            return (int)Geometry<DimensionType>::GeometryType::Tetrahedron;
+            return (int)Geometry<TPointType>::GeometryType::Tetrahedron;
         }
         //}
     private:
         int ID;
         static int number;
 };
-template<typename DimensionType> int Tetrahedron<DimensionType>::number=0;
+template<typename TPointType> int Tetrahedron<TPointType>::number=0;
 #endif

@@ -44,6 +44,10 @@ class Points_Container
         {
             return pData[index];
         }
+        int GetPointsNum()const
+        {
+            return pData.size();
+        }
     //}
 
     // @ Utility { 
