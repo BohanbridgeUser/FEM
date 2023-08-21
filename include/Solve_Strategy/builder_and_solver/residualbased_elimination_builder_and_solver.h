@@ -1,19 +1,19 @@
-#ifndef _RESIDUALBASED_ELIMINATION_BUILDEF_AND_SOLVER_H_
-#define _RESIDUALBASED_ELIMINATION_BUILDEF_AND_SOLVER_H_
+#ifndef _RESIDUALBASED_ELIMINATION_BUILDER_AND_SOLVER_H_
+#define _RESIDUALBASED_ELIMINATION_BUILDER_AND_SOLVER_H_
 #include "builder_and_solver.h"
 template<typename TSparseSpace, typename TDenseSpace, typename TLinearSolver>
-class ResidualbasedEliminationBuildefAndSolver : public Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
+class ResidualBasedEliminationBuilderAndSolver : public Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
 {
     public:
         /// @name Type Define
         /// @{
-            typedef ResidualbasedEliminationBuildefAndSolver<TSparseSpace,TDenseSpace,TLinearSolver> 
+            typedef ResidualBasedEliminationBuilderAndSolver<TSparseSpace,TDenseSpace,TLinearSolver> 
                                                                                                     ClassType;
             LOTUS_POINTER_DEFINE(ClassType)
             
             typedef Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
                                                                                                      BaseType;
-            typedef LinearSolver<TSparseSpace,TDenseSpace> 
+            typedef Linear_Solver<TSparseSpace,TDenseSpace> 
                                                                                              LinearSolverType;
             typedef Scheme<TSparseSpace,TDenseSpace>               
                                                                                                    SchemeType;
@@ -31,9 +31,9 @@ class ResidualbasedEliminationBuildefAndSolver : public Builder_And_Solver<TSpar
                                                                                         ElementsContainerType;
             typedef Model_Part::ConditionsContainerType            
                                                                                       ConditionsContainerType;
-            typedef TSparseSpace::SparseMatrix<double>             
+            typedef typename TSparseSpace::SparseMatrix            
                                                                                              SparseVectorType;
-            typedef typedef ConvergenceCriterias<TSparseSpace,TDenseSpace> 
+            typedef ConvergenceCriterias<TSparseSpace,TDenseSpace> 
                                                                                       ConvergenceCriteriaType;
         /// @}
 
@@ -41,18 +41,25 @@ class ResidualbasedEliminationBuildefAndSolver : public Builder_And_Solver<TSpar
         /// @name Life Circle
         /// @{
              /* Constructor */
-            explicit ResidualbasedEliminationBuildefAndSolver()
+            explicit ResidualBasedEliminationBuilderAndSolver()
             {
 
             }
-            ResidualbasedEliminationBuildefAndSolver(typename LinearSolverType& ThisLinearSolver)
+            ResidualBasedEliminationBuilderAndSolver(LinearSolverType& ThisLinearSolver)
             :BaseType(ThisLinearSolver)
+            {
+
+            }
+            ResidualBasedEliminationBuilderAndSolver(const ClassType& ThisLineSolver)
+            :BaseType(ThisLineSolver),
+             mScaleFactor(ThisLineSolver.mScaleFactor),
+             mScalingDiagonal(ThisLineSolver.mScalingDiagonal)
             {
 
             }
 
             /* Destructor */
-            virtual ~ResidualbasedEliminationBuildefAndSolver()
+            virtual ~ResidualBasedEliminationBuilderAndSolver()
             {
 
             }

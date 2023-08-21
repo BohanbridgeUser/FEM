@@ -15,10 +15,12 @@ class Builder_And_Solver
                                                                                BuilderAndSolverType;
             LOTUS_POINTER_DEFINE(BuilderAndSolverType)
 
-            typedef LinearSolver<TSparseSpace,TDenseSpace> 
+            typedef Linear_Solver<TSparseSpace,TDenseSpace> 
                                                                                    LinearSolverType;
             typedef Scheme<TSparseSpace,TDenseSpace>
                                                                                          SchemeType;
+            typedef typename SchemeType::Pointer
+                                                                                  SchemePointerType;
             typedef Model_Part
                                                                                       ModelPartType;
             typedef Model_Part::DofType                                                 
@@ -33,8 +35,18 @@ class Builder_And_Solver
                                                                               ElementsContainerType;
             typedef Model_Part::ConditionsContainerType
                                                                             ConditionsContainerType;
-            typedef TSparseSpace::SparseMatrix<double>
-                                                                                   SparseVectorType;
+            typedef typename TSparseSpace::SparseMatrix
+                                                                                       SpMatrixType;
+            typedef typename TSparseSpace::SparseVecto  
+                                                                                       SpVectorType;
+            typedef SpMatrixType  
+                                                                                   GlobalMatrixType;
+            typedef SpVectorType                                                     
+                                                                                   GlobalVectorType;
+            typedef typename SpMatrixType::Pointe  
+                                                                            GlobalMatrixTypePointer;
+            typedef typename SpVectorType::Pointe  
+                                                                            GlobalVectorTypePointer;
         /// @}
 
 
@@ -44,7 +56,7 @@ class Builder_And_Solver
             {
 
             }
-            Builder_And_Solver(typename LinearSolverType& ThisLinearSolver)
+            Builder_And_Solver(LinearSolverType& ThisLinearSolver)
             :mpLinearSolver(&ThisLinearSolver)
             {
 
@@ -55,6 +67,140 @@ class Builder_And_Solver
             }
         /// @}
 
+        /// @name Operations 
+        /// @{
+            /* Utility Operations */
+            Flags& GetOptions()
+            {
+                return mOptions;
+            }
+            unsigned int GetEquationGlobalSize() const
+            {
+                return mEquationSystemSize;
+            }
+            typename LinearSolverType::Pointer GetLinearSolver()const
+            {
+                return mpLinearSolver;
+            }
+            void SetLinearSolver(typename LinearSolverType::Pointer pLinearSolver)
+            {
+                mpLinearSolver = pLinearSolver;
+            }
+            void SetEchoLevel(int rEchoLevel)
+            {
+                mEchoLevel = rEchoLevel;
+            }
+
+            /* Solve Operations */
+            /**
+             * @brief Performs all the required operations that should be done (for each step) before solving the solution step.
+             * @details this function must be called only once per step.
+             */
+            virtual void InitializeSolutionStep(SchemePointerType pScheme,
+                                                Model_Part& rModelPart,
+                                                GlobalMatrixTypePointer& pA,
+                                                GlobalVectorTypePointer& pDx,
+                                                GlobalVectorTypePointer& pb)
+            {
+            }
+        
+            /**
+             * @brief Performs all the required operations that should be done (for each step) after solving the solution step.
+             * @details this function must be called only once per step.
+             */
+            virtual void FinalizeSolutionStep(SchemePointerType pScheme,
+                                                Model_Part& rModelPart,
+                                                GlobalMatrixTypePointer& pA,
+                                                GlobalVectorTypePointer& pDx,
+                                                GlobalVectorTypePointer& pb)
+            {
+            }
+
+            /**
+             * @brief Calculates system reactions
+             * @details A flag controls if reactions must be calculated
+             * @details An internal variable to store the reactions vector is needed
+             */
+            virtual void CalculateReactions(SchemePointerType pScheme,
+                                            Model_Part& rModelPart,
+                                            GlobalMatrixTypePointer& rA,
+                                            GlobalVectorTypePointer& rDx,
+                                            GlobalVectorTypePointer& rb)
+            {
+            }
+
+            virtual void BuildAndSolve(SchemeType& rScheme,
+                                       ModelPartType& rModelPart,
+                                       SpMatrixType& rmA,
+                                       SpVectorType& rmDx,
+                                       SpVectorType& rmb)
+            {
+                Build(rScheme,rModelPart,rmA,rmb);
+                ApplyDirichletConditions(rScheme,rModelPart,rmA,rmDx,rmb);
+                if (mEchoLevel == 3) 
+                {
+                    std::cout << "LHS Before Solve :\n" << rmA << std::endl;
+                    std::cout << "DX  Before Solve :\n" << rmDx << std::endl;
+                    std::cout << "RHS Before Solve :\n" << rmb << std::endl;
+                }
+                SystemSolveWithPhysics(rmA,rmDx,rmb,rModelPart);
+
+                if (mEchoLevel == 3) 
+                {
+                    std::cout << "LHS After Solve :\n" << rmA << std::endl;
+                    std::cout << "DX  After Solve :\n" << rmDx << std::endl;
+                    std::cout << "RHS After Solve :\n" << rmb << std::endl;
+                }
+            }
+            virtual void Build(SchemeType& rScheme,
+                               ModelPartType& rModelPart,
+                               SpMatrixType& rmA,
+                               SpVectorType& rmb)
+            {
+            }
+            virtual void ApplyDirichletConditions(SchemeType& rScheme,
+                                                  ModelPartType& rModelPart,
+                                                  SpMatrixType& rmA,
+                                                  SpVectorType& rmDx,
+                                                  SpVectorType& rmb)
+            {
+            }
+            
+            virtual void SystemSolveWithPhysics(SpMatrixType& rmA,
+                                                SpVectorType& rDx,
+                                                SpVectorType& rmb,
+                                                ModelPartType& rModelPart)
+            {
+            }
+
+            /**
+             * @brief Builds the list of the DofSets involved in the problem by "asking" to each element and condition its Dofs.
+             * @details The list of dofs is stores insde the SolutionBuilderAndSolver as it is closely connected to the way the matrix and RHS are built
+             */
+            virtual void SetUpDofSet(SchemePointerType pScheme,
+                                    Model_Part& rModelPart)
+            {
+            }
+
+            /**
+             * @brief organises the dofset in order to speed up the building phase
+             */
+            virtual void SetUpSystem()
+            {
+            }
+
+            virtual void Clear()
+            {
+                this->mDofSet.clear();
+
+                if(this->mpReactionsVector != nullptr)
+                    delete mpReactionsVector;
+                
+                mpLinearSolver->Clear();
+
+                std::cout << "Builder And Solver Clear!\n";
+            }
+        /// @}
 
     protected:
         /// @name Protected Static Member Variables
@@ -73,17 +219,7 @@ class Builder_And_Solver
             */
             DofsContainerType mDofSet;
 
-            bool mReshapeMatrixFlag = false;
-
-            /**
-             * @brief This flag telling if it is initialized or not
-            */
-            bool mDofSetIsInitialized = false; 
-
-            /**
-             * @brief This flag telling if it is needed or not to compute the reactions
-            */
-            bool mCalculateReactionsFlag = false; 
+            Flags mOptions;
 
             /**
              * @brief Total number of degrees of freedom of this problem to be solve
@@ -104,7 +240,7 @@ class Builder_And_Solver
             /**
              * @brief Reactions vector
             */
-            SparseVectorType mpReactionsVector;
+            SpVectorType mpReactionsVector;
 
         /// @}
 

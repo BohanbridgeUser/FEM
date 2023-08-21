@@ -1,7 +1,7 @@
 #ifndef _NODE_Data_H_
 #define _NODE_Data_H_
 
-#include "define.h"
+#include "../define.h"
 #include <vector>
 
 class Node_Data

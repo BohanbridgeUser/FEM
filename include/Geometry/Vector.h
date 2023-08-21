@@ -32,7 +32,7 @@ class Vector
             if (TDimension == 3) coordinate[2] = 0.0;
         }
         Vector(const double& xi, const double& yi, const double& zi)
-       {
+        {
             coordinate[0] = xi; coordinate[1] = yi; coordinate[2] = zi;
         }
 

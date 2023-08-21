@@ -19,7 +19,7 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         typedef std::vector<PointType> PointsVectorType;
         typedef Points_Container<PointType> PointsContainer;
 
-        typedef Geometry<TPointType> GeometryType;
+        typedef Geometry<TPointType> Geometry_Type;
 
         // Integration Points Define
         typedef Integration_Point<3> IntegrationPointType;
@@ -56,7 +56,7 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         Quadrilateral_2d_4(PointsContainer& points):Geometry<TPointType>(points)
         {
             number++;
-            GeometryType::ID = number;
+            Geometry_Type::ID = number;
         }
         Quadrilateral_2d_4(const int& F,PointsContainer& points):Geometry<TPointType>(F,points)
         {
@@ -64,7 +64,7 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         }
         Quadrilateral_2d_4(const Quadrilateral_2d_4<TPointType>& another):Geometry<TPointType>(another)
         {
-            GeometryType::ID = ++number;
+            Geometry_Type::ID = ++number;
         }
         
         //Destructor 
@@ -125,24 +125,15 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
             int IntegrationPoints_num = Vector_Integration_Points.size();
             ShapeFunctionsGradientsType result(IntegrationPoints_num);
             for (int i=0;i<IntegrationPoints_num;++i) {
-                Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> temp {
-                    {
-                        -0.25 * (1 - Vector_Integration_Points[i].y()),
-                        -0.25 * (1 - Vector_Integration_Points[i].x())
-                    },
-                    {
-                        0.25 * (1 - Vector_Integration_Points[i].y()),
-                        -0.25 * (1 + Vector_Integration_Points[i].x())
-                    },
-                    {
-                        0.25 * (1 + Vector_Integration_Points[i].y()),
-                        0.25 * (1 + Vector_Integration_Points[i].x()),
-                    },
-                    {
+                Eigen::Matrix<double, 4, 2> temp;
+                temp << -0.25 * (1 - Vector_Integration_Points[i].y()),
+                        -0.25 * (1 - Vector_Integration_Points[i].x()),
+                         0.25 * (1 - Vector_Integration_Points[i].y()),
+                        -0.25 * (1 + Vector_Integration_Points[i].x()),
+                         0.25 * (1 + Vector_Integration_Points[i].y()),
+                         0.25 * (1 + Vector_Integration_Points[i].x()),
                         -0.25 * (1 + Vector_Integration_Points[i].y()),
-                        0.25 * (1 - Vector_Integration_Points[i].x())
-                    }
-                };     
+                         0.25 * (1 - Vector_Integration_Points[i].x());    
                 result[i] = temp;
             }
             return result;
@@ -185,11 +176,11 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         // @ Utility {
         int GetID() const 
         {
-            return GeometryType::ID;
+            return Geometry_Type::ID;
         }
         static int GetType()
         {
-            return (int)Geometry<TPointType>::GeometryType::Quadrilateral;
+            return (int)Geometry<TPointType>::Geometry_Type::Quadrilateral;
         }
         //}
 

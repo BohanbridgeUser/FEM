@@ -2,16 +2,17 @@
 #define _GEOMETRY_OBJECT_H_
 
 #include "../define.h"
-#include "../node.h"
+#include "../Node/node.h"
 #include "../Geometry/geometry.h"
 class Geometry_Object
 {
     public:
         ///@name Define 
         ///@{
-        LOTUS_POINTER_DEFINE(Geometry_Object)
-        typedef Node NodeType;
-        typedef Geometry<NodeType> GeometryType;
+            LOTUS_POINTER_DEFINE(Geometry_Object)
+            typedef Node NodeType;
+            typedef Geometry<NodeType> GeometryType;
+            typedef Geometry_Object ClassType;
         ///@}
 
         ///@name Lift Circle 
@@ -19,14 +20,25 @@ class Geometry_Object
             // Constructor
             Geometry_Object()
             {
+                mpGeometry = nullptr;
+            }
+            Geometry_Object(GeometryType* ThismpGeometry)
+            :mpGeometry(ThismpGeometry)
+            {
 
             }
-            Geometry_Object(GeometryType* ThismpGeometry):mpGeometry(ThismpGeometry)
+            Geometry_Object(ClassType& another)
+            :mpGeometry(another.mpGeometry)
+            {
+
+            }
+            Geometry_Object(ClassType&& another)
+            :mpGeometry(another.mpGeometry)
             {
 
             }
             // Destructor 
-            ~Geometry_Object()
+            virtual ~Geometry_Object()
             {
 
             }
@@ -43,7 +55,7 @@ class Geometry_Object
                 return *mpGeometry;
             }
         ///@}
-    private:
+    protected:
         GeometryType* mpGeometry;
 };
 #endif

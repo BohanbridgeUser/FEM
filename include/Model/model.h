@@ -2,13 +2,8 @@
 #define _MODEL_H_
 
 #include "../define.h"
-#include "../Geometry/geometry.h"
-#include "../Geometry/geometry_dimension.h"
-#include "../Geometry/Point.h"
-#include "../node.h"
-#include "../Container/points_container.h"
-#include "../Container/geometry_container.h"
 #include "model_part.h"
+
 #include <string>
 #include <unordered_map>
 #include <memory>
@@ -20,7 +15,7 @@ class Model
         ///@{ 
         LOTUS_POINTER_DEFINE(Model)
         typedef Node NodeType;
-        typedef Geometry<Dimension<3>> GeometryType;
+        typedef Geometry<Node> GeometryType;
         typedef Model_Part ModelPart;
         ///@}
 

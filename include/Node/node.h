@@ -1,29 +1,38 @@
 #ifndef _NODE_H_
 #define _NODE_H_
-#include "define.h"
-#include "Geometry/Point.h"
+#include "../Geometry/Point.h"
 #include "node_data.h"
 #include "dof.h"
 #include <vector>
-#include "Geometry/Vector.h"
 class Node : public Point<3>
 {
     public:
         ///@name Define
         ///@{ 
-        LOTUS_POINTER_DEFINE(Node)
-        typedef Node NodeType;
-        typedef Point<3> BaseType;
-        typedef Point<3> PointType;
-
-        typedef Node_Data NodeDataType;
-
-        typedef std::vector<Dof> DofsContainerType;
+            LOTUS_POINTER_DEFINE(Node)
+            typedef Node                    
+                                                        NodeType;
+            typedef Point<3> 
+                                                        BaseType;
+            typedef Point<3> 
+                                                       PointType;
+            typedef Node_Data 
+                                                    NodeDataType;
+            typedef std::vector<Dof> 
+                                               DofsContainerType;
         ///@}
 
         ///@name Life Circle
         ///@{
             // Constructor
+            Node()
+            :PointType(),
+             mNodeData(),
+             mDofsContainer(),
+             mInitialPosition()
+            {
+
+            }
             Node(const int& ID)
             :PointType(),
              mNodeData(ID),
@@ -57,6 +66,14 @@ class Node : public Point<3>
             {
 
             }
+            Node(Node&& another)
+                :PointType(another.x(),another.y(),another.z()),
+                mNodeData(another.mNodeData),
+                mDofsContainer(another.mDofsContainer),
+                mInitialPosition(another.x(),another.y(),another.z())
+            {
+
+            }
             Node(const Point<3>& anotherP)
                  :PointType(anotherP),
                  mNodeData(),
@@ -81,8 +98,41 @@ class Node : public Point<3>
 
             }    
         ///@}
+
+        /// @name Operators
+        /// @{
+            Node& operator=(const Node& another)
+            {
+                this->x() = another.x();
+                this->y() = another.y();
+                this->z() = another.z();
+                mNodeData = another.mNodeData;
+                mNodeData.GetID()++;
+                mDofsContainer = another.mDofsContainer;
+                mInitialPosition = another.mInitialPosition;
+                return *this;
+            }
+            Node& operator=(Node&& another)
+            {
+                this->x() = another.x();
+                this->y() = another.y();
+                this->z() = another.z();
+                mDofsContainer = another.mDofsContainer;
+                mInitialPosition = another.mInitialPosition;
+                return *this;
+            }
+        /// @}
         
         ///@name Operations {
+            
+        ///@}
+
+        /// @name Access
+        /// @{
+            int GetNodeID()const
+            {
+                return mNodeData.GetID();
+            }
             NodeDataType& GetNodeData()
             {
                 return mNodeData;
@@ -99,6 +149,10 @@ class Node : public Point<3>
             {
                 return mDofsContainer;
             }
+            // typename Dof::Pointer pGetDof(const TVariableType& rDofVariable) const
+            // {
+
+            // }
             Vector<3> GetInitialPosition()const
             {
                 return mInitialPosition;
@@ -107,7 +161,19 @@ class Node : public Point<3>
             {
                 return mInitialPosition;
             }
-        ///@}
+        /// @}
+
+        /// @name Input and Output
+        /// @{
+            friend std::ostream& operator<<(std::ostream& os, const Node& another)
+            {
+                os << "Node ID:" << another.GetNodeID() 
+                    << " Loc:" << another.x() << " "
+                    << another.y() << " "
+                    << another.z() << "\n";
+                    return os;
+            }
+        /// @}
     private:
         // NodeData stores ID and SolutionData of Nodes
         NodeDataType mNodeData;

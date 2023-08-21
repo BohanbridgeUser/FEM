@@ -1,9 +1,10 @@
 #ifndef _ADAPTIVE_RESIDUALBASED_NEWTON_RAPHSON_STRATEGY_H_
 #define _ADAPTIVE_RESIDUALBASED_NEWTON_RAPHSON_STRATEGY_H_
 #include "implicit_solving_strategy.h"
+#include "../builder_and_solver/residualbased_elimination_builder_and_solver.h"
 
 template<typename TSparseSpace, typename TDenseSpace, typename TLinearSolver>
-class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strategy<TSparseSpace, TDensSpace, TLinearSolver>
+class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strategy<TSparseSpace,TDenseSpace,TLinearSolver>
 {
     public:
         /// @name Type Define
@@ -12,7 +13,7 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
                                                                                                         ClassType;
             LOTUS_POINTER_DEFINE(ClassType)
             
-            typedef Solve_Stategy<TSparseSpace,TDenseSpace, TLinearSolver> 
+            typedef Solve_Strategy<TSparseSpace,TDenseSpace, TLinearSolver> 
                                                                                                 SolveStrategyType;
             
             typedef Implicit_Solving_Strategy<TSparseSpace, TDenseSpace, TLinearSolver> 
@@ -26,9 +27,9 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
 
             typedef ConvergenceCriterias<TSparseSpace,TDenseSpace>
                                                                                          ConvergenceCriteriasType;
-            typedef TSparseSpace::SparseMatrix<double>
+            typedef typename TSparseSpace::SparseMatrix
                                                                                                      SpMatrixType;
-            typedef TSparseSpace::SparseVector<double>
+            typedef typename TSparseSpace::SparseVector
                                                                                                      SpVectorType;
             typedef TDenseSpace
                                                                                                        MatrixType;
@@ -51,8 +52,8 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
             AdaptiveResidualBasedNewtonRaphsonStrategy(
                 ModelPartType& rModelPart,
                 typename SchemeType::Pointer pScheme,
-                typename LinearSolver::Pointer pNewLinearSolver,
-                typename ConvergenceCriteriaType::Pointer pNewConvergenceCriteria,
+                typename LinearSolverType::Pointer pNewLinearSolver,
+                typename ConvergenceCriteriasType::Pointer pNewConvergenceCriteria,
                 int MaxIterations = 30,
                 int MinIterations = 4,
                 bool CalculateReactions = false,
@@ -87,7 +88,7 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
                  * - ResidualBasedEliminationBuilderAndSolver
                  * 
                  */
-                mpBuilderAndSolver = typename TBuilderAndSolverType::Pointer
+                mpBuilderAndSolver = typename BuilderAndSolverType::Pointer
                                     (
                                         new ResidualBasedEliminationBuilderAndSolver<TSparseSpace,TDenseSpace,TLinearSolver>(mpLinearSolver)
                                     );
@@ -102,13 +103,22 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
                 //set EchoLevel to the default value (only time is displayed)
                 SetEchoLevel(1);
 
-                //by default the matrices are rebuilt at each iteration
+                /**
+                 * @brief Set the RebuildLevel
+                 * @details The father class Implicit_Solveing_Strategy has a protected member variable mRebuildLevel
+                 * @param mRebuildLevel
+                 * {
+                 * 0 -> Build StiffnessMatrix just once
+                 * 1 -> Build StiffnessMatrix at the beginning of each solution step
+                 * 2 -> build StiffnessMatrix at each iteration
+                 * }
+                */
                 this->SetRebuildLevel(2);
             }
 
 
             /* Destructor */
-            virtual AdaptiveResidualBasedNewtonRaphsonStrategy()
+            virtual ~AdaptiveResidualBasedNewtonRaphsonStrategy()
             {
 
             }
@@ -116,11 +126,18 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
 
         /// @name Public Operations
         /// @{
+            
+
+
+            void SetEchoLevel(int level)
+            {
+
+            }
             void SetMaxIterationNumber(int MaxIterations)
             {
                 mMaxIterationNumber = MaxIterations;
             }
-            typename BuilderAndSolverType::Pointer GetBuildAndSolver()
+            typename BuilderAndSolverType::Pointer GetBuilderAndSolver()
             {
                 return mpBuilderAndSolver;
             }
@@ -147,11 +164,11 @@ class AdaptiveResidualBasedNewtonRaphsonStrategy : public Implicit_Solving_Strat
              *  @details ma * mDx = mb;
              * 
             */
-            typename SpVectorType mDx;
+            SpVectorType mDx;
 
-            typename SpVectorType mb;
+            SpVectorType mb;
 
-            typename SpMatrixType ma;
+            SpMatrixType ma;
 
             /**
              * @brief Flag telling if it is needed to reform the DofSet at each solution step 

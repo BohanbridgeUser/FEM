@@ -1,9 +1,10 @@
 #ifndef _MESH_H_
 #define _MESH_H_
 #include "define.h"
-#include "node.h"
-#include "properties.h"
+#include "Node/node.h"
+#include "Property/properties.h"
 #include "Geometry/geometry.h"
+
 #include <unordered_map>
 template<typename TNodeType, typename TPropertiesType, typename TElementType, typename TConditionType>
 class Mesh
@@ -60,13 +61,38 @@ class Mesh
 
             }
         ///@}
+
+        /// @name Operators
+        /// @{
+
+        /// @}
+
+        /// @name Operations
+        /// @{
+            ElementsContainerType& Elements()
+            {
+                return *mpElements;
+            }
+            ConditionsContainerType& Conditions()
+            {
+                return *mpConditions;
+            }
+            PropertiesType& Property()
+            {
+                return *mpProperties;
+            }
+            NodesContainerType& Nodes()
+            {
+                return *mpNodes;
+            }
+        /// @}
     private:
-        NodesContainerTypePointer mpNodes;
+        NodesContainerType* mpNodes;
 
-        Properties::SharedPointer mpProperties;
+        Properties* mpProperties;
 
-        ElementsContainerTypePointer mpElements;
+        ElementsContainerType* mpElements;
 
-        ConditionsContainerTypePointer mpConditions;
+        ConditionsContainerType* mpConditions;
 };
 #endif

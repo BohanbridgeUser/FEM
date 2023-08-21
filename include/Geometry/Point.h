@@ -1,6 +1,5 @@
 #ifndef _POINT_H_
 #define _POINT_H_
-#include "../define.h"
 #include "Vector.h"
 #include <iostream>
 template<int TDimension>
@@ -8,8 +7,8 @@ class Point:public Vector<TDimension>
 {
     public:
     // @ Define { 
-    LOTUS_POINTER_DEFINE(Point<TDimension>)
-    static int D;
+        LOTUS_POINTER_DEFINE(Point<TDimension>)
+        static int D;
     //}
 
     // @ Constructor {
@@ -21,27 +20,17 @@ class Point:public Vector<TDimension>
         Point(const double& xi, const double& yi):Vector<TDimension>(xi,yi)
         {
             number++;
-            ID= number;
         }
         Point(const double& xi, const double& yi, const double& zi):Vector<TDimension>(xi,yi,zi)
         {
             number++;
-            ID= number;
         }
-        Point(const int& p, const double& xi, const double& yi):Vector<TDimension>(xi,yi), ID(p)
-        {
-            number++;
-        }
-        Point(const int& p, const double& xi, const double& yi, const double& zi):Vector<TDimension>(xi,yi,zi),ID(p)
-        {
-            number++;
-        }
-        Point(const Point& another):Vector<TDimension>(another.x(),another.y()),ID(another.ID)
+        Point(const Point& another):Vector<TDimension>(another.x(),another.y())
         {
             if(TDimension == 3) Vector<TDimension>::z() = another.z();
             number++;
         }
-        Point(const int& p, const Vector<TDimension>& v2p):Vector<TDimension>(v2p),ID(p)
+        Point(const Vector<TDimension>& v2p):Vector<TDimension>(v2p)
         {
             number++;
         }
@@ -127,27 +116,22 @@ class Point:public Vector<TDimension>
         friend std::ostream& operator<<(std::ostream& os, const Point& a)
         {
              if (TDimension  == 2) {
-                os << a.ID << ' ' << a.x() << ' ' << a.y() << std::endl;
+                os << a.x() << ' ' << a.y() << std::endl;
                 return os;
             }else {
-                os << a.ID << ' ' << a.x() << ' ' << a.y() << ' ' << a.z() << std::endl;
+                os << a.x() << ' ' << a.y() << ' ' << a.z() << std::endl;
                 return os;
             }
         }
     //}
     
     // @ Utility{
-        int GetID() const
-        {
-            return ID;
-        }
         friend double dist(const Point& a, const Point& b)
         {
             return Point(b-a).norm();
         }
     // }
     private:
-        int ID;
         static int number;
         
 };

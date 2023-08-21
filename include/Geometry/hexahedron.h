@@ -48,7 +48,7 @@ class Hexahedron:public Geometry<TPointType>
         }
         static int GetType()
         {
-            return (int)Geometry<TPointType>::GeometryType::Hexahedron;
+            return (int)Geometry<TPointType>::Geometry_Type::Hexahedron;
         }
         //}
     private:

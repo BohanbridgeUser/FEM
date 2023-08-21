@@ -1,6 +1,6 @@
 #ifndef _DOF_H_
 #define _DOF_H_
-#include "define.h"
+
 #include "node.h"
 #include "node_data.h"
 class Dof

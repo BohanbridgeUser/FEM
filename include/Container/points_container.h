@@ -8,25 +8,28 @@ class Points_Container
 {
     
     public:
-        typedef TPointType PointType;
-        typedef std::vector<PointType> PointsVector;
+        /// @name Define
+        /// @{
+            typedef TPointType PointType;
+            typedef std::vector<PointType*> PointsVector;
+            LOTUS_POINTER_DEFINE(Points_Container<PointType>)
+        /// @} 
+        
+        /// @name Life Circle
+        /// @{
+            /* Default */
+            Points_Container():pData()
+            {
+                number = 0;
+            }
 
-        LOTUS_POINTER_DEFINE(Points_Container<PointType>)
-
-    // @ Constructor {
-        /* Default */
-        Points_Container():pData()
-        {
-            number = 0;
-        }
-
-        /* Copy Constructor */
-        Points_Container(PointsVector& InputPointsVector)
-        {
-            pData = InputPointsVector;
-            number = InputPointsVector.size();
-        }
-    //}
+            /* Copy Constructor */
+            Points_Container(PointsVector& InputPointsVector)
+            {
+                pData = InputPointsVector;
+                number = InputPointsVector.size();
+            }
+        /// @@}
 
     // @ Destructor {
         ~Points_Container()
@@ -38,11 +41,11 @@ class Points_Container
     // @ Access { 
         TPointType& GetValue(const int& index)
         {
-            return pData[index];
+            return *pData[index];
         }    
         TPointType GetValue(const int& index) const
         {
-            return pData[index];
+            return *pData[index];
         }
         int GetPointsNum()const
         {
@@ -51,9 +54,9 @@ class Points_Container
     //}
 
     // @ Utility { 
-        void InsertPoint(const PointType& point)
+        void InsertPoint(PointType& point)
         {
-            pData.push_back(point);
+            pData.push_back(&point);
         }
     // }
     /* private member */

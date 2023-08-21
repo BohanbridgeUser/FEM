@@ -3,7 +3,7 @@
 #include "solve_strategy.h"
 
 template<typename TSparseSpace, typename TDenseSpace, typename TLinearSolver>
-class  Implicit_Solving_Strategy: public Solve_Stategy<TSparseSpace, TDenseSpace, TLinearSolver>
+class  Implicit_Solving_Strategy: public Solve_Strategy<TSparseSpace, TDenseSpace, TLinearSolver>
 {
     public:
         /// @name Define
@@ -11,8 +11,11 @@ class  Implicit_Solving_Strategy: public Solve_Stategy<TSparseSpace, TDenseSpace
             typedef Implicit_Solving_Strategy<TSparseSpace,TDenseSpace,TLinearSolver> ClassType;
             LOTUS_POINTER_DEFINE(ClassType)
             
-            typedef Solve_Stategy<TSparseSpace,TDenseSpace, TLinearSolver> 
+            typedef Solve_Strategy<TSparseSpace,TDenseSpace, TLinearSolver> 
                                                                                                 SolveStrategyType;
+            
+            typedef SolveStrategyType 
+                                                                                                         BaseType;
             
             typedef Implicit_Solving_Strategy<TSparseSpace, TDenseSpace, TLinearSolver> 
                                                                                       ImplicitSolvingStrategyType;

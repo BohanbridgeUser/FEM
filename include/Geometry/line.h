@@ -78,7 +78,7 @@ class Line : public Geometry<TPointType>
         }
         static int GetType()
         {
-            return (int)Geometry<PointType>::GeometryType::Line;
+            return (int)Geometry<PointType>::Geometry_Type::Line;
         }    
         //}
     private:

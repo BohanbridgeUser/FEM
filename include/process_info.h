@@ -1,31 +1,31 @@
 #ifndef _PROCESS_INFO_H_
 #define _PROCESS_INFO_H_
 #include "define.h"
-class Process_info
+class Process_Info
 {
 public:
     /// @name Define {
-    LOTUS_POINTER_DEFINE(Process_info)
+    LOTUS_POINTER_DEFINE(Process_Info)
     /// @ }
 
     /// @name Life Circle 
     /// @{
         // Constructor
-        Process_info()
+        Process_Info()
         {
 
         }
 
         // Destructor
-        ~Process_info()
+        ~Process_Info()
         {
 
         }
     /// @}
 private:
     int mSolutionStepIndex;
-    Process_info::SharedPointer mpPreviousSolutionPointer;
-    Process_info::SharedPointer mpPreviousTimeStepInfo;
+    Process_Info::SharedPointer mpPreviousSolutionPointer;
+    Process_Info::SharedPointer mpPreviousTimeStepInfo;
 };
 
 #endif
