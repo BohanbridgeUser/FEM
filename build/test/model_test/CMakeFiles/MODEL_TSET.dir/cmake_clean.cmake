@@ -1,12 +1,17 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/MODEL_TSET.dir/__/__/src/node_data.cpp.obj"
-  "CMakeFiles/MODEL_TSET.dir/__/__/src/node_data.cpp.obj.d"
-  "CMakeFiles/MODEL_TSET.dir/test.cpp.obj"
-  "CMakeFiles/MODEL_TSET.dir/test.cpp.obj.d"
-  "MODEL_TSET.exe"
-  "MODEL_TSET.exe.manifest"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Condition/boundary_condition.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Container/flags.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Geometry/geometry_object.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Node/node_data.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Registry/registry.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Registry/registry_item.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Variable/variable.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Variable/variable_date.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/Variable/variables.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/__/__/src/model/model.cpp.o"
+  "CMakeFiles/MODEL_TSET.dir/test.cpp.o"
+  "MODEL_TSET"
   "MODEL_TSET.pdb"
-  "libMODEL_TSET.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

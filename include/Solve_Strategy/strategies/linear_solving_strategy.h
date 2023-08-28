@@ -220,7 +220,10 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
             void SetSystemDofs()
             {
                 if (this->mEchoLevel >= 2)
-                std::cout << " Reform Dofs " << " Flag = " << this->mOptions.Is(LocalFlagType::REFORM_DOFS) << std::endl;
+                    std::cout << " Reform Dofs " 
+                              << " Flag = " 
+                              << this->mOptions.Is(LocalFlagType::REFORM_DOFS) 
+                              << std::endl;
                 //setting up the list of the DOFs to be solved
                 // double begin_time = OpenMPUtils::GetCurrentTime();
                 mpBuilderAndSolver->SetUpDofSet(mpScheme, this->GetModelPart());

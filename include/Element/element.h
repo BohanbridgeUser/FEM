@@ -30,7 +30,9 @@ class Element:public Geometry_Object
         typedef Dof 
                                                             DofType;
         typedef std::vector<Dof::Pointer> 
-                                                      DofsVectorType;
+                                                     DofsVectorType;
+        typedef std::vector<std::size_t> 
+                                               EquationIdVectorType;
         ///@}
 
         ///@name Lift Circle 

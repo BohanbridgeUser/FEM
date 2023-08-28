@@ -18,8 +18,14 @@ class Node : public Point<3>
                                                        PointType;
             typedef Node_Data 
                                                     NodeDataType;
-            typedef std::vector<Dof> 
-                                               DofsContainerType;
+            typedef std::vector<Dof*> 
+                                        DofPointersContainerType;
+            typedef Dof
+                                                         DofType;
+            typedef size_t
+                                                       IndexType;
+            typedef Variable_List_Data_Value_Container
+                                 VariablesListDataValueContainer; 
         ///@}
 
         ///@name Life Circle
@@ -50,7 +56,7 @@ class Node : public Point<3>
 
             }
             Node(const double& x, const double& y, const double& z,
-                const NodeDataType& ThisNodeData, const DofsContainerType& ThisDofs)
+                const NodeDataType& ThisNodeData, const DofPointersContainerType& ThisDofs)
                 :PointType(x,y,z),
                 mNodeData(ThisNodeData),
                 mDofsContainer(ThisDofs),
@@ -84,7 +90,7 @@ class Node : public Point<3>
             }
             Node(const Point<3>& anotherP,
                  const NodeDataType& ThisNodeData, 
-                 const DofsContainerType& ThisDofs)
+                 const DofPointersContainerType& ThisDofs)
                  :PointType(anotherP),
                  mNodeData(ThisNodeData),
                  mDofsContainer(ThisDofs),
@@ -141,18 +147,76 @@ class Node : public Point<3>
             {
                 return mNodeData;
             }
-            DofsContainerType& GetDofs()
+            DofPointersContainerType& GetDofs()
             {
                 return mDofsContainer;
             }
-            DofsContainerType GetDofs()const
+            DofPointersContainerType GetDofs()const
             {
                 return mDofsContainer;
             }
-            // typename Dof::Pointer pGetDof(const TVariableType& rDofVariable) const
-            // {
+            VariablesListDataValueContainer& SolutionStepData()
+            {
+                return mNodeData.GetSolutionStepData();
+            }
+            const VariablesListDataValueContainer& SolutionStepData() const
+            {
+                return mNodeData.GetSolutionStepData();
+            }
 
-            // }
+            template<typename TVariableType>
+            typename Dof::Pointer pGetDof(const TVariableType& rDofVariable) const
+            {
+                for(auto it_dof = mDofsContainer.begin();it_dof != mDofsContainer.end();it_dof++)
+                {
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return (*it_dof);
+                    }
+                }
+                std::cerr << "Dof Not Find!\n";
+                return nullptr;
+            }
+            template<typename TVariableType>
+            Dof& GetDof(const TVariableType& rDofVariable) const
+            {
+                for(auto it_dof = mDofsContainer.begin();it_dof != mDofsContainer.end();it_dof++)
+                {
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return *(*it_dof);
+                    }
+                }
+                std::cerr << "Dof Not Find!\n";
+                exit(0);
+            }
+
+            template<class TVariableType> 
+            typename TVariableType::Type& GetSolutionStepValue(const TVariableType& rThisVariable)
+            {
+                return SolutionStepData().GetValue(rThisVariable);
+            }
+
+            template<class TVariableType> 
+            typename TVariableType::Type const& GetSolutionStepValue(const TVariableType& rThisVariable) const
+            {
+                return SolutionStepData().GetValue(rThisVariable);
+            }
+
+            template<class TVariableType> 
+            typename TVariableType::Type& GetSolutionStepValue(const TVariableType& rThisVariable,
+                                                                int SolutionStepIndex)
+            {
+                return SolutionStepData().GetValue(rThisVariable, SolutionStepIndex);
+            }
+
+            template<class TVariableType> 
+            typename TVariableType::Type const& GetSolutionStepValue(const TVariableType& rThisVariable,
+                                                                     IndexType SolutionStepIndex) const
+            {
+                return SolutionStepData().GetValue(rThisVariable, SolutionStepIndex);
+            }
+
+
+
             Vector<3> GetInitialPosition()const
             {
                 return mInitialPosition;
@@ -160,6 +224,19 @@ class Node : public Point<3>
             Vector<3>& GetInitialPosition()
             {
                 return mInitialPosition;
+            }
+        /// @}
+
+        /// @name Inquiry
+        /// @{
+            inline bool HasDofFor(const Variable_Data& rDofVariable) const
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return true;
+                    }
+                }
+                return false;
             }
         /// @}
 
@@ -178,7 +255,7 @@ class Node : public Point<3>
         // NodeData stores ID and SolutionData of Nodes
         NodeDataType mNodeData;
 
-        DofsContainerType mDofsContainer;
+        DofPointersContainerType mDofsContainer;
 
         Vector<3> mInitialPosition;
 };

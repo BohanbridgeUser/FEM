@@ -2,6 +2,8 @@
 #define _NODE_Data_H_
 
 #include "../define.h"
+#include "../Variable/variable_list_data_value_container.h"
+
 #include <vector>
 
 class Node_Data
@@ -11,7 +13,7 @@ class Node_Data
         ///@{
         LOTUS_POINTER_DEFINE(Node_Data)
         typedef std::vector<double> SolutionOneStepNodalDataContainerType;
-        typedef std::vector<SolutionOneStepNodalDataContainerType> SolutionStepsNodalDataContainerType;
+        typedef Variable_List_Data_Value_Container SolutionStepsNodalDataContainerType;
         ///@}
 
         ///@name Life circle 
@@ -55,11 +57,11 @@ class Node_Data
             {
                 return nodeID;
             }
-            SolutionStepsNodalDataContainerType& GetSolutionStepsNodalData()
+            SolutionStepsNodalDataContainerType& GetSolutionStepData()
             {
                 return mSolutionStepsNodalData;
             }
-            SolutionStepsNodalDataContainerType GetSolutionStepsNodalData()const
+            const SolutionStepsNodalDataContainerType& GetSolutionStepData()const
             {
                 return mSolutionStepsNodalData;
             }

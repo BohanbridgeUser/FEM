@@ -17,6 +17,8 @@ class Builder_And_Solver
 
             typedef Linear_Solver<TSparseSpace,TDenseSpace> 
                                                                                    LinearSolverType;
+            typedef typename LinearSolverType::Pointer
+                                                                            LinearSolverPointerType;
             typedef Scheme<TSparseSpace,TDenseSpace>
                                                                                          SchemeType;
             typedef typename SchemeType::Pointer
@@ -47,6 +49,14 @@ class Builder_And_Solver
                                                                             GlobalMatrixTypePointer;
             typedef typename SpVectorType::Pointe  
                                                                             GlobalVectorTypePointer;
+            typedef typename TDenseSpace::DenseMatrix
+                                                                                    LoaclMatrixType;
+            typedef typename TDenseSpace::DenseVector
+                                                                                    LoaclVectorType; 
+            typedef typename TDenseSpace::DenseMatrix::Pointer
+                                                                             LoaclMatrixPointerType;
+            typedef typename TDenseSpace::DenseVector::Pointer
+                                                                             LoaclVectorPointerType;                                                                        
         /// @}
 
 

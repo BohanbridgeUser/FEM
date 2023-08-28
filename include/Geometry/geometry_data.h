@@ -18,22 +18,26 @@ class Geometry_Data
         };
 
         // @ Integration Points Define
-        typedef Integration_Point<3> IntegrationPointType;
-        typedef std::vector<IntegrationPointType> IntegrationPointsVector;
+        typedef Integration_Point<3> 
+                                                                                        IntegrationPointType;
+        typedef std::vector<IntegrationPointType> 
+                                                                                     IntegrationPointsVector;
         typedef std::array<IntegrationPointsVector, 
                             static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)>
-                                IntegrationPointsContainerType;
+                                                                              IntegrationPointsContainerType;
         // @ ShapeFunctionValueContainer Define
+        typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>
+                                                                                     ShapeFunctionsValueType;
         typedef std::array<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>,
                                 static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)> 
-                                    ShapeFunctionsValueContainerType;
+                                                                            ShapeFunctionsValueContainerType;
 
         // @ First derivatives/gradients
         typedef std::vector<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> >
-                            ShapeFunctionsGradientsType;
+                                                                                 ShapeFunctionsGradientsType;
         typedef std::array<ShapeFunctionsGradientsType,
                                 static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)> 
-                                    ShapeFunctionsGradientsContainerType;
+                                                                        ShapeFunctionsGradientsContainerType;
         //}
 
         // @ Constructor { 
@@ -63,14 +67,30 @@ class Geometry_Data
         //}
 
         // @ Access {
-        GeometryShapeFuncionContainer<IntegrationMethod>& GetShapeInformation() 
-        {
-            return mGeometryShapeFunctionContainer;
-        }
-        int GetIntegrationPointsNum(Geometry_Data::IntegrationMethod& ThisMethod)const
-        {
-            return mGeometryShapeFunctionContainer.GetIntegrationPointsNum(ThisMethod);
-        }
+            const GeometryShapeFuncionContainer<IntegrationMethod>& GetShapeInformation() const
+            {
+                return mGeometryShapeFunctionContainer;
+            }
+            const ShapeFunctionsGradientsType& ShapeFunctionsLocalGradients( IntegrationMethod ThisMethod ) const
+            {
+                return mGeometryShapeFunctionContainer.ShapeFunctionsLocalGradients(ThisMethod);
+            }
+            const ShapeFunctionsValueType& ShapeFunctionsValues(IntegrationMethod ThisMethod)const
+            {
+                return mGeometryShapeFunctionContainer.ShapeFunctionsValues(ThisMethod);
+            }
+            int GetIntegrationPointsNum(Geometry_Data::IntegrationMethod& ThisMethod)const
+            {
+                return mGeometryShapeFunctionContainer.GetIntegrationPointsNum(ThisMethod);
+            }
+            IntegrationMethod DefaultIntegrationMethod() const
+            {
+                return mGeometryShapeFunctionContainer.DefaultIntegrationMethod();
+            }
+            const IntegrationPointsVector& IntegrationPoints(const IntegrationMethod& ThisMethod)const
+            {
+                return mGeometryShapeFunctionContainer.IntegrationPoints(ThisMethod);
+            }
         //}
     private:
         IntegrationMethod mIntegrationMethod;

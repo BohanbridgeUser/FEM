@@ -1,6 +1,8 @@
 #ifndef _SOLID_ELEMENT_H_
 #define _SOLID_ELEMENT_H_
 #include "element.h"
+#include "../Variable/variables.h"
+
 #include <Eigen/Eigen>
 class Solid_Element : public Element
 {
@@ -24,7 +26,7 @@ class Solid_Element : public Element
                                                           IntegrationMethod;
             typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> 
                                                                      Matrix;
-            typedef Eigen::Vector<double,Eigen::Dynamic> 
+            typedef Eigen::Matrix<double,Eigen::Dynamic,1> 
                                                                      Vector;
 
             LOTUS_DEFINE_LOCAL_FLAGS( COMPUTE_RHS_VECTOR );
@@ -35,7 +37,7 @@ class Solid_Element : public Element
             {
             private:
                 //variables including all integration points
-                const GeometryType::ShapeFunctionsGradientsType* pDN_De;
+                const GeometryType::ShapeFunctionGradientsType* pDN_De;
                 const Matrix* pNcontainer;
                 const Process_Info* pProcessInfo;
             public:
@@ -67,7 +69,7 @@ class Solid_Element : public Element
                 /**
                  * sets the value of a specified pointer variable
                  */
-                void SetShapeFunctionsGradients(const GeometryType::ShapeFunctionsGradientsType &rDN_De)
+                void SetShapeFunctionsGradients(const GeometryType::ShapeFunctionGradientsType &rDN_De)
                 {
                     pDN_De=&rDN_De;
                 };
@@ -83,7 +85,7 @@ class Solid_Element : public Element
                 /**
                  * returns the value of a specified pointer variable
                  */
-                const GeometryType::ShapeFunctionsGradientsType& GetShapeFunctionsGradients()
+                const GeometryType::ShapeFunctionGradientsType& GetShapeFunctionsGradients()
                 {
                     return *pDN_De;
                 };
@@ -247,7 +249,10 @@ class Solid_Element : public Element
 
                 for (int i=0;i<GetGeometry().GetPointsNum();++i)
                 {
-                    
+                    rElementalDofList.push_back( GetGeometry()[i].pGetDof( DISPLACEMENT_X ) );
+                    rElementalDofList.push_back( GetGeometry()[i].pGetDof( DISPLACEMENT_Y ) );
+                    if( dimension == 3 )
+                        rElementalDofList.push_back( GetGeometry()[i].pGetDof( DISPLACEMENT_Z ) );
                 }
             }
 

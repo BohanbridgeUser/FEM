@@ -1,6 +1,12 @@
 #include "../../include/Model/model.h"
 #include "../../include/Element/solid_element.h"
+#include "../../include/Condition/boundary_condition.h"
 #include "../../include/Variable/variable.h"
+#include "../../include/Solve_Strategy/builder_and_solver/block_builder_and_solver.h"
+#include "../../include/Solve_Strategy/strategies/linear_solving_strategy.h"
+#include "../../include/Solve_Strategy/convergencecriterias/convergencecriterias.h"
+#include "../../include/Solve_Strategy/schemes/scheme.h"
+#include "../../include/Container/lotus_flags.h"
 int main()
 {
     /* Geometry Model */

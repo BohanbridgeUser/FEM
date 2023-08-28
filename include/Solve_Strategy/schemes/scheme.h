@@ -178,7 +178,33 @@ class Scheme : public Flags
             {
 
             }
-        ///@}
+            
+            /**
+             * Function that returns the list of Degrees of freedom to be assembled in the system for a Given Element
+             * @param rCurrentElement: The element to compute
+             * @param rElementalDofsList: The element dofs list
+             * @param rCurrentProcessInfo: The current process info instance
+             */
+            virtual void GetElementalDofList(Element::Pointer pCurrentElement,
+                                            Element::DofsVectorType& rElementalDofList,
+                                            Process_Info& rCurrentProcessInfo)
+            {
+                pCurrentElement->GetDofList(rElementalDofList, rCurrentProcessInfo);
+            }
+            
+            /**
+             * Function that returns the list of Degrees of freedom to be assembled in the system for a Given Element
+             * @param rCurrentCondition: The condition to compute
+             * @param rConditionDofsList: The condition dofs list
+             * @param rCurrentProcessInfo: The current process info instance
+             */
+            virtual void GetConditionDofList(Condition::Pointer pCurrentCondition,
+                                            Element::DofsVectorType& rConditionDofList,
+                                            Process_Info& rCurrentProcessInfo)
+            {
+                //pCurrentCondition->GetDofList(rConditionDofList, rCurrentProcessInfo);
+            }
+        /// @}
     protected:
         ///@name Static Member Variables
         ///@{

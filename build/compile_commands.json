@@ -1,17 +1,222 @@
 [
 {
-  "directory": "G:/COMPUTER/FEM/build/test/geometry_test",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/GEOMETRY_TSET.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\GEOMETRY_TSET.dir\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\geometry_test\\test.cpp",
-  "file": "G:/COMPUTER/FEM/test/geometry_test/test.cpp"
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Condition/boundary_condition.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build/test/model_test",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/MODEL_TSET.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\MODEL_TSET.dir\\test.cpp.obj -c G:\\COMPUTER\\FEM\\test\\model_test\\test.cpp",
-  "file": "G:/COMPUTER/FEM/test/model_test/test.cpp"
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Container/flags.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp"
 },
 {
-  "directory": "G:/COMPUTER/FEM/build/test/model_test",
-  "command": "C:\\MINGW64-NEW\\w64devkit\\bin\\g++.exe  @CMakeFiles/MODEL_TSET.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\MODEL_TSET.dir\\__\\__\\src\\node_data.cpp.obj -c G:\\COMPUTER\\FEM\\src\\node_data.cpp",
-  "file": "G:/COMPUTER/FEM/src/node_data.cpp"
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Geometry/geometry_object.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Node/node_data.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Registry/registry.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Registry/registry_item.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Variable/variable.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Variable/variable_date.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/Variable/variables.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/__/__/src/model/model.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/geometry_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/GEOMETRY_TSET.dir/test.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/test.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/geometry_test/test.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Condition/boundary_condition.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Container/flags.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Geometry/geometry_object.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Node/node_data.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Registry/registry.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Registry/registry_item.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Variable/variable.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Variable/variable_date.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/Variable/variables.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/__/__/src/model/model.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/model_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/MODEL_TSET.dir/test.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/test.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/model_test/test.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Condition/boundary_condition.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Container/flags.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Geometry/geometry_object.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Node/node_data.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Registry/registry.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Registry/registry_item.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Variable/variable.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Variable/variable_date.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/Variable/variables.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/__/__/src/model/model.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/solver_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3 -I/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/../../include  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/SOLVER_TEST.dir/test.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/test.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/solver_test/test.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Condition/boundary_condition.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Condition/boundary_condition.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Container/flags.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Container/flags.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Geometry/geometry_object.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Geometry/geometry_object.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Node/node_data.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Node/node_data.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Registry/registry.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Registry/registry_item.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Registry/registry_item.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Variable/variable.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Variable/variable_date.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variable_date.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/Variable/variables.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/Variable/variables.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/__/__/src/model/model.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/src/model/model.cpp"
+},
+{
+  "directory": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/build/test/complete_test",
+  "command": "/usr/bin/g++   -I/usr/local/include/eigen3 -I/usr/include/eigen3  -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/COMPLETE_SOFT_TEST.dir/Complete_Soft_Test.cpp.o -c /media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/complete_test/Complete_Soft_Test.cpp",
+  "file": "/media/zbh/E426DEBA26DE8CC4/COMPUTER/FEM/test/complete_test/Complete_Soft_Test.cpp"
 }
 ]

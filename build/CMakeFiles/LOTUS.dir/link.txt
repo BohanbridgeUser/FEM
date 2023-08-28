@@ -1,3 +1,0 @@
-D:\CMAKE\CLIENT\bin\cmake.exe -E rm -f CMakeFiles\LOTUS.dir/objects.a
-C:\MINGW64-NEW\w64devkit\bin\ar.exe qc CMakeFiles\LOTUS.dir/objects.a @CMakeFiles\LOTUS.dir\objects1
-C:\MINGW64-NEW\w64devkit\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\LOTUS.dir/objects.a -Wl,--no-whole-archive -o LOTUS.exe -Wl,--out-implib,libLOTUS.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\LOTUS.dir\linkLibs.rsp

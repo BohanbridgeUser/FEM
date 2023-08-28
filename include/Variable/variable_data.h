@@ -203,7 +203,7 @@ class Variable_Data
 
 
         /// @}
-        
+
         /// @name Friend 
         /// @{
             friend bool operator==(const Variable_Data& rFirstVariable, const Variable_Data& rSecondVariable)
@@ -282,9 +282,10 @@ class Variable_Data
         /// @name Private Member Variables
         /// @{
             std::string mName;
-
-            /** Key value of this variable. Each variable will be locate by this
-            value in each data structure. Variable constructor will initialize it. */
+            /** 
+             * Key value of this variable. Each variable will be locate by this
+             * value in each data structure. Variable constructor will initialize it. 
+            */
             KeyType mKey;
 
             std::size_t mSize;
@@ -323,4 +324,12 @@ class Variable_Data
 
         /// @}
 };
+inline std::ostream& operator << (std::ostream& rOStream,
+                                  const Variable_Data& rThis)
+{
+    rThis.PrintInfo(rOStream);
+    rThis.PrintData(rOStream);
+
+    return rOStream;
+}
 #endif
