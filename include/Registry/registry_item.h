@@ -188,7 +188,7 @@ class Registry_Item
                         )
                     );
 
-                if(insert_result.second){
+                if(!insert_result.second){
                     std::cout << "Error in inserting '" << ItemName
                     << "' in registry item with name '" << this->Name() << "'." << std::endl;
                     exit(0);

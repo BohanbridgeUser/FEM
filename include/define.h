@@ -20,7 +20,7 @@
 
 #define LOTUS_CREATE_VARIABLE(type,name) Variable<type> name(#name);
 #define LOTUS_CREATE_3D_VARIABLES_WITH_THIS_COMPONENTS(name, component1, component2, component3)\
-        Variable<std::array<double,3> > name(#name, std::array<double,3>({0,0,0}));\
+        Variable<std::array<double,3> > name(#name, std::array<double,3>({0.00,0.00,0.00}));\
         Variable<double > component1(#component1, &name, 0);\
         Variable<double > component2(#component2, &name, 1);\
         Variable<double > component3(#component3, &name, 2);

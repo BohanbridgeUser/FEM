@@ -12,6 +12,7 @@ A structural FEM Solver developed by Bohan Zhang. The code framework for this fi
     - [Vector and Matrix](#vector-and-matrix)
     - [Geometry](#geometry)
     - [Quadrature](#quadrature)
+    - [VariableBaseInterface](#variablebaseinterface)
     - [LinearSolver](#linearsolver)
     - [DataContainers](#datacontainers)
   - [Base Finite Element](#base-finite-element)
@@ -53,7 +54,8 @@ Integration points can be calculated as follows:
 ![Gaussion Quadrature2](pic/pic3.jpg)
 The rationality of `Gaussion Quadrature` is not proved here.
 
-
+### VariableBaseInterface
+The Variable Base Interface is the most creative feature of this framework.The Variable Base Interface 
 ### LinearSolver
 ### DataContainers
 

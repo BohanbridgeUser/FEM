@@ -6,13 +6,18 @@ template<int TDimension>
 class Point:public Vector<TDimension>
 {
     public:
-    // @ Define { 
+    /// @name Define
+    /// @{ 
         LOTUS_POINTER_DEFINE(Point<TDimension>)
+        typedef size_t
+                                                    IndexType;
+        typedef size_t                              
+                                                     SizeType;
         static int D;
-    //}
-
-    // @ Constructor {
-        /* Default */
+    /// @}
+    
+    /// @name Lift Circle
+    /// @{
         Point():Vector<TDimension>()
         {
             
@@ -34,16 +39,14 @@ class Point:public Vector<TDimension>
         {
             number++;
         }
-    //}
-
-    // @ Destructor {
         ~Point()
         {
             if (number > 0) number--; 
         }
-    //}
+    /// @}
 
-    // @ /* Algebra Operations*/ {
+    /// @name Operations
+    /// @{
         Point& operator*(const double& alpha)
         {
             std::cout << "Operator* Version 1\n";
@@ -125,12 +128,18 @@ class Point:public Vector<TDimension>
         }
     //}
     
-    // @ Utility{
+    /// @name Operation
+    /// @{
         friend double dist(const Point& a, const Point& b)
         {
             return Point(b-a).norm();
         }
-    // }
+    /// @}
+
+    /// @name Access
+    /// @{
+        
+    /// @}
     private:
         static int number;
         

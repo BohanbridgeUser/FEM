@@ -9,9 +9,12 @@ class Hexahedron:public Geometry<TPointType>
     public:
         // @ Define { 
         LOTUS_POINTER_DEFINE(Hexahedron<TPointType>)
-        typedef TPointType PointType;
-        typedef std::vector<PointType> PointsVectorType;
-        typedef Points_Container<PointType> PointsContainer;    
+        typedef TPointType 
+                                                            PointType;
+        typedef std::vector<PointType> 
+                                                     PointsVectorType;
+        typedef std::vector<PointType> 
+                                                      PointsContainer;    
         //}
 
         // @ Constructor { 
@@ -19,16 +22,19 @@ class Hexahedron:public Geometry<TPointType>
         {
             number++;
         }
-        Hexahedron(PointsContainer& points):Geometry<TPointType>(points)
+        Hexahedron(PointsContainer& points)
+        :Geometry<TPointType>(points)
         {
             number++;
             ID = number;
         }
-        Hexahedron(const int& F,PointsContainer& points):Geometry<TPointType>(points),ID(F)
+        Hexahedron(const int& F,PointsContainer& points)
+        :Geometry<TPointType>(points),ID(F)
         {
             number++;
         }
-        Hexahedron(const Hexahedron<TPointType>& another):Geometry<TPointType>(another)
+        Hexahedron(const Hexahedron<TPointType>& another)
+        :Geometry<TPointType>(another)
         {
             ID = ++number;
         }

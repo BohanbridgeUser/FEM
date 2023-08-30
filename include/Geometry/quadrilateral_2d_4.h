@@ -15,35 +15,43 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         ///@{ 
         LOTUS_POINTER_DEFINE(Quadrilateral_2d_4<TPointType>)
 
-        typedef TPointType PointType;
-        typedef std::vector<PointType> PointsVectorType;
-        typedef Points_Container<PointType> PointsContainer;
-
-        typedef Geometry<TPointType> Geometry_Type;
+        typedef TPointType 
+                                                           PointType;
+        typedef std::vector<PointType> 
+                                                    PointsVectorType;
+        typedef std::vector<PointType> 
+                                                     PointsContainer;
+        typedef Geometry<TPointType> 
+                                                       Geometry_Type;
 
         // Integration Points Define
-        typedef Integration_Point<3> IntegrationPointType;
-        typedef std::vector<IntegrationPointType> IntegrationPointsVector;
+        typedef Integration_Point<3> 
+                                                IntegrationPointType;
+        typedef std::vector<IntegrationPointType> 
+                                             IntegrationPointsVector;
         typedef std::array<IntegrationPointsVector, 
                             static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)>
-                                IntegrationPointsContainerType;
+                                      IntegrationPointsContainerType;
         
         // ShapeFunctionValueContainer Define
-        typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> ShapeFunctionsValueType;
+        typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> 
+                                             ShapeFunctionsValueType;
         typedef std::array<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>,
                                 static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)> 
                                     ShapeFunctionsValueContainerType;
 
         // First derivatives/gradients
         typedef std::vector<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> >
-                            ShapeFunctionsGradientsType;
+                                         ShapeFunctionsGradientsType;
         typedef std::array<ShapeFunctionsGradientsType,
                                 static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)> 
-                                    ShapeFunctionsGradientsContainerType;
+                                ShapeFunctionsGradientsContainerType;
 
         // Jacobian 
-        typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> JacobianType;
-        typedef std::vector<JacobianType> JacobiansContainer;
+        typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> 
+                                                        JacobianType;
+        typedef std::vector<JacobianType> 
+                                                  JacobiansContainer;
         ///@}
 
         ///@name Life Circle 
@@ -53,16 +61,19 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         {
             number++;
         }
-        Quadrilateral_2d_4(PointsContainer& points):Geometry<TPointType>(points)
+        Quadrilateral_2d_4(PointsContainer& points)
+        :Geometry<TPointType>(points)
         {
             number++;
             Geometry_Type::ID = number;
         }
-        Quadrilateral_2d_4(const int& F,PointsContainer& points):Geometry<TPointType>(F,points)
+        Quadrilateral_2d_4(const int& F,PointsContainer& points)
+        :Geometry<TPointType>(F,points)
         {
             number++;
         }
-        Quadrilateral_2d_4(const Quadrilateral_2d_4<TPointType>& another):Geometry<TPointType>(another)
+        Quadrilateral_2d_4(const Quadrilateral_2d_4<TPointType>& another)
+        :Geometry<TPointType>(another)
         {
             Geometry_Type::ID = ++number;
         }
@@ -199,7 +210,7 @@ class Quadrilateral_2d_4:public Geometry<TPointType>
         }
         PointType& GetPoint(int i)
         {
-            return this->pPointsVector().GetValue(i);
+            return this->pPointsVector()[i];
         }
         //}
     private:

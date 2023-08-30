@@ -19,9 +19,10 @@ class Triangle:public Geometry<TPointType>
     public:
         // @ Define { 
         LOTUS_POINTER_DEFINE(Triangle<TPointType>)  
-        typedef TPointType PointType;
-        typedef std::vector<PointType> PointsVectorType;
-        typedef Points_Container<PointType> PointsContainer;
+        typedef TPointType 
+                                                    PointType;
+        typedef std::vector<PointType> 
+                                             PointsVectorType;
         //}
 
         // @ Constructor { 
@@ -40,16 +41,20 @@ class Triangle:public Geometry<TPointType>
             Points_Container<TPointType> t_c(t);
             Geometry<TPointType>::pPointsVector() = t_c;
         }
-        Triangle(PointsContainer& points):Geometry<TPointType>(points)
+        Triangle(PointsVectorType& points)
+        :Geometry<TPointType>(points)
         {
             number++;
             ID = number;
         }
-        Triangle(const int& F,PointsContainer& points):Geometry<TPointType>(points),ID(F)
+        Triangle(const int& F,PointsVectorType& points)
+        :Geometry<TPointType>(points),
+         ID(F)
         {
             number++;
         }
-        Triangle(const Triangle<TPointType>& another):Geometry<TPointType>(another)
+        Triangle(const Triangle<TPointType>& another)
+        :Geometry<TPointType>(another)
         {
             ID = ++number;
         }

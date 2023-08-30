@@ -253,7 +253,6 @@ class Variable : public Variable_Data
         /// @name Private Operations
         /// @{
 
-
         /// @}
 
 

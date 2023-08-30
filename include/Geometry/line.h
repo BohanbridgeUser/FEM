@@ -11,8 +11,14 @@ class Line : public Geometry<TPointType>
     public:
         // @ Define {
         LOTUS_POINTER_DEFINE(Line<TPointType>)
-        typedef TPointType PointType;
-        typedef std::array<int,3> EdgeType;
+        typedef TPointType 
+                                                        PointType;
+        typedef std::array<int,3> 
+                                                         EdgeType;
+        typedef Geometry<TPointType>
+                                                         BaseType;
+        typedef typename BaseType::PointsContainerType
+                                              PointsContainerType;
         //}
 
         //@ Constructor { 
@@ -29,7 +35,7 @@ class Line : public Geometry<TPointType>
             number++;
             ID = number;
         }
-        Line(Points_Container<PointType>& Points):Geometry<PointType>(Points)
+        Line(PointsContainerType& Points):Geometry<PointType>(Points)
         {
             number++;
             ID = number;
@@ -55,19 +61,19 @@ class Line : public Geometry<TPointType>
         }
         PointType& GetPoint1()
         {
-            return Geometry<PointType>::pPointsVector().GetValue(0);
+            return Geometry<PointType>::pPointsVector()[0];
         }
         PointType GetPoint1()const
         {
-            return Geometry<PointType>::pPointsVector().GetValue(0);
+            return Geometry<PointType>::pPointsVector()[0];
         }
         PointType& GetPoint2() 
         {
-            return Geometry<PointType>::pPointsVector().GetValue(1);
+            return Geometry<PointType>::pPointsVector()[1];
         }
         PointType GetPoint2() const
         {
-            return Geometry<PointType>::pPointsVector().GetValue(1);
+            return Geometry<PointType>::pPointsVector()[1];
         }
         //}
 
