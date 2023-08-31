@@ -249,6 +249,23 @@ class Variables_List
             {
                 return *mDofVariables[DofIndex];
             }
+            const Variable_Data* pGetDofReaction(int DofIndex) const 
+            {
+			    return mDofReactions[DofIndex];
+		    }
+            void SetDofReaction(Variable_Data const* pThisDofReaction, int DofIndex) 
+            {
+                if(static_cast<std::size_t>(DofIndex) >= mDofReactions.size()) 
+                {
+                    std::cerr << "The given dof with index = " << DofIndex  << " is not stored in this variables list" << std::endl;
+                    exit(0);
+                }
+                mDofReactions[DofIndex] = pThisDofReaction;
+            }
+            VariablesContainerType const& Variables()
+            {
+                return mVariables;
+            }
         /// @}
 
 
@@ -292,6 +309,28 @@ class Variables_List
             }
         /// @}
 
+        /// @name Input and Output
+        /// @{
+            std::string Info() const
+            {
+                return "variables list";
+            }
+            void PrintInfo(std::ostream& rOStream) const
+            {
+                rOStream << Info();
+            }
+            void PrintData(std::ostream& rOStream) const
+            {
+                rOStream << " with " << size() << " variables";
+                rOStream << " (size : " << mDataSize << " blocks of " << sizeof(BlockType) << " bytes) " << std::endl;
+                for (IndexType i = 0; i < mVariables.size(); ++i)
+                    rOStream << "    " << mVariables[i]->Name() << " \t-> " << GetPosition(mVariables[i]->Key()) << std::endl;
+
+                rOStream << " with " << mDofVariables.size() << " Dofs:";
+                for (IndexType i = 0; i < mDofVariables.size(); ++i)
+                    rOStream << "    [" << mDofVariables[i]->Name() << " ,  " << ((mDofReactions[i] == nullptr) ? "NONE" : mDofReactions[i]->Name()) << "]" << std::endl;
+            }
+        /// @}
 
     protected:
         /// @name Protected Static Member Variables
@@ -346,18 +385,26 @@ class Variables_List
 
         /// @name Private Member Variables
         /// @{
+            /**
+             * @brief @param mDataSize is the number of blocks
+             * In Variable_List Class block is 8Bytes.
+            */
             SizeType mDataSize = 0;
 
             SizeType mHashFunctionIndex = 0;
 
+            /**
+             * @brief Key is key of Variable
+            */
             KeysContainerType mKeys = {static_cast<IndexType>(-1)};
 
+            /**
+             * @param Position is data of Variable in Variable_List_Data_Value_Container
+            */
             PositionsContainerType mPositions = {static_cast<IndexType>(-1)};
 
             VariablesContainerType mVariables;
-
             VariablesContainerType mDofVariables;
-
             VariablesContainerType mDofReactions;
         /// @}
 
@@ -444,4 +491,12 @@ class Variables_List
 
         /// @}
 };
+inline std::ostream& operator << (std::ostream& rOStream,
+		const Variables_List& rThis)
+{
+    rThis.PrintInfo(rOStream);
+    rThis.PrintData(rOStream);
+
+    return rOStream;
+}
 #endif
