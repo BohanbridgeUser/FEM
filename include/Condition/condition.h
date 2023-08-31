@@ -114,17 +114,19 @@ class Condition : public Geometry_Object
                 return 0;
             }
 
-            virtual void Initialize(Process_Info& rCurrentProcessInfo)
+            virtual void Initialize(const Process_Info& rCurrentProcessInfo)
             {
                 
             }
 
-            virtual void InitializeSolutionStep(Process_Info& rCurrentProcessInfo)
+            virtual void InitializeSolutionStep(const Process_Info& rCurrentProcessInfo)
             {
 
             }
-
-            virtual void FinalizeSolutionStep(Process_Info& rCurrentProcessInfo)
+            virtual void InitializeNonLinearIteration(const Process_Info& rCurrentProcessInfo)
+            {
+            }
+            virtual void FinalizeSolutionStep(const Process_Info& rCurrentProcessInfo)
             {
 
             }

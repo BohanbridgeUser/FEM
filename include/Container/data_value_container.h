@@ -137,32 +137,6 @@ public:
     ///@name Operations
     ///@{
 
-    template<class TDataType> 
-    TDataType& GetValue(const Variable<TDataType>& rThisVariable)
-    {
-        typename ContainerType::iterator i;
-
-        if ((i = std::find_if(mData.begin(), mData.end(), IndexCheck(rThisVariable.SourceKey())))  != mData.end())
-            return *(static_cast<TDataType*>(i->second) + rThisVariable.GetComponentIndex());
-
-        auto p_source_variable = &rThisVariable.GetSourceVariable();
-        mData.push_back(ValueType(p_source_variable,p_source_variable->Clone(p_source_variable->pZero())));
-
-        return *(static_cast<TDataType*>(mData.back().second) + rThisVariable.GetComponentIndex());
-    }
-
-    //TODO: make the variable of the constant version consistent with the one of the "classical" one
-    template<class TDataType> 
-    const TDataType& GetValue(const Variable<TDataType>& rThisVariable) const
-    {
-        typename ContainerType::const_iterator i;
-
-        if ((i = std::find_if(mData.begin(), mData.end(), IndexCheck(rThisVariable.SourceKey())))  != mData.end())
-            return *(static_cast<const TDataType*>(i->second) + rThisVariable.GetComponentIndex());
-
-        return rThisVariable.Zero();
-    }
-
     SizeType Size()
     {
         return mData.size();
@@ -207,7 +181,31 @@ public:
     ///@}
     ///@name Access
     ///@{
+        template<class TDataType> 
+        TDataType& GetValue(const Variable<TDataType>& rThisVariable)
+        {
+            typename ContainerType::iterator i;
 
+            if ((i = std::find_if(mData.begin(), mData.end(), IndexCheck(rThisVariable.SourceKey())))  != mData.end())
+                return *(static_cast<TDataType*>(i->second) + rThisVariable.GetComponentIndex());
+
+            auto p_source_variable = &rThisVariable.GetSourceVariable();
+            mData.push_back(ValueType(p_source_variable,p_source_variable->Clone(p_source_variable->pZero())));
+
+            return *(static_cast<TDataType*>(mData.back().second) + rThisVariable.GetComponentIndex());
+        }
+
+        //TODO: make the variable of the constant version consistent with the one of the "classical" one
+        template<class TDataType> 
+        const TDataType& GetValue(const Variable<TDataType>& rThisVariable) const
+        {
+            typename ContainerType::const_iterator i;
+
+            if ((i = std::find_if(mData.begin(), mData.end(), IndexCheck(rThisVariable.SourceKey())))  != mData.end())
+                return *(static_cast<const TDataType*>(i->second) + rThisVariable.GetComponentIndex());
+
+            return rThisVariable.Zero();
+        }
 
     ///@}
     ///@name Inquiry

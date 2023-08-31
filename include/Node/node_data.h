@@ -66,6 +66,15 @@ class Node_Data
                 return mSolutionStepsNodalData;
             }
         ///@}
+
+        /// @name Inquiry
+        /// @{
+            template<typename TDataType>
+            inline bool SolutionStepsDataHas(const Variable<TDataType>& rVariable) const
+            {
+                return mSolutionStepsNodalData.Has(rVariable);
+            }
+        /// @}
     private:
         int nodeID;
         static int nodenum;

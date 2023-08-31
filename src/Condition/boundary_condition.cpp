@@ -422,6 +422,48 @@ double& Boundary_Condition::CalculateAndAddExternalEnergy(double& rEnergy,
     return rEnergy;
 }
 
+void Boundary_Condition::Initialize( const Process_Info& rCurrentProcessInfo )
+{
+
+}
+void Boundary_Condition::InitializeSolutionStep( const Process_Info& rCurrentProcessInfo )
+{
+
+InitializeExplicitContributions();
+
+}
+void Boundary_Condition::InitializeNonLinearIteration( const Process_Info& rCurrentProcessInfo )
+{
+
+}
+
+void Boundary_Condition::InitializeExplicitContributions()
+{
+    const SizeType number_of_nodes = GetGeometry().PointsNumber();
+    for ( SizeType i = 0; i < number_of_nodes; i++ )
+    {
+        if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_FORCE) && GetGeometry()[i].SolutionStepsDataHas(FORCE_RESIDUAL) ){
+            std::array<double, 3 > & ExternalForce = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_FORCE);
+            std::array<double, 3 > & ResidualForce = GetGeometry()[i].FastGetSolutionStepValue(FORCE_RESIDUAL);
+            GetGeometry()[i].SetLock();
+            ExternalForce.clear();
+            ResidualForce.clear();
+            GetGeometry()[i].UnSetLock();
+        }
+        if( HasVariableDof(ROTATION) ){
+            if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_MOMENT) && GetGeometry()[i].SolutionStepsDataHas(MOMENT_RESIDUAL) ){
+                std::array<double, 3 > & ExternalMoment = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_MOMENT);
+                std::array<double, 3 > & ResidualMoment = GetGeometry()[i].FastGetSolutionStepValue(MOMENT_RESIDUAL);
+                GetGeometry()[i].SetLock();
+                ExternalMoment.clear();
+                ResidualMoment.clear();
+                GetGeometry()[i].UnSetLock();
+            }
+	    }
+    }
+}
+
+
 // void Boundary_Condition::GetNodalDeltaMovements(VectorType& rValues, const int& rNode)
 // {
 //     const SizeType& dimension = GetGeometry().WorkingSpaceDimension();

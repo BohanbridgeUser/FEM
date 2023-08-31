@@ -41,31 +41,22 @@ int main()
     /* Supppose 6 dofs per node */
     Node_Data::SolutionOneStepNodalDataContainerType S_O_S_N_D(6,2.00);
     Node_Data::SolutionStepsNodalDataContainerType S_S_N_D;
-    S_S_N_D.push_back(S_O_S_N_D);
-    N1.GetNodeData().GetSolutionStepsNodalData() = S_S_N_D;
-    for (int i=0;i<N1.GetNodeData().GetSolutionStepsNodalData().size();++i) {
-        for (int j=0;j<N1.GetNodeData().GetSolutionStepsNodalData()[i].size();++j){
-            cout << "Node1 Data Solution Step:"<< i 
-                 << " Node1 Dof:" << j 
-                 << "\nData:" << N1.GetNodeData().GetSolutionStepsNodalData()[i][j] << endl;
-        }
-    }
 ///@}
 
 ///@brief Element Test {
     cout << "**********Element Test**********\n";
-    Points_Container<Node> N_C;
-    N_C.InsertPoint(N5);
-    N_C.InsertPoint(N6);
-    N_C.InsertPoint(N7);
-    N_C.InsertPoint(N8);
+    std::vector<Node> N_C;
+    N_C.push_back(N5);
+    N_C.push_back(N6);
+    N_C.push_back(N7);
+    N_C.push_back(N8);
     Quadrilateral_2d_4<Node> Q(N_C);
     Properties::DataContainerType Elasticity(10,2.1e11);
     Properties::TableContainerType P_T_C{{std::string("Elasticity"),Elasticity}};
     Properties Property(P_T_C);
-    Element E(&Q,Property);
+    Element E(1,&Q,Property);
     for (int i=0;i<E.GetGeometry().GetPointsNum();++i){
-        cout << E.GetGeometry().pPointsVector().GetValue(i);
+        cout << E.GetGeometry().pPointsVector()[i];
     }
 ///@}
     return 0;

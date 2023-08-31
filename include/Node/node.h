@@ -164,6 +164,10 @@ class Node : public Point<3>
                 return mNodeData.GetSolutionStepData();
             }
 
+            /**
+             * @name Dof Access
+             * @brief These methods can get Dof in two ways
+            */
             template<typename TVariableType>
             typename Dof::Pointer pGetDof(const TVariableType& rDofVariable) const
             {
@@ -189,25 +193,26 @@ class Node : public Point<3>
                 exit(0);
             }
 
+            /**
+             * @name GetSolutionStepValue
+             * @brief These methods can get values of variable
+            */
             template<class TVariableType> 
             typename TVariableType::Type& GetSolutionStepValue(const TVariableType& rThisVariable)
             {
                 return SolutionStepData().GetValue(rThisVariable);
             }
-
             template<class TVariableType> 
             typename TVariableType::Type const& GetSolutionStepValue(const TVariableType& rThisVariable) const
             {
                 return SolutionStepData().GetValue(rThisVariable);
             }
-
             template<class TVariableType> 
             typename TVariableType::Type& GetSolutionStepValue(const TVariableType& rThisVariable,
                                                                 int SolutionStepIndex)
             {
                 return SolutionStepData().GetValue(rThisVariable, SolutionStepIndex);
             }
-
             template<class TVariableType> 
             typename TVariableType::Type const& GetSolutionStepValue(const TVariableType& rThisVariable,
                                                                      IndexType SolutionStepIndex) const
@@ -215,7 +220,46 @@ class Node : public Point<3>
                 return SolutionStepData().GetValue(rThisVariable, SolutionStepIndex);
             }
 
-
+            /*********************************************************************************************/
+            /**
+             * @name FastGetSolutionStepValue
+             * @brief An Interface to Data_Value_Container's FastGetSolutionStepValue
+            */
+            template<class TVariableType> 
+            typename TVariableType::Type& FastGetSolutionStepValue(const TVariableType& rThisVariable)
+            {
+                return SolutionStepData().FastGetValue(rThisVariable);
+            }
+            template<class TVariableType> 
+            const typename TVariableType::Type& FastGetSolutionStepValue(const TVariableType& rThisVariable) const
+            {
+                return SolutionStepData().FastGetValue(rThisVariable);
+            }
+            template<class TVariableType> 
+            typename TVariableType::Type& FastGetSolutionStepValue(const TVariableType& rThisVariable,
+                                                                   IndexType SolutionStepIndex)
+            {
+                return SolutionStepData().FastGetValue(rThisVariable, SolutionStepIndex);
+            }
+            template<class TVariableType> 
+            const typename TVariableType::Type& FastGetSolutionStepValue(const TVariableType& rThisVariable,
+                                                                         IndexType SolutionStepIndex) const
+            {
+                return SolutionStepData().FastGetValue(rThisVariable, SolutionStepIndex);
+            }
+            template<class TVariableType> 
+            typename TVariableType::Type& FastGetSolutionStepValue(const TVariableType& rThisVariable,
+                                                                   IndexType SolutionStepIndex, IndexType ThisPosition)
+            {
+                return SolutionStepData().FastGetValue(rThisVariable, SolutionStepIndex, ThisPosition);
+            }
+            template<class TVariableType> 
+            typename TVariableType::Type& FastGetCurrentSolutionStepValue(const TVariableType& rThisVariable,
+                                                                          IndexType ThisPosition)
+            {
+                return SolutionStepData().FastGetCurrentValue(rThisVariable, ThisPosition);
+            }
+            /*********************************************************************************************/
 
             Vector<3> GetInitialPosition()const
             {
@@ -237,6 +281,11 @@ class Node : public Point<3>
                     }
                 }
                 return false;
+            }
+            template<typename TDataType>
+            inline bool SolutionStepsDataHas(const Variable<TDataType>& rVariable) const
+            {
+                return mNodeData.SolutionStepsDataHas(rVariable);
             }
         /// @}
 

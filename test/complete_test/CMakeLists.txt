@@ -9,7 +9,13 @@ ENDIF()
 
 FILE(GLOB_RECURSE SRC_DIR_LIST "../../src/*.cpp" "../../src/*.c" "*.cpp")	#遍历获取source/路径下所有的*.cpp和*.c文件列表
 
+FIND_PACKAGE(Threads REQUIRED)
+IF(${Threads_FOUND})
+    SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -pthread)
+    MESSAGE(STATUS "Threads PACKAGE FOUNDED")
+ENDIF()
+
 MESSAGE(STATUS "SRC_DIR_LIST = ${SRC_DIR_LIST}")	
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRC_DIR_LIST})
-
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE Threads::Threads)

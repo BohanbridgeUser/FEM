@@ -78,6 +78,13 @@ class Boundary_Condition : public Condition
                         NodesContainerType const& ThisNodes,
                         PropertiesType::Pointer pProperties ) const override;
 
+
+            void Initialize(const Process_Info& rCurrentProcessInfo) override;
+
+            void InitializeSolutionStep(const Process_Info& rCurrentProcessInfo) override;
+
+            void InitializeNonLinearIteration(const Process_Info& rCurrentProcessInfo) override;
+
         /// @}
 
 

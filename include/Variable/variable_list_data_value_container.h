@@ -51,17 +51,14 @@ class Variable_List_Data_Value_Container
             {
                 return mpVariablesList;
             }
-
             const Variables_List::Pointer pGetVariablesList() const
             {
                 return mpVariablesList;
             }
-
             Variables_List& GetVariablesList()
             {
                 return *mpVariablesList;
             }
-
             const Variables_List& GetVariablesList() const
             {
                 return *mpVariablesList;
@@ -73,19 +70,16 @@ class Variable_List_Data_Value_Container
             {
                 return *(reinterpret_cast<TDataType*>(Position(rThisVariable)) + rThisVariable.GetComponentIndex());
             }
-
             template<class TDataType>
             TDataType& GetValue(const Variable<TDataType>& rThisVariable, SizeType QueueIndex)
             {
                 return *(reinterpret_cast<TDataType*>(Position(rThisVariable, QueueIndex)) + rThisVariable.GetComponentIndex());
             }
-
             template<class TDataType>
             const TDataType& GetValue(const Variable<TDataType>& rThisVariable) const
             {
                 return *(reinterpret_cast<const TDataType*>(Position(rThisVariable)) + rThisVariable.GetComponentIndex());
             }
-
             template<class TDataType>
             const TDataType& GetValue(const Variable<TDataType>& rThisVariable, SizeType QueueIndex) const
             {
@@ -97,7 +91,12 @@ class Variable_List_Data_Value_Container
 
         /// @name Inquiry
         /// @{
-
+            bool Has(const Variable_Data& rThisVariable) const
+            {
+                if(!mpVariablesList)
+                    return false;
+                return mpVariablesList->Has(rThisVariable);
+            }
 
         /// @}
 

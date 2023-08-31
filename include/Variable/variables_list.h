@@ -3,6 +3,7 @@
 #include "variable.h"
 
 #include <vector>
+#include <cassert>
 class Variables_List
 {
     public:
@@ -18,7 +19,7 @@ class Variables_List
                                                            KeysContainerType;
             typedef std::vector<IndexType> 
                                                       PositionsContainerType;
-            typedef std::vector<const Variable_Data*> 
+            typedef std::vector<const Variable_Data*>  
                                                       VariablesContainerType;
             typedef Variable_Data 
                                                                    data_type;
@@ -86,18 +87,159 @@ class Variables_List
                 mDofReactions=rOther.mDofReactions;
                 return *this;
             }
-
             IndexType operator()(IndexType VariableKey) const
             {
                 return GetPosition(VariableKey);
+            }
+            template<class TDataType>
+            IndexType operator()(Variable<TDataType> const& ThisVariable) const
+            {
+                return GetPosition(ThisVariable.SourceKey());
+            }
+            const Variable_Data* operator[](IndexType Index) const
+            {
+                return mVariables[Index];
             }
         /// @}
 
 
         /// @name Operations
         /// @{
+            // const_iterator             begin() const
+            // {
+            //     return const_iterator(mVariables.begin());
+            // }
+            // const_iterator             end() const
+            // {
+            //     return const_iterator(mVariables.end());
+            // }
+            // const_reverse_iterator     rbegin() const
+            // {
+            //     return const_reverse_iterator(mVariables.rbegin());
+            // }
+            // const_reverse_iterator     rend() const
+            // {
+            //     return const_reverse_iterator(mVariables.rend());
+            // }
+            ptr_const_iterator         ptr_begin() const
+            {
+                return mVariables.begin();
+            }
+            ptr_const_iterator         ptr_end() const
+            {
+                return mVariables.end();
+            }
+            ptr_const_reverse_iterator ptr_rbegin() const
+            {
+                return mVariables.rbegin();
+            }
+            ptr_const_reverse_iterator ptr_rend() const
+            {
+                return mVariables.rend();
+            }
+            const_reference  front() const /* nothrow */
+            {
+                assert(!IsEmpty());
+                return *mVariables.front();
+            }
+            const_reference  back() const  /* nothrow */
+            {
+                assert(!IsEmpty());
+                return *mVariables.back();
+            }
+            size_type size() const
+            {
+                return mVariables.size();
+            }
+            size_type max_size() const
+            {
+                return mVariables.max_size();
+            }
 
+            void swap(Variables_List& rOther)
+            {
+                SizeType temp = mDataSize;
+                mDataSize = rOther.mDataSize;
+                rOther.mDataSize = temp;
 
+                temp = mHashFunctionIndex;
+                mHashFunctionIndex = rOther.mHashFunctionIndex;
+                rOther.mHashFunctionIndex = temp;
+
+                mVariables.swap(rOther.mVariables);
+
+                mDofVariables.swap(rOther.mDofVariables);
+                mDofReactions.swap(rOther.mDofReactions);
+
+                mKeys.swap(rOther.mKeys);
+                mPositions.swap(rOther.mPositions);
+            }
+            template<class TOtherDataType>
+            void push_back(TOtherDataType const& x)
+            {
+                Add(x);
+            }
+            void clear()
+            {
+                mDataSize = 0;
+                mHashFunctionIndex = 0;
+                mVariables.clear();
+                mDofVariables.clear();
+                mDofReactions.clear();
+                mKeys = {static_cast<IndexType>(-1)};
+                mPositions = {static_cast<IndexType>(-1)};
+            }
+            void Add(Variable_Data const& ThisVariable)
+            {
+                if (ThisVariable.SourceKey() == 0)
+                    std::cerr << "Adding uninitialize variable to this variable list. Check if all variables are registered before kernel initialization\n";
+
+                if (Has(ThisVariable))
+                    return;
+                if(ThisVariable.IsComponent()){
+                    Add(ThisVariable.GetSourceVariable());
+                    return;
+                }
+
+                mVariables.push_back(&ThisVariable);
+                SetPosition(ThisVariable.SourceKey(), mDataSize);
+                const SizeType block_size = sizeof(BlockType);
+                mDataSize += static_cast<SizeType>(((block_size - 1) + ThisVariable.Size()) / block_size);
+            }
+
+            int AddDof(Variable_Data const* pThisDofVariable){
+
+                for(std::size_t dof_index = 0 ; dof_index < mDofVariables.size() ; dof_index++){
+                    if(*mDofVariables[dof_index] == *pThisDofVariable){
+                        return static_cast<int>(dof_index);
+                    }
+                }
+                mDofVariables.push_back(pThisDofVariable);
+                mDofReactions.push_back(nullptr);
+                if(mDofVariables.size()>64) {
+                    std::cout<< "Adding too many dofs to the node. Each node only can store 64 Dofs." << std::endl;
+                    exit(0);
+                }
+                return mDofVariables.size() - 1;
+            }
+
+            int AddDof(Variable_Data const* pThisDofVariable, Variable_Data const* pThisDofReaction){
+
+                for(std::size_t dof_index = 0 ; dof_index < mDofVariables.size() ; dof_index++){
+                    if(*mDofVariables[dof_index] == *pThisDofVariable){
+                        mDofReactions[dof_index] = pThisDofReaction;
+                        return static_cast<int>(dof_index);
+                    }
+                }
+                mDofVariables.push_back(pThisDofVariable);
+                mDofReactions.push_back(pThisDofReaction);
+
+                if(mDofVariables.size()>64) {
+                    std::cerr << "Adding too many dofs to the node. Each node only can store 64 Dofs." << std::endl;
+                    exit(0);
+                }
+                return mDofVariables.size() - 1;
+            }
         /// @}
 
 
@@ -144,7 +286,10 @@ class Variables_List
 
                 return mKeys[GetHashIndex(rThisVariable.SourceKey(), mKeys.size(), mHashFunctionIndex)] == rThisVariable.SourceKey();
             }
-
+            bool IsEmpty() const
+            {
+                return mVariables.empty();
+            }
         /// @}
 
 
@@ -239,6 +384,50 @@ class Variables_List
                 return mPositions[index];
             }
 
+            void SetPosition(IndexType Key, SizeType ThePosition) 
+            {
+                if (mPositions.empty())
+                    ResizePositions();
+
+                if (mPositions[GetHashIndex(Key,mPositions.size(),mHashFunctionIndex)] < mDataSize) // The position is ocupied and a resize  (as re hash) is needed
+                    ResizePositions();
+
+                mKeys[GetHashIndex(Key, mPositions.size(), mHashFunctionIndex)] = Key;
+                mPositions[GetHashIndex(Key, mPositions.size(), mHashFunctionIndex)] = ThePosition;
+            }
+
+            void ResizePositions() 
+            {
+                bool size_is_ok = false;
+                std::size_t new_size = mPositions.size();
+                SizeType new_hash_function_index = 0;
+                while (size_is_ok != true) {
+                    new_hash_function_index++;
+                    if (new_hash_function_index > 31) {
+                        new_hash_function_index = 0;
+                        new_size *= 2;
+                    }
+                    KeysContainerType new_keys(new_size, static_cast<IndexType>(-1));
+                    PositionsContainerType new_positions(new_size, static_cast<IndexType>(-1));
+                    size_is_ok = true;
+
+                        for (auto i_variable = mVariables.begin(); i_variable != mVariables.end(); i_variable++)
+                            if (new_positions[GetHashIndex((*i_variable)->SourceKey(), new_size, new_hash_function_index)] > mDataSize) {
+                                new_positions[GetHashIndex((*i_variable)->SourceKey(), new_size, new_hash_function_index)] = mPositions[GetHashIndex((*i_variable)->SourceKey(), mPositions.size(), mHashFunctionIndex)];
+                                new_keys[GetHashIndex((*i_variable)->SourceKey(), new_size, new_hash_function_index)] = (*i_variable)->SourceKey();
+                            }
+                            else {
+                                size_is_ok = false;
+                                break;
+                            }
+
+                    if (size_is_ok) {
+                        mPositions.swap(new_positions);
+                        mKeys.swap(new_keys);
+                        mHashFunctionIndex = new_hash_function_index;
+                    }
+                }
+            }
         /// @}
 
 
