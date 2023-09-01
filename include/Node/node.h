@@ -24,7 +24,7 @@ class Node : public Point<3>
                                                          DofType;
             typedef size_t
                                                        IndexType;
-            typedef Variable_List_Data_Value_Container
+            typedef Variables_List_Data_Value_Container
                                  VariablesListDataValueContainer; 
         ///@}
 

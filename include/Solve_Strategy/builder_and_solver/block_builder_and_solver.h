@@ -14,38 +14,38 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
         /// @name Type Define
         /// @{
             typedef Block_Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
-                                                                                             ClassType;
+                                                                        ClassType;
             LOTUS_POINTER_DEFINE(ClassType)                                                                                 
             typedef Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
-                                                                                              BaseType;
+                                                                         BaseType;
             typedef typename BaseType::Pointer                                       
-                                                                                       BasePointerType;
+                                                                  BasePointerType;
             typedef typename BaseType::LocalFlagType                                   
-                                                                                         LocalFlagType;
+                                                                    LocalFlagType;
             typedef typename BaseType::DofsArrayType                                   
-                                                                                         DofsArrayType;
+                                                                    DofsArrayType;
             typedef typename BaseType::GlobalMatrixType                             
-                                                                                      GlobalMatrixType;
+                                                                 GlobalMatrixType;
             typedef typename BaseType::GlobalVectorType                             
-                                                                                      GlobalVectorType;
+                                                                 GlobalVectorType;
             typedef typename BaseType::GlobalMatrixPointerType               
-                                                                               GlobalMatrixPointerType;
-            typedef typename BaseType::GlobalVectorPointerType               
-                                                                               GlobalVectorPointerType;
-            typedef typename BaseType::LocalVectorType                   
-                                                                                       LocalVectorType;
-            typedef typename BaseType::LocalMatrixType                   
-                                                                                       LocalMatrixType;
-            typedef typename Model_Part::NodesContainerType                         
-                                                                                    NodesContainerType;
-            typedef typename Model_Part::ElementsContainerType                  
-                                                                                 ElementsContainerType;
-            typedef typename Model_Part::ConditionsContainerType              
-                                                                               ConditionsContainerType;
-            typedef typename BaseType::SchemePointerType                           
-                                                                                     SchemePointerType;
-            typedef typename BaseType::LinearSolverPointerType               
-                                                                               LinearSolverPointerType;
+                                                          GlobalMatrixPointerType;
+            typedef typename BaseType::GlobalVectorPointerType  
+                                                          GlobalVectorPointerType;
+            typedef typename BaseType::LocalVectorType          
+                                                                  LocalVectorType;
+            typedef typename BaseType::LocalMatrixType          
+                                                                  LocalMatrixType;
+            typedef typename Model_Part::NodesContainerType         
+                                                               NodesContainerType;
+            typedef typename Model_Part::ElementsContainerType  
+                                                            ElementsContainerType;
+            typedef typename Model_Part::ConditionsContainerType
+                                                          ConditionsContainerType;
+            typedef typename BaseType::SchemePointerType           
+                                                                SchemePointerType;
+            typedef typename BaseType::LinearSolverPointerType  
+                                                          LinearSolverPointerType;
             struct dof_iterator_hash
             {
                 size_t operator()(const Node::DofType::Pointer& it) const
@@ -56,7 +56,6 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                     return seed;
                 }
             };
-
             struct dof_iterator_equal
             {
                 size_t operator()(const Node::DofType::Pointer& it1, const Node::DofType::Pointer& it2) const
@@ -117,7 +116,6 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 {
                     typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
                     const std::size_t i = dof_iterator->EquationId();
-
                     if (dof_iterator->IsFixed())
                         rb[i] = 0.0f;
                 }
@@ -696,9 +694,9 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
         /// @name Protected Operations
         /// @{
             void SystemSolveWithPhysics(GlobalMatrixType& rA,
-                              GlobalVectorType& rDx,
-                              GlobalVectorType& rb,
-                              Model_Part& rModelPart)
+                                GlobalVectorType& rDx,
+                                GlobalVectorType& rb,
+                                Model_Part& rModelPart)
             {
                 double norm_b;
                 if (TSparseSpace::Size(rb) != 0)
@@ -807,8 +805,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 rA.set_filled(indices.size()+1, nnz);
             }
             void AssembleLHS(GlobalMatrixType& rA,
-                   LocalMatrixType& rLHS_Contribution,
-                   Element::EquationIdVectorType& rEquationId)
+                    LocalMatrixType& rLHS_Contribution,
+                    Element::EquationIdVectorType& rEquationId)
             {
                 unsigned int local_size = rLHS_Contribution.size1();
                 for (unsigned int i_local = 0; i_local < local_size; i_local++)
@@ -913,8 +911,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
             }
 
             void BuildRHSNoDirichlet(SchemePointerType pScheme,
-                           Model_Part& rModelPart,
-                           GlobalVectorType& rb)
+                            Model_Part& rModelPart,
+                            GlobalVectorType& rb)
             {
 
                 //Getting the Elements

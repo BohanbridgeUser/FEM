@@ -115,6 +115,13 @@ class Variable_Data
              * @param pData A pointer to the data to be allocated
              */
             virtual void Allocate(void** pData) const;
+            /**
+             * @brief Destruct eliminates an object maintaining the memory it is using.
+             * @details However, the unlike Delete it does nothing with the memory allocated to it.
+             * So it is very useful in case of reallocating a part of the memory.
+             * @param pSource The pointer of the variable to be destructed
+             */
+            
             virtual std::string Info() const;
             virtual void PrintInfo(std::ostream& rOStream) const;
             virtual void PrintData(std::ostream& rOStream) const;

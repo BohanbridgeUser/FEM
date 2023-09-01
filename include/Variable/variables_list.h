@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <cassert>
+#include <boost/iterator/indirect_iterator.hpp>
 class Variables_List
 {
     public:
@@ -31,6 +32,10 @@ class Variables_List
                                                              const_reference;
             typedef VariablesContainerType::size_type 
                                                                    size_type;
+            typedef boost::indirect_iterator<VariablesContainerType::const_iterator>
+                                                              const_iterator;
+		    typedef boost::indirect_iterator<VariablesContainerType::const_reverse_iterator>
+                                                      const_reverse_iterator;
             typedef VariablesContainerType::const_iterator 
                                                           ptr_const_iterator;
             typedef VariablesContainerType::const_reverse_iterator 
@@ -105,22 +110,22 @@ class Variables_List
 
         /// @name Operations
         /// @{
-            // const_iterator             begin() const
-            // {
-            //     return const_iterator(mVariables.begin());
-            // }
-            // const_iterator             end() const
-            // {
-            //     return const_iterator(mVariables.end());
-            // }
-            // const_reverse_iterator     rbegin() const
-            // {
-            //     return const_reverse_iterator(mVariables.rbegin());
-            // }
-            // const_reverse_iterator     rend() const
-            // {
-            //     return const_reverse_iterator(mVariables.rend());
-            // }
+            const_iterator             begin() const
+            {
+                return const_iterator(mVariables.begin());
+            }
+            const_iterator             end() const
+            {
+                return const_iterator(mVariables.end());
+            }
+            const_reverse_iterator     rbegin() const
+            {
+                return const_reverse_iterator(mVariables.rbegin());
+            }
+            const_reverse_iterator     rend() const
+            {
+                return const_reverse_iterator(mVariables.rend());
+            }
             ptr_const_iterator         ptr_begin() const
             {
                 return mVariables.begin();

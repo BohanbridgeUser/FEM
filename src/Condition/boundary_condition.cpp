@@ -27,12 +27,14 @@ Boundary_Condition::Boundary_Condition( Boundary_Condition const& rOther )
  mThisIntegrationMethod(rOther.mThisIntegrationMethod)
 {
 }
+
 Condition::SharedPointer Boundary_Condition::Create(IndexType NewId,
                         NodesContainerType const& ThisNodes,
                         PropertiesType::Pointer pProperties) const
 {
     return make_shared<Boundary_Condition>(NewId, GetGeometry().Create(ThisNodes), pProperties);
 }
+
 
 void Boundary_Condition::GetDofList(DofsVectorType& rConditionDofList,
 				     const Process_Info& rCurrentProcessInfo) const
@@ -422,6 +424,56 @@ double& Boundary_Condition::CalculateAndAddExternalEnergy(double& rEnergy,
     return rEnergy;
 }
 
+void Boundary_Condition::CalculateLeftHandSide( MatrixType& rLeftHandSideMatrix, const Process_Info& rCurrentProcessInfo )
+{
+    //create local system components
+    LocalSystemComponents LocalSystem;
+
+    //calculation flags
+    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_LHS_MATRIX);
+
+    VectorType RightHandSideVector = VectorType();
+
+    //Initialize sizes for the system components:
+    this->InitializeSystemMatrices( rLeftHandSideMatrix, RightHandSideVector, LocalSystem.CalculationFlags );
+
+    //Set Variables to Local system components
+    LocalSystem.SetLeftHandSideMatrix(rLeftHandSideMatrix);
+    LocalSystem.SetRightHandSideVector(RightHandSideVector);
+
+    //Calculate condition system
+    this->CalculateConditionSystem( LocalSystem, rCurrentProcessInfo );
+
+}
+void Boundary_Condition::CalculateRightHandSide( VectorType& rRightHandSideVector, const Process_Info& rCurrentProcessInfo )
+{
+    //create local system components
+    LocalSystemComponents LocalSystem;
+
+    //calculation flags
+    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_RHS_VECTOR);
+
+    MatrixType LeftHandSideMatrix = MatrixType();
+
+    //Initialize sizes for the system components:
+    this->InitializeSystemMatrices( LeftHandSideMatrix, rRightHandSideVector, LocalSystem.CalculationFlags );
+
+    //Set Variables to Local system components
+    LocalSystem.SetLeftHandSideMatrix(LeftHandSideMatrix);
+    LocalSystem.SetRightHandSideVector(rRightHandSideVector);
+
+    //Calculate condition system
+    this->CalculateConditionSystem( LocalSystem, rCurrentProcessInfo );
+}
+void Boundary_Condition::CalculateMassMatrix( MatrixType& rMassMatrix, const Process_Info& rCurrentProcessInfo)
+{
+    rMassMatrix.resize(0, 0);
+}
+void Boundary_Condition::CalculateDampingMatrix( MatrixType& rDampingMatrix, const Process_Info& rCurrentProcessInfo)
+{
+    rDampingMatrix.resize(0, 0);
+}
+
 void Boundary_Condition::Initialize( const Process_Info& rCurrentProcessInfo )
 {
 
@@ -445,65 +497,58 @@ void Boundary_Condition::InitializeExplicitContributions()
         if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_FORCE) && GetGeometry()[i].SolutionStepsDataHas(FORCE_RESIDUAL) ){
             std::array<double, 3 > & ExternalForce = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_FORCE);
             std::array<double, 3 > & ResidualForce = GetGeometry()[i].FastGetSolutionStepValue(FORCE_RESIDUAL);
-            GetGeometry()[i].SetLock();
-            ExternalForce.clear();
-            ResidualForce.clear();
-            GetGeometry()[i].UnSetLock();
+            ExternalForce.fill(0.0);
+            ResidualForce.fill(0.0);
         }
         if( HasVariableDof(ROTATION) ){
             if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_MOMENT) && GetGeometry()[i].SolutionStepsDataHas(MOMENT_RESIDUAL) ){
                 std::array<double, 3 > & ExternalMoment = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_MOMENT);
                 std::array<double, 3 > & ResidualMoment = GetGeometry()[i].FastGetSolutionStepValue(MOMENT_RESIDUAL);
-                GetGeometry()[i].SetLock();
-                ExternalMoment.clear();
-                ResidualMoment.clear();
-                GetGeometry()[i].UnSetLock();
+                ExternalMoment.fill(0.0);
+                ResidualMoment.fill(0.0);
             }
 	    }
     }
 }
 
+void Boundary_Condition::GetNodalDeltaMovements(VectorType& rValues, const int& rNode)
+{
+    const SizeType& dimension = GetGeometry().WorkingSpaceDimension();
+    if( rValues.size() != dimension )
+      rValues.resize(dimension);
 
-// void Boundary_Condition::GetNodalDeltaMovements(VectorType& rValues, const int& rNode)
-// {
-//     const SizeType& dimension = GetGeometry().WorkingSpaceDimension();
-//     if( rValues.size() != dimension )
-//       rValues.resize(dimension);
+    rValues.setZero(dimension);
+    VectorType CurrentValueVector(3);
+    CurrentValueVector.setZero(3);
+    CurrentValueVector = GetNodalCurrentValue( DISPLACEMENT, CurrentValueVector, rNode );
+    VectorType PreviousValueVector(3);
+    PreviousValueVector.setZero(3);
+    CurrentValueVector = GetNodalPreviousValue( DISPLACEMENT, CurrentValueVector, rNode );
+    rValues[0] = CurrentValueVector[0] - PreviousValueVector[0];
+    rValues[1] = CurrentValueVector[1] - PreviousValueVector[1];
+    if( dimension == 3 )
+      rValues[2] = CurrentValueVector[2] - PreviousValueVector[2];
+}
+typename Boundary_Condition::VectorType& Boundary_Condition::GetNodalCurrentValue(const Variable<std::array<double,3> >&rVariable, VectorType& rValue, const unsigned int& rNode)
+{
+    const SizeType& dimension       = GetGeometry().WorkingSpaceDimension();
 
-//     rValues.setZero(dimension);
-//     VectorType CurrentValueVector(3);
-//     CurrentValueVector.setZero(3);
-//     CurrentValueVector = GetNodalCurrentValue( DISPLACEMENT, CurrentValueVector, rNode );
-//     VectorType PreviousValueVector(3);
-//     PreviousValueVector.setZero(3);
-//     CurrentValueVector = GetNodalPreviousValue( DISPLACEMENT, CurrentValueVector, rNode );
-//     rValues[0] = CurrentValueVector[0] - PreviousValueVector[0];
-//     rValues[1] = CurrentValueVector[1] - PreviousValueVector[1];
-//     if( dimension == 3 )
-//       rValues[2] = CurrentValueVector[2] - PreviousValueVector[2];
-// }
-// VectorType& Boundary_Condition::GetNodalCurrentValue(const Variable<std::array<double,3> >&rVariable, VectorType& rValue, const unsigned int& rNode)
-// {
-//     const SizeType& dimension       = GetGeometry().WorkingSpaceDimension();
+    if( rValue.size() != dimension )
+      rValue.resize(dimension, false);
 
-//     if( rValue.size() != dimension )
-//       rValue.resize(dimension, false);
+    for (int i=0;i<3;i++)
+        rValue[i] = GetGeometry()[rNode].FastGetSolutionStepValue(rVariable)[i];
 
-//     rValue = GetGeometry()[rNode].FastGetSolutionStepValue( rVariable );
+    return rValue;
+}
+typename Boundary_Condition::VectorType& Boundary_Condition::GetNodalPreviousValue(const Variable<std::array<double,3> >&rVariable, VectorType& rValue, const unsigned int& rNode)
+{
+    const SizeType& dimension       = GetGeometry().WorkingSpaceDimension();
+    if( rValue.size() != dimension )
+      rValue.resize(dimension, false);
 
-//     return rValue;
-// }
-
-//   //************************************************************************************
-//   //************************************************************************************
-
-// VectorType& Boundary_Condition::GetNodalPreviousValue(const Variable<std::array<double,3> >&rVariable, VectorType& rValue, const unsigned int& rNode)
-// {
-//     const SizeType& dimension       = GetGeometry().WorkingSpaceDimension();
-//     if( rValue.size() != dimension )
-//       rValue.resize(dimension, false);
-
-//     rValue = GetGeometry()[rNode].FastGetSolutionStepValue( rVariable, 1 );
-//     return rValue;
-// }
+    for (int i=0;i<3;i++)
+        rValue[i] = GetGeometry()[rNode].FastGetSolutionStepValue(rVariable,1)[i];
+    return rValue;
+}
 

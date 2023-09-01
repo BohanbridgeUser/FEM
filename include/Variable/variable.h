@@ -125,8 +125,41 @@ class Variable : public Variable_Data
 
         /// @name Operations
         /// @{
-
-
+            void Destruct(void* pSource) const override
+            {
+                static_cast<TDataType* >(pSource)->~TDataType();
+            }
+            /**
+             * @brief Clone creates a copy of the object using a copy constructor of the class.
+             * @details It is useful to avoid shallow copying of complex objects and also without actually having information about the variable type.
+             * @param pSource The pointer of the variable to be cloned
+             * @return A raw pointer of the variable
+             */
+            void* Clone(const void* pSource) const override
+            {
+                return new TDataType(*static_cast<const TDataType* >(pSource) );
+            }
+            /**
+             * @brief Copy is very similar to Clone except that it also the destination pointer also passed to it.
+             * @details It is a helpful method specially to create a copy of heterogeneous data arrays
+             * @param pSource The pointer of the variable to be copied
+             * @param pDestination The pointer of the destination variable
+             * @return A raw pointer of the variable
+             */
+            void* Copy(const void* pSource, void* pDestination) const override
+            {
+                return new(pDestination) TDataType(*static_cast<const TDataType* >(pSource) );
+            }
+            /**
+             * @brief Assign is very similar to Copy. It just differs in using an assignment operator besides the copy constructor. Copy creates a new object while
+             * @details Assign does the assignment for two existing objects.
+             * @param pSource The pointer of the value to be assigned
+             * @param pDestination The pointer of the destination value
+             */
+            void Assign(const void* pSource, void* pDestination) const override
+            {
+                (*static_cast<TDataType* >(pDestination) ) = (*static_cast<const TDataType* >(pSource) );
+            }
         /// @}
 
 

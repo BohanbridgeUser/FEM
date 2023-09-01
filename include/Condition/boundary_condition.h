@@ -78,12 +78,82 @@ class Boundary_Condition : public Condition
                         NodesContainerType const& ThisNodes,
                         PropertiesType::Pointer pProperties ) const override;
 
-
             void Initialize(const Process_Info& rCurrentProcessInfo) override;
 
             void InitializeSolutionStep(const Process_Info& rCurrentProcessInfo) override;
 
             void InitializeNonLinearIteration(const Process_Info& rCurrentProcessInfo) override;
+
+            void CalculateLocalSystem(MatrixType& rLeftHandSideMatrix,
+                                      VectorType& rRightHandSideVector,
+                                      const Process_Info& rCurrentProcessInfo ) override;
+
+            /**
+             * this is called during the assembling process in order
+             * to calculate the condition right hand side vector only
+             * @param rRightHandSideVector: the condition right hand side vector
+             * @param rCurrentProcessInfo: the current process info instance
+             */
+            void CalculateRightHandSide(VectorType& rRightHandSideVector,
+                                        const Process_Info& rCurrentProcessInfo ) override;
+
+            /**
+             * this is called during the assembling process in order
+             * to calculate the condition left hand side matrix only
+             * @param rLeftHandSideMatrix: the condition left hand side matrix
+             * @param rCurrentProcessInfo: the current process info instance
+             */
+            void CalculateLeftHandSide(MatrixType& rLeftHandSideMatrix,
+                                       const Process_Info& rCurrentProcessInfo) override;
+
+            /**
+             * this is called during the assembling process in order
+             * to calculate the condition mass matrix
+             * @param rMassMatrix: the condition mass matrix
+             * @param rCurrentProcessInfo: the current process info instance
+             */
+            void CalculateMassMatrix(MatrixType& rMassMatrix,
+                                     const Process_Info& rCurrentProcessInfo ) override;
+
+            /**
+             * this is called during the assembling process in order
+             * to calculate the condition damping matrix
+             * @param rDampingMatrix: the condition damping matrix
+             * @param rCurrentProcessInfo: the current process info instance
+             */
+            void CalculateDampingMatrix(MatrixType& rDampingMatrix,
+                                        const Process_Info& rCurrentProcessInfo ) override;
+
+            /**
+             * this function is designed to make the element to assemble an rRHS vector
+             * identified by a variable rRHSVariable by assembling it to the nodes on the variable
+             * rDestinationVariable.
+             * @param rRHSVector: input variable containing the RHS vector to be assembled
+             * @param rRHSVariable: variable describing the type of the RHS vector to be assembled
+             * @param rDestinationVariable: variable in the database to which the rRHSvector will be assembled
+             * @param rCurrentProcessInfo: the current process info instance
+             */
+            void AddExplicitContribution(const VectorType& rRHS,
+                            const Variable<VectorType>& rRHSVariable,
+                            const Variable<std::array<double,3> >& rDestinationVariable,
+                            const Process_Info& rCurrentProcessInfo) override;
+
+
+            /**
+             * Calculate a double Variable
+             */
+            void CalculateOnIntegrationPoints(const Variable<double>& rVariable,
+                            std::vector<double>& rOutput,
+                            const Process_Info& rCurrentProcessInfo) override;
+
+             /**
+             * This function provides the place to perform checks on the completeness of the input.
+             * It is designed to be called only once (or anyway, not often) typically at the beginning
+             * of the calculations, so to verify that nothing is missing from the input
+             * or that no common error is found.
+             * @param rCurrentProcessInfo
+             */
+            int Check( const Process_Info& rCurrentProcessInfo ) const override;
 
         /// @}
 
