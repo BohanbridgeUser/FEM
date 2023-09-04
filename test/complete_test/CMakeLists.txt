@@ -5,9 +5,18 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     INCLUDE_DIRECTORIES(/usr/local/include/eigen3 /usr/include/eigen3)
 ELSE(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     MESSAGE(STATUS ${PROJECT_NAME} "CONFIGURE ON WINDOS----SET EIGEN DIRECTORIES")
+    SET(BOOST_ROOT "D:\\Boost\\boost_1_83_0")
+    SET(Boost_USE_STATIC_LIBS ON)
+    SET(Boost_USE_MULTITHREADED ON)
+    FIND_PACKAGE(Boost REQUIRED)
 ENDIF()
 
 FILE(GLOB_RECURSE SRC_DIR_LIST "../../src/*.cpp" "../../src/*.c" "*.cpp")	#遍历获取source/路径下所有的*.cpp和*.c文件列表
+
+IF(${Boost_FOUND})
+    MESSAGE(STATUS "BOOST FOUND!")
+    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+ENDIF()
 
 FIND_PACKAGE(Threads REQUIRED)
 IF(${Threads_FOUND})

@@ -5,7 +5,15 @@ IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     INCLUDE_DIRECTORIES(../../include /usr/include/eigen3)
 ELSEIF (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     MESSAGE(STATUS "Configure on/for Windos")
-    INCLUDE_DIRECTORIES(../../include)
+    SET(BOOST_ROOT "D:\\Boost\\boost_1_83_0")
+    SET(Boost_USE_STATIC_LIBS ON)
+    SET(Boost_USE_MULTITHREADED ON)
+    FIND_PACKAGE(Boost REQUIRED)
+ENDIF()
+
+IF(${Boost_FOUND})
+    MESSAGE(STATUS "BOOST FOUND!")
+    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 ENDIF()
 
 FIND_PACKAGE(Threads REQUIRED)
@@ -13,6 +21,8 @@ IF(${Threads_FOUND})
     SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -pthread)
     MESSAGE(STATUS "Threads PACKAGE FOUNDED")
 ENDIF()
+
+
 
 FILE(GLOB_RECURSE SRC_DIR_LIST "../../src/*.cpp" "../../src/*.c" "*.cpp")	#遍历获取source/路径下所有的*.cpp和*.c文件列表
 

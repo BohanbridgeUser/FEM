@@ -259,6 +259,10 @@ class Geometry
                 p_geom->SetId(rNewGeometryName);
                 return p_geom;
             }
+            virtual int Check() const
+            {
+                return 0;
+            }
         /// @}
 
         /// @name Access 
@@ -311,6 +315,10 @@ class Geometry
             {
                 return mGeometry_Data.IntegrationPoints(ThisMethod);
             }
+            int IntegrationPointsNumber(const IntegrationMethod& ThisIntegrationMethod) const
+            {
+                return mGeometry_Data.IntegrationPoints(ThisIntegrationMethod).size();
+            }
             const ShapeFunctionValueType&
             ShapeFunctionsValues(const IntegrationMethod& ThisIntegrationMethod) const
             {
@@ -339,6 +347,78 @@ class Geometry
             {
                 return mGeometry_Dimension.GetLocalSpaceDimension();
             }
+
+             /**
+             * @brief This method calculate and return length, area or volume of this geometry depending to it's dimension.
+             * @details For one dimensional geometry it returns its length, for two dimensional it gives area and for three dimensional geometries it gives its volume.
+             * @return double value contains length, area or volume.
+             * @see Length()
+             * @see Area()
+             * @see Volume()
+             */
+            virtual double DomainSize() const 
+            {
+                const SizeType local_dimension = this->LocalSpaceDimension();
+                if (local_dimension == 1) { // 1D geometry
+                    return this->Length();
+                } else if (local_dimension == 2) { // 2D geometry
+                    return this->Area();
+                } else { // 3D geometry
+                    return this->Volume();
+                }
+                return 0.0;
+            }
+
+            /** This method calculate and return Length or charactereistic
+             * length of this geometry depending to it's dimension. For one
+             * dimensional geometry for example Line it returns length of it
+             * and for the other geometries it gives Characteristic length
+             * otherwise.
+             *
+             * @return double value contains length or Characteristic
+             * length
+             *
+             * @see Area()
+             * @see Volume()
+             * @see DomainSize()
+             */
+            virtual double Length() const 
+            {
+                std::cerr << "Calling base class 'Length' method instead of derived class one. Please check the definition of derived class. " << *this << std::endl;
+                exit(0);
+                return 0.0;
+            }
+
+            /**
+             * @brief This method calculate and return area or surface area of this geometry depending to it's dimension.
+             * @details For one dimensional geometry it returns length, for two dimensional it gives area and for three dimensional geometries it gives surface area.
+             * @return double value contains area or surface area.
+             * @see Length()
+             * @see Volume()
+             * @see DomainSize()
+             */
+            virtual double Area() const 
+            {
+                std::cerr << "Calling base class 'Area' method instead of derived class one. Please check the definition of derived class. " << *this << std::endl;
+                exit(0);
+                return 0.0;
+            }
+
+            /**
+             * @brief This method calculate and return volume of this geometry.
+             * @details For one and two dimensional geometry it returns zero and for three dimensional it gives volume of geometry.
+             * @return double value contains volume.
+             * @see Length()
+             * @see Area()
+             * @see DomainSize()
+             */
+            virtual double Volume() const 
+            {
+                std::cerr << "Calling base class 'Volume' method instead of derived class one. Please check the definition of derived class. " << *this << std::endl;
+                exit(0);
+                return 0.0;
+            }
+
         /// @}
 
         /// @name Input and Output

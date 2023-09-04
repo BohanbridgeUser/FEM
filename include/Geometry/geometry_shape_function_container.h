@@ -98,6 +98,10 @@ class GeometryShapeFuncionContainer
             {
                 return mIntegrationPoints[static_cast<int>(ThisMethod)];
             }
+            const IntegrationPointsVector& IntegrationPoints() const
+            {
+                return mIntegrationPoints[static_cast<int>(mDefaultMethod)];
+            }
         //}
     private:
         IntegrationMethod mDefaultMethod;

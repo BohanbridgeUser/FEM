@@ -33,8 +33,6 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
                                                                               GlobalMatrixTypePointer;
             typedef typename SpVectorType::Pointer
                                                                               GlobalVectorTypePointer;
-            
-
             /* Linear_Solving_Strategy */
             typedef Linear_Solving_Strategy<TSparseSpace,TDenseSpace,TLinearSolver> 
                                                                                             ClassType;                                                                           

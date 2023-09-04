@@ -511,6 +511,130 @@ void Boundary_Condition::InitializeExplicitContributions()
     }
 }
 
+void Boundary_Condition::CalculateLocalSystem( MatrixType& rLeftHandSideMatrix, VectorType& rRightHandSideVector, const Process_Info& rCurrentProcessInfo )
+{
+    //create local system components
+    LocalSystemComponents LocalSystem;
+    //calculation flags
+    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_LHS_MATRIX);
+    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_RHS_VECTOR);
+
+    //Initialize sizes for the system components:
+    this->InitializeSystemMatrices( rLeftHandSideMatrix, rRightHandSideVector, LocalSystem.CalculationFlags );
+
+    //Set Variables to Local system components
+    LocalSystem.SetLeftHandSideMatrix(rLeftHandSideMatrix);
+    LocalSystem.SetRightHandSideVector(rRightHandSideVector);
+
+    //Calculate condition system
+    this->CalculateConditionSystem( LocalSystem, rCurrentProcessInfo );
+}
+
+void Boundary_Condition::AddExplicitContribution(const VectorType& rRHS,
+                        const Variable<VectorType>& rRHSVariable,
+                        const Variable<std::array<double,3> >& rDestinationVariable,
+                        const Process_Info& rCurrentProcessInfo)
+{
+    const SizeType number_of_nodes  = GetGeometry().PointsNumber();
+    const SizeType& dimension       = GetGeometry().WorkingSpaceDimension();
+
+    if( rRHSVariable == EXTERNAL_FORCES_VECTOR && rDestinationVariable == EXTERNAL_FORCE )
+    {
+
+        for(SizeType i=0; i< number_of_nodes; i++)
+        {
+            int index = dimension * i;
+
+            std::array<double, 3 > &ExternalForce = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_FORCE);
+            for(SizeType j=0; j<dimension; j++)
+                {
+                    ExternalForce[j] += rRHS[index + j];
+                }
+        }
+    }
+
+    if( rRHSVariable == RESIDUAL_VECTOR && rDestinationVariable == FORCE_RESIDUAL )
+    {
+        for(SizeType i=0; i< number_of_nodes; i++)
+        {
+            int index = dimension * i;
+
+            std::array<double, 3 > &ForceResidual = GetGeometry()[i].FastGetSolutionStepValue(FORCE_RESIDUAL);
+            for(SizeType j=0; j<dimension; j++)
+            {
+                ForceResidual[j] += rRHS[index + j];
+            }
+        }
+    }
+
+    if( HasVariableDof(ROTATION) )
+    {
+        if( rRHSVariable == EXTERNAL_FORCES_VECTOR && rDestinationVariable == EXTERNAL_MOMENT )
+        {
+
+            for(SizeType i=0; i< number_of_nodes; i++)
+            {
+                int index = dimension * i;
+                std::array<double, 3 > &ExternalForce = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_FORCE);
+                for(SizeType j=0; j<dimension; j++)
+                {
+                    ExternalForce[j] += rRHS[index + j];
+                }
+            }
+        }
+
+        if( rRHSVariable == RESIDUAL_VECTOR && rDestinationVariable == MOMENT_RESIDUAL )
+        {
+
+            for(SizeType i=0; i< number_of_nodes; i++)
+            {
+                int index = dimension * i;
+                std::array<double, 3 > &MomentResidual = GetGeometry()[i].FastGetSolutionStepValue(MOMENT_RESIDUAL);
+                for(SizeType j=0; j<dimension; j++)
+                {
+                    MomentResidual[j] += rRHS[index + j];
+                }
+            }
+        }
+    }
+}
+
+void Boundary_Condition::CalculateOnIntegrationPoints( const Variable<double>& rVariable, std::vector<double>& rOutput, const Process_Info& rCurrentProcessInfo )
+{
+    const unsigned int& integration_points_number = GetGeometry().IntegrationPointsNumber( mThisIntegrationMethod );
+
+    unsigned int integration_points = 0;
+    if( integration_points_number == 0 )
+      integration_points = 1;
+
+    if ( rOutput.size() != integration_points )
+      rOutput.resize( integration_points, false );
+
+
+    if ( rVariable == EXTERNAL_ENERGY )
+    {
+        //create and initialize condition variables:
+        ConditionVariables Variables;
+        this->InitializeConditionVariables(Variables,rCurrentProcessInfo);
+        //reading integration points
+        const GeometryType::IntegrationPointsVector& integration_points = GetGeometry().IntegrationPoints( mThisIntegrationMethod );
+
+        double Energy = 0;
+        double IntegrationWeight = 0;
+        for ( unsigned int PointNumber = 0; PointNumber < integration_points.size(); PointNumber++ )
+        {
+            //compute element kinematics B, F, DN_DX ...
+            this->CalculateKinematics(Variables,PointNumber);
+            IntegrationWeight = Variables.Jacobian * integration_points[PointNumber].Weight();
+            Energy = 0;
+            Energy = this->CalculateAndAddExternalEnergy( Energy, Variables, IntegrationWeight, rCurrentProcessInfo);
+            rOutput[PointNumber] = Energy;
+        }
+    }
+}
+
+
+
 void Boundary_Condition::GetNodalDeltaMovements(VectorType& rValues, const int& rNode)
 {
     const SizeType& dimension = GetGeometry().WorkingSpaceDimension();
@@ -552,3 +676,10 @@ typename Boundary_Condition::VectorType& Boundary_Condition::GetNodalPreviousVal
     return rValue;
 }
 
+int Boundary_Condition::Check( const Process_Info& rCurrentProcessInfo ) const
+{
+    // Perform base element checks
+    int ErrorCode = 0;
+    ErrorCode = Condition::Check(rCurrentProcessInfo);
+    return ErrorCode;
+}

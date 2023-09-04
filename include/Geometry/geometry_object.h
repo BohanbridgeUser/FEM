@@ -75,6 +75,23 @@ class Geometry_Object : public Flags
                 return *mpGeometry;
             }
         ///@}
+
+        /// @name Access
+        /// @{
+
+        /// @}
+
+        /// @name Inquiry
+        /// @{
+            IndexType Id() const
+            {
+                return ID;
+            }
+            IndexType& Id() 
+            {
+                return ID;
+            }
+        /// @}
     protected:
         IndexType ID;
         static int numbers;

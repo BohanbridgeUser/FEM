@@ -306,9 +306,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                                             GlobalVectorType& rDx,
                                             GlobalVectorType& rb) override
             {
-                std::size_t system_size = rA.size1();
+                std::size_t system_size = rA.rows();
                 std::vector<double> scaling_factors (system_size, 0.0f);
-
                 const int ndofs = static_cast<int>(this->mDofSet.size());
 
                 //NOTE: dofs are assumed to be numbered consecutively in the BlockBuilderAndSolver
@@ -322,54 +321,45 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
 
                 }
 
-                double* Avalues = rA.value_data().begin();
-                std::size_t* Arow_indices = rA.index1_data().begin();
-                std::size_t* Acol_indices = rA.index2_data().begin();
-
                 //detect if there is a line of all zeros and set the diagonal to a 1 if this happens
-                for(int k = 0; k < static_cast<int>(system_size); ++k)
+                for(int k = 0; k < rA.outersize(); ++k)
                 {
-                std::size_t col_begin = Arow_indices[k];
-                std::size_t col_end = Arow_indices[k+1];
-                bool empty = true;
-                for (std::size_t j = col_begin; j < col_end; ++j)
-                {
-                    if(Avalues[j] != 0.0)
+                    bool empty = true;
+                    for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
                     {
-                    empty = false;
-                    break;
+                        if(it.value() != 0.0)
+                        {
+                            empty = false;
+                            break;
+                        }
+                    }
+
+                    if(empty == true)
+                    {
+                        rA(k,k) = 1.0;
+                        rb[k] = 0.0;
                     }
                 }
 
-                if(empty == true)
+                for (int k = 0; k < rA.outerSize(); ++k)
                 {
-                    rA(k,k) = 1.0;
-                    rb[k] = 0.0;
-                }
-                }
-
-                for (int k = 0; k < static_cast<int>(system_size); ++k)
-                {
-                std::size_t col_begin = Arow_indices[k];
-                std::size_t col_end = Arow_indices[k+1];
-                double k_factor = scaling_factors[k];
-                if (k_factor == 0)
-                {
-                    // zero out the whole row, except the diagonal
-                    for (std::size_t j = col_begin; j < col_end; ++j)
-                    if (static_cast<int>(Acol_indices[j]) != k )
-                        Avalues[j] = 0.0;
-
-                    // zero out the RHS
-                    rb[k] = 0.0;
-                }
-                else
-                {
-                    // zero out the column which is associated with the zero'ed row
-                    for (std::size_t j = col_begin; j < col_end; ++j)
-                    if(scaling_factors[ Acol_indices[j] ] == 0 )
-                        Avalues[j] = 0.0;
-                }
+                    double k_factor = scaling_factors[k];
+                    if (k_factor == 0)
+                    {
+                        // zero out the whole row, except the diagonal
+                        for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
+                            if (it.col() != k )
+                                it.value() = 0.0;
+                        // zero out the RHS
+                        rb[k] = 0.0;
+                    }
+                    else
+                    {
+                        // zero out the column which is associated with the zero'ed row
+                        for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
+                            if(scaling_factors[ it.row() ] == 0 )
+                                it.value() = 0.0;
+                    }
                 }
             }
 
@@ -389,7 +379,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
 
                 Process_Info& rCurrentProcessInfo = rModelPart.GetProcessInfo();
 
-                typedef std::unordered_set < Node::DofType::Pointer, dof_iterator_hash>  set_type;
+                typedef std::unordered_set <Node::DofType::Pointer, dof_iterator_hash>  
+                                                                                set_type;
 
                 #ifdef OPENMP
                     int nthreads = omp_get_max_threads();
@@ -459,7 +450,7 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 // Here we do a reduction in a tree so to have everything on thread 0
                 unsigned int old_max = nthreads;
                 unsigned int new_max = ceil(0.5*static_cast<double>(old_max));
-                while (new_max>=1 && new_max != old_max)
+                while (new_max >= 1 && new_max != old_max)
                 {
                     if( this->mEchoLevel > 2)
                     {
@@ -477,8 +468,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                     {
                         if (i + new_max < old_max)
                         {
-                        dofs_aux_list[i].insert(dofs_aux_list[i+new_max].begin(), dofs_aux_list[i+new_max].end());
-                        dofs_aux_list[i+new_max].clear();
+                            dofs_aux_list[i].insert(dofs_aux_list[i+new_max].begin(), dofs_aux_list[i+new_max].end());
+                            dofs_aux_list[i+new_max].clear();
                         }
                     }
                     old_max = new_max;
@@ -569,24 +560,24 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 GlobalVectorType& rDx = *pDx;
                 GlobalVectorType& rb = *pb;
                 //resizing the system vectors and matrix
-                if (rA.size1() == 0 || this->mOptions.Is(LocalFlagType::REFORM_DOFS)) //if the matrix is not initialized
+                if (rA.rows() == 0 || this->mOptions.Is(LocalFlagType::REFORM_DOFS)) //if the matrix is not initialized
                 {
-                    rA.resize(this->mEquationSystemSize, this->mEquationSystemSize, false);
+                    rA.resize(this->mEquationSystemSize, this->mEquationSystemSize);
                     ConstructMatrixStructure(pScheme, rA, rModelPart.Elements(), rModelPart.Conditions(), rModelPart.GetProcessInfo());
                 }
                 else
                 {
-                    if (rA.size1() != this->mEquationSystemSize || rA.size2() != this->mEquationSystemSize)
+                    if (rA.rows() != this->mEquationSystemSize || rA.cols() != this->mEquationSystemSize)
                     {
                         std::cout << "block builder resize" << "it should not come here -> this is SLOW" << std::endl;
-                        rA.resize(this->mEquationSystemSize, this->mEquationSystemSize, true);
+                        rA.resize(this->mEquationSystemSize, this->mEquationSystemSize);
                         ConstructMatrixStructure(pScheme, rA, rModelPart.Elements(), rModelPart.Conditions(), rModelPart.GetProcessInfo());
                     }
                 }
                 if (rDx.size() != this->mEquationSystemSize)
-                rDx.resize(this->mEquationSystemSize, false);
+                rDx.resize(this->mEquationSystemSize);
                 if (rb.size() != this->mEquationSystemSize)
-                rb.resize(this->mEquationSystemSize, false);
+                rb.resize(this->mEquationSystemSize);
             }
 
 

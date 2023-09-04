@@ -175,7 +175,7 @@ class Condition : public Geometry_Object
                                                 const Process_Info& rCurrentProcessInfo)
             {
                 if (rRightHandSideVector.size() != 0) {
-                    rRightHandSideVector.resize(0,);
+                    rRightHandSideVector.resize(0);
                 }
             }
 
