@@ -78,31 +78,24 @@ int main()
     Properties Prop;
     std::vector<double> V_E,V_M,V_P;
     V_E.push_back(2.1E9);
-    Prop.InsertProperty("Elasticity",V_E);
     V_M.push_back(7850.00);
-    Prop.InsertProperty("Mass",V_M);
     V_P.push_back(1.2E-5);
-    Prop.InsertProperty("Poisson",V_P);
-    std::cout << Prop;
 
-    std::vector<Element> E_V;
-    Element E[64];
+    std::vector<Solid_Element> E_V;
     for (int i=0;i<64;++i) 
     {
-        E_V.push_back(Element(i,&Q_3d_4Ns[i],Prop));
+        E_V.push_back(Solid_Element(i,&Q_3d_4Ns[i],&Prop));
     }
 
     Condition Cond;
     std::vector<Condition> C_V;
     C_V.push_back(Cond);
-    Mesh<Node,Properties,Element,Condition> 
+    Mesh<Node,Properties,Solid_Element,Condition> 
                         mesh(&N_V,Prop,E_V,C_V);
     for(int i=0;i<mesh.Elements().size();++i)
     {
         std::cout << "Element ID: " << i+1 << std::endl;
         std::cout << mesh.Elements()[i];
     }
-    std::cout << "Properties:\n" 
-              << mesh.Property();
     return 0;
 }

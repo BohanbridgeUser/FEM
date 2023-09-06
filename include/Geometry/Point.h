@@ -1,9 +1,11 @@
 #ifndef _POINT_H_
 #define _POINT_H_
-#include "Vector.h"
+#include "Lotus_Vector.h"
 #include <iostream>
+#include <array>
+
 template<int TDimension>
-class Point:public Vector<TDimension>
+class Point:public Lotus_Vector<TDimension>
 {
     public:
     /// @name Define
@@ -18,24 +20,24 @@ class Point:public Vector<TDimension>
     
     /// @name Lift Circle
     /// @{
-        Point():Vector<TDimension>()
+        Point():Lotus_Vector<TDimension>()
         {
             
         }
-        Point(const double& xi, const double& yi):Vector<TDimension>(xi,yi)
+        Point(const double& xi, const double& yi):Lotus_Vector<TDimension>(xi,yi)
         {
             number++;
         }
-        Point(const double& xi, const double& yi, const double& zi):Vector<TDimension>(xi,yi,zi)
+        Point(const double& xi, const double& yi, const double& zi):Lotus_Vector<TDimension>(xi,yi,zi)
         {
             number++;
         }
-        Point(const Point& another):Vector<TDimension>(another.x(),another.y())
+        Point(const Point& another):Lotus_Vector<TDimension>(another.x(),another.y())
         {
-            if(TDimension == 3) Vector<TDimension>::z() = another.z();
+            if(TDimension == 3) Lotus_Vector<TDimension>::z() = another.z();
             number++;
         }
-        Point(const Vector<TDimension>& v2p):Vector<TDimension>(v2p)
+        Point(const Lotus_Vector<TDimension>& v2p):Lotus_Vector<TDimension>(v2p)
         {
             number++;
         }
@@ -45,7 +47,7 @@ class Point:public Vector<TDimension>
         }
     /// @}
 
-    /// @name Operations
+    /// @name Operators
     /// @{
         Point& operator*(const double& alpha)
         {
@@ -128,11 +130,19 @@ class Point:public Vector<TDimension>
         }
     //}
     
-    /// @name Operation
+    /// @name Operations
     /// @{
         friend double dist(const Point& a, const Point& b)
         {
             return Point(b-a).norm();
+        }
+        std::array<double,3> Coordinates()
+        {
+            return std::array<double,3>(this->x(),this->y(),this->z());
+        }
+        std::array<double,3> Coordinates() const
+        {
+            return std::array<double,3>{this->x(),this->y(),this->z()};
         }
     /// @}
 

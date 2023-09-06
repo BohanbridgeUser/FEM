@@ -49,7 +49,10 @@ class Scheme : public Flags
                                                                             GlobalMatrixTypePointer;
             typedef typename SpVectorType::Pointe  
                                                                             GlobalVectorTypePointer;
-            
+            typedef typename TDenseSpace::Matrix
+                                                                                    LocalMatrixType;
+            typedef typename TDenseSpace::Vector
+                                                                                    LocalVectorType;
         ///@}
 
         ///@name Life Circle
@@ -204,6 +207,29 @@ class Scheme : public Flags
             {
                 //pCurrentCondition->GetDofList(rConditionDofList, rCurrentProcessInfo);
             }
+
+            /**
+             * This function is designed to be called in the builder and solver to introduce
+             * @param pCurrentElement: The element to compute
+             * @param rLHS_Contribution: The LHS matrix contribution
+             * @param rRHS_Contribution: The RHS vector contribution
+             * @param rEquationId: The ID's of the element degrees of freedom
+             * @param rCurrentProcessInfo: The current process info instance
+             */
+            virtual void CalculateSystemContributions(Element::Pointer pCurrentElement,
+                                                        LocalMatrixType& rLHS_Contribution,
+                                                        LocalVectorType& rRHS_Contribution,
+                                                        Element::EquationIdVectorType& rEquationId,
+                                                        Process_Info& rCurrentProcessInfo)
+            {
+                pCurrentElement->CalculateLocalSystem(rLHS_Contribution, rRHS_Contribution, rCurrentProcessInfo);
+                pCurrentElement->EquationIdVector(rEquationId, rCurrentProcessInfo);
+            }
+        /// @}
+
+        /// @name Access
+        /// @{
+            
         /// @}
     protected:
         ///@name Static Member Variables

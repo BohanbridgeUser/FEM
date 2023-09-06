@@ -45,6 +45,10 @@ class Geometry
             typedef std::array<IntegrationPointsVector, 
                                 static_cast<int>(Geometry_Data::IntegrationMethod::NumberofIntegrationMethods)>
                                                        IntegrationPointsContainerType;
+            typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>
+                                                                               Matrix;
+            typedef Eigen::Matrix<double,Eigen::Dynamic,1>
+                                                                               Vector;
             // @ ShapeFunctionValueContainer Define
             typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>
                                                                ShapeFunctionValueType;
@@ -134,6 +138,10 @@ class Geometry
                 return *this;
             }
             PointType& operator[](const int& index)
+            {
+                return pPoints[index];
+            }
+            const PointType& operator[](const int& index) const
             {
                 return pPoints[index];
             }
@@ -263,6 +271,50 @@ class Geometry
             {
                 return 0;
             }
+        
+            /**
+             * @name Jacobian 
+             * @brief Calculate Jacobian
+            */
+            JacobiansType& Jacobian( JacobiansType& rResult ) const
+            {
+                Jacobian( rResult, mGeometry_Data.DefaultIntegrationMethod() );
+                return rResult;
+            }
+            virtual JacobiansType& Jacobian( JacobiansType& rResult,
+                                     IntegrationMethod ThisMethod ) const
+            {
+                if( rResult.size() != this->IntegrationPointsNumber( ThisMethod ) )
+                    rResult.resize( this->IntegrationPointsNumber( ThisMethod ));
+                for ( unsigned int pnt = 0; pnt < this->IntegrationPointsNumber( ThisMethod ); pnt++ ) {
+                    this->Jacobian( rResult[pnt], pnt, ThisMethod);
+                }
+                return rResult;
+            }
+            virtual Matrix& Jacobian( Matrix& rResult, IndexType IntegrationPointIndex, IntegrationMethod ThisMethod ) const
+            {
+                const SizeType working_space_dimension = this->WorkingSpaceDimension();
+                const SizeType local_space_dimension = this->LocalSpaceDimension();
+                if(rResult.rows() != working_space_dimension || rResult.cols() != local_space_dimension)
+                    rResult.resize( working_space_dimension, local_space_dimension);
+
+                const Matrix& r_shape_functions_gradient_in_integration_point = ShapeFunctionsLocalGradients( ThisMethod )[ IntegrationPointIndex ];
+
+                rResult.setZero(rResult.rows(),rResult.cols());
+                const SizeType points_number = this->PointsNumber();
+                for (IndexType i = 0; i < points_number; ++i ) {
+                    const std::array<double, 3>& r_coordinates = (*this)[i].Coordinates();
+                    for(IndexType k = 0; k< working_space_dimension; ++k) {
+                        const double value = r_coordinates[k];
+                        for(IndexType m = 0; m < local_space_dimension; ++m) {
+                            rResult(k,m) += value * r_shape_functions_gradient_in_integration_point(i,m);
+                        }
+                    }
+                }
+
+                return rResult;
+            }
+
         /// @}
 
         /// @name Access 
@@ -335,7 +387,7 @@ class Geometry
 
         /// @name Inquiry
         /// @{ 
-            int GetPointsNum()const
+            int size()const
             {
                 return pPoints.size();
             }
@@ -368,6 +420,7 @@ class Geometry
                 }
                 return 0.0;
             }
+
 
             /** This method calculate and return Length or charactereistic
              * length of this geometry depending to it's dimension. For one

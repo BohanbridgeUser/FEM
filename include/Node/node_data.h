@@ -12,8 +12,12 @@ class Node_Data
         ///@name Define 
         ///@{
         LOTUS_POINTER_DEFINE(Node_Data)
-        typedef std::vector<double> SolutionOneStepNodalDataContainerType;
-        typedef Variables_List_Data_Value_Container SolutionStepsNodalDataContainerType;
+        typedef size_t
+                                                                                        IndexType;
+        typedef std::vector<double> 
+                                                            SolutionOneStepNodalDataContainerType;
+        typedef Variables_List_Data_Value_Container 
+                                                              SolutionStepsNodalDataContainerType;
         ///@}
 
         ///@name Life circle 

@@ -33,6 +33,10 @@ class Element:public Geometry_Object
                                                      DofsVectorType;
         typedef std::vector<std::size_t> 
                                                EquationIdVectorType;
+        typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> 
+                                                         MatrixType;
+        typedef Eigen::Matrix<double,Eigen::Dynamic,1> 
+                                                         VectorType;
         ///@}
 
         ///@name Lift Circle 
@@ -42,21 +46,21 @@ class Element:public Geometry_Object
             {
 
             }
-            Element(const int& NewID,GeometryType* ThismpGeometry)
+            Element(const int& NewID,typename GeometryType::Pointer ThismpGeometry)
             :Geometry_Object(ThismpGeometry),
              Index(NewID),
              mpProperties()
             {
                 
             }
-            Element(const int& NewID, GeometryType* ThismpGeometry, Properties& ThisProperties)
+            Element(const int& NewID,typename GeometryType::Pointer ThismpGeometry, Properties::Pointer ThisProperties)
             :Geometry_Object(ThismpGeometry),
              Index(NewID),
-             mpProperties(&ThisProperties)
+             mpProperties(ThisProperties)
             {
                 
             }
-            Element(Element& another)
+            Element(const Element& another)
             :Geometry_Object(another.mpGeometry),
              Index(another.Index),
              mpProperties(another.mpProperties)
@@ -87,22 +91,43 @@ class Element:public Geometry_Object
 
         ///@name Operations 
         ///@{
-            virtual int Check()
+            /**
+             * This method provides the place to perform checks on the completeness of the input
+             * and the compatibility with the problem options as well as the contitutive laws selected
+             * It is designed to be called only once (or anyway, not often) typically at the beginning
+             * of the calculations, so to verify that nothing is missing from the input
+             * or that no common error is found.
+             * @param rCurrentProcessInfo
+             * this method is: MANDATORY
+             */
+            virtual int Check(const Process_Info& rCurrentProcessInfo) const
             {
+                if( this->Id() < 1 )
+                {
+                    std::cerr<< "Element found with Id " << this->Id() << std::endl;
+                    exit(0);
+                } 
+                const double domain_size = this->GetGeometry().DomainSize();
+                if( domain_size <= 0.0 )
+                {
+                    std::cerr << "Element " << this->Id() << " has non-positive size " << domain_size << std::endl;
+                    exit(0);
+                } 
+                GetGeometry().Check();
                 return 0;
             }
-
-            virtual void Initialize(Process_Info& rCurrentProcessInfo)
+            
+            virtual void Initialize(const Process_Info& rCurrentProcessInfo)
             {
                 
             }
 
-            virtual void InitializeSolutionStep(Process_Info& rCurrentProcessInfo)
+            virtual void InitializeSolutionStep(const Process_Info& rCurrentProcessInfo)
             {
 
             }
 
-            virtual void FinalizeSolutionStep(Process_Info& rCurrentProcessInfo)
+            virtual void FinalizeSolutionStep(const Process_Info& rCurrentProcessInfo)
             {
 
             }
@@ -116,6 +141,34 @@ class Element:public Geometry_Object
             {
 
             }
+        
+            /**
+             * ELEMENTS inherited from this class have to implement next
+             * CalculateLocalSystem, CalculateLeftHandSide and CalculateRightHandSide methods
+             * they can be managed internally with a private method to do the same calculations
+             * only once: MANDATORY
+             */
+            /**
+             * this is called during the assembling process in order
+             * to calculate all elemental contributions to the global system
+             * matrix and the right hand side
+             * @param rLeftHandSideMatrix the elemental left hand side matrix
+             * @param rRightHandSideVector the elemental right hand side
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateLocalSystem(MatrixType& rLeftHandSideMatrix,
+                                              VectorType& rRightHandSideVector,
+                                              const Process_Info& rCurrentProcessInfo)
+            {
+                if (rLeftHandSideMatrix.rows() != 0) 
+                {
+                    rLeftHandSideMatrix.resize(0, 0);
+                }
+                if (rRightHandSideVector.size() != 0) 
+                {
+                    rRightHandSideVector.resize(0);
+                }
+            }
         ///@}
 
         /// @name Access
@@ -127,6 +180,19 @@ class Element:public Geometry_Object
             Properties GetProperties()const
             {
                 return *mpProperties;
+            }
+            /**
+             * this determines the elemental equation ID vector for all elemental
+             * DOFs
+             * @param rResult the elemental equation ID vector
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void EquationIdVector(EquationIdVectorType& rResult,
+                                          const Process_Info& rCurrentProcessInfo) const
+            {
+                if (rResult.size() != 0) {
+                    rResult.resize(0);
+                }
             }
         /// @}
 

@@ -30,6 +30,6 @@
 
 #define LOTUS_CREATE_FLAG(name, position) const Flags name(Flags::Create(position));
 
-
+#define LOTUS_ERROR(content) std::cerr<< content <<std::endl; exit(0);
 
 

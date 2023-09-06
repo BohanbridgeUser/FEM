@@ -46,10 +46,7 @@ class Dof
 
         /// @name Operations
         /// @{
-            const Variable_Data& GetVariable() const
-            {
-                return mNodeData->GetSolutionStepData().GetVariablesList().GetDofVariable(mID);
-            }
+            
         /// @}
 
         /// @name Access
@@ -66,11 +63,60 @@ class Dof
             {
                 return mEQID;
             }
+            const Variable_Data& GetVariable() const
+            {
+                return mNodeData->GetSolutionStepData().GetVariablesList().GetDofVariable(mID);
+            }
+            double& GetSolutionStepValue(const IndexType& rThisSolutionStep =0)
+            {
+                return GetReference(GetVariable(),mNodeData->GetSolutionStepData(),rThisSolutionStep,mReactionType);
+            }
+            double const& GetSolutionStepValue(const IndexType& rThisSolutionStep = 0)const
+            {
+                return GetReference(GetVariable(),mNodeData->GetSolutionStepData(),rThisSolutionStep,mReactionType);
+            }
         /// @}
     private:
-        IndexType mID;
-        bool mIsFixed = false;
-        EquationType mEQID;
-        NodeDataType* mNodeData;
+        /// @name Private Static Member
+        /// @{
+
+        /// @}
+
+        /// @name Private Member
+        /// @{
+            IndexType mID;
+            int mIsFixed : 1;
+            int mVariableType : 4;
+            int mReactionType : 4;
+            EquationType mEQID;
+            NodeDataType* mNodeData;
+        /// @}
+        
+        /// @name Private Operators
+        /// @{
+
+        /// @}
+
+        /// @name Private Operations
+        /// @{
+            double& GetReference(const Variable_Data& rThisVariableData, Variables_List_Data_Value_Container& rData,const IndexType& rThisSolutionStep, const int& rReactionType)
+            {
+                if(!rReactionType) return rData.GetValue(static_cast< Variable<double> const&>(rThisVariableData),rThisSolutionStep);
+                else
+                {
+                    std::cerr << "Not supported type for Dof" << std::endl;
+                    exit(0);
+                }
+            }
+            double const& GetReference(const Variable_Data& rThisVariableData,const Variables_List_Data_Value_Container& rData,const IndexType& rThisSolutionStep, const int& rReactionType)const
+            {
+                if(!rReactionType) return rData.GetValue(static_cast< Variable<double> const&>(rThisVariableData),rThisSolutionStep);
+                else
+                {
+                    std::cerr << "Not supported type for Dof" << std::endl;
+                    exit(0);
+                }
+            }
+        /// @}
 };
 #endif

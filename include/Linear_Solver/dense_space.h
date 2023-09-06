@@ -8,7 +8,7 @@ class DenseSpace
         /// @name Type Define
         /// @{
             typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> Matrix;
-            typedef Eigen::Vector<double,Eigen::Dynamic> Vector;
+            typedef Eigen::Matrix<double,Eigen::Dynamic, 1> Vector;
         /// @}
 
 

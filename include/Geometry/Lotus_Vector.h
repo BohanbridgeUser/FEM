@@ -1,5 +1,5 @@
-#ifndef _VECTOR_H_
-#define _VECTOR_H_
+#ifndef _LOTUS_VECTOR_H_
+#define _LOTUS_VECTOR_H_
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
@@ -11,40 +11,40 @@
 //   
 
 template<int TDimension>
-class Vector
+class Lotus_Vector
 {
     protected:
         double coordinate[TDimension];
     public:
         // @ Define { 
-        LOTUS_POINTER_DEFINE(Vector<TDimension>)
+        LOTUS_POINTER_DEFINE(Lotus_Vector<TDimension>)
         // }
 
         // @ Constructor {
-        Vector()
+        Lotus_Vector()
         {
             for(int i=0;i<TDimension;++i) 
                 coordinate[i] = 0;
         }   
-        Vector(const double& xi, const double& yi)
+        Lotus_Vector(const double& xi, const double& yi)
         {
             coordinate[0] = xi; coordinate[1] = yi;
             if (TDimension == 3) coordinate[2] = 0.0;
         }
-        Vector(const double& xi, const double& yi, const double& zi)
+        Lotus_Vector(const double& xi, const double& yi, const double& zi)
         {
             coordinate[0] = xi; coordinate[1] = yi; coordinate[2] = zi;
         }
 
         /* Copy Constructor */
-        Vector(const Vector& another)
+        Lotus_Vector(const Lotus_Vector& another)
         {
             for (int i=0;i<TDimension;++i) coordinate[i] = another.coordinate[i];
         }
         //}
 
         // @ Destructor {
-        ~Vector()
+        ~Lotus_Vector()
         {
 
         }
@@ -52,7 +52,7 @@ class Vector
 
         
         // @ Algebra Operations {
-        Vector& operator+(const Vector& another)
+        Lotus_Vector& operator+(const Lotus_Vector& another)
         {
             if(TDimension == 2){
                 coordinate[0]+=another.coordinate[0];
@@ -66,7 +66,7 @@ class Vector
                 return *this;
             }
         }
-        Vector& operator-(const Vector& another)
+        Lotus_Vector& operator-(const Lotus_Vector& another)
         {
             if(TDimension == 2){
                 coordinate[0]-=another.coordinate[0];
@@ -80,7 +80,7 @@ class Vector
                 return *this;
             }
         }
-        Vector& operator*(const double& alpha)
+        Lotus_Vector& operator*(const double& alpha)
         {
             if(TDimension == 2){
                 coordinate[0]*=alpha;
@@ -94,27 +94,27 @@ class Vector
                 return *this;
             }
         }
-        friend Vector operator+(const Vector& a, const Vector& b)
+        friend Lotus_Vector operator+(const Lotus_Vector& a, const Lotus_Vector& b)
         {
-            if (TDimension == 2) return  Vector<TDimension>(a.coordinate[0]+b.coordinate[0],
+            if (TDimension == 2) return  Lotus_Vector<TDimension>(a.coordinate[0]+b.coordinate[0],
                                                                      a.coordinate[1]+b.coordinate[1]);
-            else return Vector<TDimension>(a.coordinate[0]+b.coordinate[0],
+            else return Lotus_Vector<TDimension>(a.coordinate[0]+b.coordinate[0],
                                               a.coordinate[1]+b.coordinate[1],
                                               a.coordinate[2]+b.coordinate[2]);
         }
-        friend Vector<TDimension> operator-(const Vector<TDimension>& a, const Vector<TDimension>& b)
+        friend Lotus_Vector<TDimension> operator-(const Lotus_Vector<TDimension>& a, const Lotus_Vector<TDimension>& b)
         {
-            if (TDimension == 2) return  Vector<TDimension>(a.coordinate[0]-b.coordinate[0],
+            if (TDimension == 2) return  Lotus_Vector<TDimension>(a.coordinate[0]-b.coordinate[0],
                                                                      a.coordinate[1]-b.coordinate[1]);
-            else return Vector<TDimension>(a.coordinate[0]-b.coordinate[0],
+            else return Lotus_Vector<TDimension>(a.coordinate[0]-b.coordinate[0],
                                               a.oordinate[1]-b.coordinate[1],
                                               a.coordinate[2]-b.coordinate[2]);
         }
-        friend Vector<TDimension> operator*(const double& alpha, const Vector<TDimension>& a)
+        friend Lotus_Vector<TDimension> operator*(const double& alpha, const Lotus_Vector<TDimension>& a)
         {
-            if (TDimension == 2) return  Vector<TDimension>(a.coordinate[0]*alpha,
+            if (TDimension == 2) return  Lotus_Vector<TDimension>(a.coordinate[0]*alpha,
                                                                      a.coordinate[1]*alpha);
-            else return Vector<TDimension>(a.coordinate[0]*alpha,
+            else return Lotus_Vector<TDimension>(a.coordinate[0]*alpha,
                                               a.coordinate[1]*alpha,
                                               a.coordinate[2]*alpha);
         }
@@ -134,7 +134,7 @@ class Vector
         // }
 
         // @ Utility {
-        friend std::ostream& operator<<(std::ostream& os, const Vector& a)
+        friend std::ostream& operator<<(std::ostream& os, const Lotus_Vector& a)
         {
             if (TDimension == 2) {
                 os << a.x() << ' ' << a.y() << std::endl;

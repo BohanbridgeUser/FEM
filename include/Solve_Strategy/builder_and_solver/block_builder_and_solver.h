@@ -131,7 +131,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                         GlobalVectorType& rb) override
             {
 
-                if (!pScheme){
+                if (!pScheme)
+                {
                     std::cerr  << "No scheme provided!" << std::endl;
                     exit(0);
                 }
@@ -156,9 +157,11 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 for (int k = 0; k < nelements; k++)
                 {
                     Model_Part::ElementsContainerType::iterator it = el_begin + k;
-
-                    //detect if the element is active or not. If the user did not make any choice the element
-                    //is active by default
+                    /**
+                     * detect if the element is active or not. 
+                     * If the user did not make any choice the element
+                     * is active by default
+                    */
                     bool element_is_active = true;
                     if ((it)->IsDefined(ACTIVE))
                         element_is_active = (it)->Is(ACTIVE);
@@ -171,7 +174,6 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                                                                 RHS_Contribution, 
                                                                 EquationId, 
                                                                 rCurrentProcessInfo);
-
                         //assemble the elemental contribution
                         Assemble(rA, rb, LHS_Contribution, RHS_Contribution, EquationId);
                         // clean local elemental memory
@@ -192,17 +194,16 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
 
                     if (condition_is_active)
                     {
-                    //calculate elemental contribution
-                    pScheme->Condition_CalculateSystemContributions(*(it.base()), 
-                                                                    LHS_Contribution, 
-                                                                    RHS_Contribution, 
-                                                                    EquationId, 
-                                                                    rCurrentProcessInfo);
-                    //assemble the elemental contribution
-                    Assemble(rA, rb, LHS_Contribution, RHS_Contribution, EquationId);
-
-                    // clean local elemental memory
-                    pScheme->Clear(*(it.base()));
+                        //calculate elemental contribution
+                        pScheme->Condition_CalculateSystemContributions(*(it.base()), 
+                                                                        LHS_Contribution, 
+                                                                        RHS_Contribution, 
+                                                                        EquationId, 
+                                                                        rCurrentProcessInfo);
+                        //assemble the elemental contribution
+                        Assemble(rA, rb, LHS_Contribution, RHS_Contribution, EquationId);
+                        // clean local elemental memory
+                        pScheme->Clear(*(it.base()));
                     }
                 }
             }
@@ -828,13 +829,12 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
             }
 
             void Assemble(GlobalMatrixType& rA,
-                            GlobalVectorType& rb,
-                            const LocalMatrixType& rLHS_Contribution,
-                            const LocalVectorType& rRHS_Contribution,
-                            Element::EquationIdVectorType& rEquationId
-                            )
+                          GlobalVectorType& rb,
+                          const LocalMatrixType& rLHS_Contribution,
+                          const LocalVectorType& rRHS_Contribution,
+                          Element::EquationIdVectorType& rEquationId)
             {
-                unsigned int local_size = rLHS_Contribution.size1();
+                unsigned int local_size = rLHS_Contribution.rows();
 
                 for (unsigned int i_local = 0; i_local < local_size; i_local++)
                 {

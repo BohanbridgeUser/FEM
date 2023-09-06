@@ -3,8 +3,10 @@
 #include "../Geometry/Point.h"
 #include "node_data.h"
 #include "dof.h"
+#include "../Container/data_value_container.h"
+
 #include <vector>
-class Node : public Point<3>
+class Node : public Point<3> , public Flags
 {
     public:
         ///@name Define
@@ -33,58 +35,72 @@ class Node : public Point<3>
             // Constructor
             Node()
             :PointType(),
+             Flags(),
              mNodeData(),
              mDofsContainer(),
-             mInitialPosition()
+             mInitialPosition(),
+             mData()
             {
 
             }
             Node(const int& ID)
             :PointType(),
+             Flags(),
              mNodeData(ID),
              mDofsContainer(),
-             mInitialPosition()
+             mInitialPosition(),
+             mData()
             {
 
             }  
             Node(const double& x, const double& y, const double& z)
                 :PointType(x,y,z),
+                Flags(),
                 mNodeData(),
                 mDofsContainer(),
-                mInitialPosition(x,y,z)
+                mInitialPosition(x,y,z),
+                mData()
             {
 
             }
             Node(const double& x, const double& y, const double& z,
                 const NodeDataType& ThisNodeData, const DofPointersContainerType& ThisDofs)
                 :PointType(x,y,z),
+                Flags(),
                 mNodeData(ThisNodeData),
                 mDofsContainer(ThisDofs),
-                mInitialPosition(x,y,z)
+                mInitialPosition(x,y,z),
+                mData()
             {
                 
             }  
             Node(const Node& another)
                 :PointType(another.x(),another.y(),another.z()),
+                Flags(),
                 mNodeData(another.mNodeData),
                 mDofsContainer(another.mDofsContainer),
-                mInitialPosition(another.x(),another.y(),another.z())
+                mInitialPosition(another.x(),another.y(),another.z()),
+                mData(another.mData)
             {
 
             }
             Node(Node&& another)
                 :PointType(another.x(),another.y(),another.z()),
+                Flags(),
                 mNodeData(another.mNodeData),
                 mDofsContainer(another.mDofsContainer),
-                mInitialPosition(another.x(),another.y(),another.z())
+                mInitialPosition(another.x(),another.y(),another.z()),
+                mData(another.mData)
             {
 
             }
             Node(const Point<3>& anotherP)
                  :PointType(anotherP),
+                 Flags(),
                  mNodeData(),
                  mDofsContainer(),
-                 mInitialPosition(anotherP)
+                 mInitialPosition(anotherP),
+                 mData()
             {
 
             }
@@ -92,9 +108,11 @@ class Node : public Point<3>
                  const NodeDataType& ThisNodeData, 
                  const DofPointersContainerType& ThisDofs)
                  :PointType(anotherP),
+                 Flags(),
                  mNodeData(ThisNodeData),
                  mDofsContainer(ThisDofs),
-                 mInitialPosition(anotherP)
+                 mInitialPosition(anotherP),
+                 mData()
             {
 
             }
@@ -261,11 +279,32 @@ class Node : public Point<3>
             }
             /*********************************************************************************************/
 
-            Vector<3> GetInitialPosition()const
+            template<class TVariableType>
+            typename TVariableType::Type& GetValue(const TVariableType& rThisVariable)
+            {
+                return mData.GetValue(rThisVariable);
+            }
+            template<class TVariableType>
+            typename TVariableType::Type const& GetValue(const TVariableType& rThisVariable) const
+            {
+                return mData.GetValue(rThisVariable);
+            }
+            template<class TVariableType>
+            typename TVariableType::Type& GetValue(const TVariableType& rThisVariable, const IndexType rThisSolutionStep)
+            {
+                return mData.GetValue(rThisVariable,rThisSolutionStep);
+            }
+            template<class TVariableType>
+            typename TVariableType::Type const& GetValue(const TVariableType& rThisVariable, const IndexType rThisSolutionStep) const
+            {
+                return mData.GetValue(rThisVariable,rThisSolutionStep);
+            }
+
+            Lotus_Vector<3> GetInitialPosition()const
             {
                 return mInitialPosition;
             }
-            Vector<3>& GetInitialPosition()
+            Lotus_Vector<3>& GetInitialPosition()
             {
                 return mInitialPosition;
             }
@@ -306,7 +345,9 @@ class Node : public Point<3>
 
         DofPointersContainerType mDofsContainer;
 
-        Vector<3> mInitialPosition;
+        Lotus_Vector<3> mInitialPosition;
+
+        Data_Value_Container mData;
 };
 
 #endif
