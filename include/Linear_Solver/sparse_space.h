@@ -18,7 +18,18 @@ class SparseSpace
 
         /// @}
 
+        /// @name Operators
+        /// @{
 
+        /// @}
+
+        /// @name Operations
+        /// @{
+            static double TwoNorm(Eigen::SparseVector<double> rb) 
+            {
+                return rb.norm();
+            }
+        /// @}
     protected:
         /// @name Protected Static Member Variables
         /// @{

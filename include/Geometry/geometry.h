@@ -24,7 +24,7 @@ class Geometry
                 Hexahedron
             };
 
-            LOTUS_POINTER_DEFINE(Geometry)
+            LOTUS_POINTER_DEFINE(Geometry<TPointType>)
             typedef Geometry<TPointType>
                                                                             ClassType;
             typedef TPointType 
@@ -73,6 +73,7 @@ class Geometry
         /// @{ 
             // Constructor  
                 Geometry()
+                :mGeometry_Data(GeometryDataInstance())
                 {
                     number++;
                     ID = number;
@@ -93,10 +94,10 @@ class Geometry
                 {
                     number++;
                 }
-                Geometry(const PointsContainerType &ThisPoints,
-                         Geometry_Data const *pThisGeometryData = &GeometryDataInstance())
-                :mGeometry_Data(pThisGeometryData),
-                 pPoints(ThisPoints)
+                Geometry(const PointsContainerType& Points,
+                         Geometry_Data const& pThisGeometryData = GeometryDataInstance())
+                :pPoints(Points),
+                mGeometry_Data(pThisGeometryData)
                 {
                     ID = ++number;
                 }
@@ -120,6 +121,14 @@ class Geometry
                  pPoints(another.pPoints),
                  mGeometry_Data(another.mGeometry_Data),
                  mData(another.mData)
+                {
+                    number++;
+                }
+                Geometry(Geometry<TPointType>* another)
+                :ID(another->ID),
+                 pPoints(another->pPoints),
+                 mGeometry_Data(another->mGeometry_Data),
+                 mData(another->mData)
                 {
                     number++;
                 }
@@ -153,14 +162,13 @@ class Geometry
             {
                 mData = mThisData;
             }
+
             /**
              * @brief Creates a new geometry pointer
              * @param rThisPoints the nodes of the new geometry
              * @return Pointer to the new geometry
              */
-            virtual Pointer Create(
-                PointsContainerType const& rThisPoints
-            ) const
+            virtual ClassType::SharedPointer Create(PointsContainerType const& rThisPoints) const
             {
                 // Create geometry
                 auto p_geom = this->Create(0, rThisPoints);
@@ -185,88 +193,66 @@ class Geometry
              * @param rThisPoints the nodes of the new geometry
              * @return Pointer to the new geometry
              */
-            virtual Pointer Create(
-                const IndexType NewGeometryId,
-                PointsContainerType const& rThisPoints
-            ) const
+            virtual ClassType::SharedPointer Create(const IndexType NewGeometryId,PointsContainerType const& rThisPoints) const
             {
-                return Pointer(new ClassType( NewGeometryId, rThisPoints, mGeometry_Data));
+                return make_shared<ClassType>(new ClassType( NewGeometryId, rThisPoints, mGeometry_Data));
             }
-
             /**
              * @brief Creates a new geometry pointer
              * @param rNewGeometryName the name of the new geometry
              * @param rThisPoints the nodes of the new geometry
              * @return Pointer to the new geometry
              */
-            Pointer Create(
-                const std::string& rNewGeometryName,
-                PointsContainerType const& rThisPoints
-                ) const
+            ClassType::SharedPointer Create(const std::string& rNewGeometryName,PointsContainerType const& rThisPoints) const
             {
                 auto p_geom = this->Create(0, rThisPoints);
                 p_geom->SetId(rNewGeometryName);
                 return p_geom;
             }
-
             /**
              * @brief Creates a new geometry pointer
              * @param rGeometry Reference to an existing geometry
              * @return Pointer to the new geometry
              */
-            virtual Pointer Create(
-                const ClassType& rGeometry
-            ) const
+            virtual ClassType::SharedPointer Create(const ClassType& rGeometry) const
             {
                 // Create geometry
                 auto p_geom = this->Create(0, rGeometry);
-
                 // Generate Id
                 IndexType id = (p_geom->GetID());
-
                 // Sets second bit to zero.
                 p_geom->SetIdSelfAssigned(id);
-
                 // Sets first bit to zero.
                 p_geom->SetIdNotGeneratedFromString(id);
-
                 // Sets Id
                 p_geom->SetIdWithoutCheck(id);
-
                 return p_geom;
             }
-
             /**
              * @brief Creates a new geometry pointer
              * @param NewGeometryId the ID of the new geometry
              * @param rGeometry Reference to an existing geometry
              * @return Pointer to the new geometry
              */
-            virtual Pointer Create(
-                const IndexType NewGeometryId,
-                const ClassType& rGeometry
-            ) const
+            virtual ClassType::SharedPointer Create(const IndexType NewGeometryId,const ClassType& rGeometry) const
             {
-                auto p_geometry = Pointer( new Geometry( NewGeometryId, rGeometry.pPoints, mGeometry_Data));
+                auto p_geometry = std::make_shared<ClassType>(new ClassType(NewGeometryId, rGeometry.pPoints, mGeometry_Data));
                 p_geometry->SetData(rGeometry.GetData());
                 return p_geometry;
             }
-
             /**
              * @brief Creates a new geometry pointer
              * @param rNewGeometryName the name of the new geometry
              * @param rGeometry Reference to an existing geometry
              * @return Pointer to the new geometry
              */
-            Pointer Create(
-                const std::string& rNewGeometryName,
-                const ClassType& rGeometry
-                ) const
+            ClassType::SharedPointer Create(const std::string& rNewGeometryName,const ClassType& rGeometry) const
             {
                 auto p_geom = this->Create(0, rGeometry);
                 p_geom->SetId(rNewGeometryName);
                 return p_geom;
             }
+
             virtual int Check() const
             {
                 return 0;
@@ -481,6 +467,24 @@ class Geometry
                 for (auto p=another.pPoints.begin();p!=another.pPoints.end();++p)
                     os << *p;
                 return os;
+            }
+            virtual std::string Info() const
+            {
+                std::stringstream sstream;
+                sstream << "Geometry Class\n";
+                return sstream.str();
+            }
+            virtual void PrintInfo(std::ostream& os) const
+            {
+                os << "Geometry # " << ID << std::endl;
+            }
+            virtual void PrintData(std::ostream& os) const
+            {
+                os << "Geometry # " << ID << std::endl;
+                for(auto it=pPoints.begin();it<pPoints.end();++it)
+                {
+                    os << "Point" << ID << " " << (*it);
+                }
             }
         /// @}
     protected:

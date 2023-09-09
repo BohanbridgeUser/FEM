@@ -220,6 +220,7 @@ void Constitutive_Law::FinalizeMaterialResponseCauchy (Parameters& rValues)
 Constitutive_Law::SizeType Constitutive_Law::GetStrainSize() const
 {
     std::cerr <<  "Called the virtual function for GetStrainSize"<< std::endl;
+    exit(0);
 }
 
 /**
@@ -237,4 +238,3 @@ int Constitutive_Law::Check(const Properties& rMaterialProperties,
 {
     return 0;
 }
-

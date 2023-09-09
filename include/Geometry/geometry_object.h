@@ -20,6 +20,10 @@ class Geometry_Object : public Flags
                                                             GeometryType;
             typedef Geometry_Object 
                                                                ClassType;
+            typedef Data_Value_Container
+                                                  DataValueContainerType;
+            typedef GeometryType::PointsContainerType
+                                                      NodesContainerType;
         ///@}
 
         ///@name Lift Circle 
@@ -37,6 +41,13 @@ class Geometry_Object : public Flags
             mpGeometry(ThismpGeometry)
             {
                 ID = ++numbers;
+            }
+            Geometry_Object(IndexType NewID, NodesContainerType const& rThisNodes)
+            :FlagType(),
+            ID(NewID),
+            mpGeometry(GeometryType::Pointer(new GeometryType(rThisNodes)))
+            {
+                numbers++;
             }
             Geometry_Object(IndexType NewID, GeometryType* ThismpGeometry)
             :FlagType(),
@@ -66,6 +77,18 @@ class Geometry_Object : public Flags
 
         ///@name Operations 
         ///@{
+            void SetFlags(Flags const& rThisFlags)
+            {
+                Flags::operator=(rThisFlags);
+            }
+            void SetData(DataValueContainerType const& rThisData)
+            {
+                
+            }
+        ///@}
+
+        /// @name Access
+        /// @{
             GeometryType& GetGeometry()
             {
                 return *mpGeometry;
@@ -74,11 +97,32 @@ class Geometry_Object : public Flags
             {
                 return *mpGeometry;
             }
-        ///@}
-
-        /// @name Access
-        /// @{
-
+            DataValueContainerType& GetData()
+            {
+                return mpGeometry->GetData();
+            }
+            DataValueContainerType const& GetData() const
+            {
+                return mpGeometry->GetData();
+            }
+            Flags& GetFlag()
+            {
+                return *this;
+            }
+            Flags const& GetFlag() const
+            {
+                return *this;
+            }
+            template<typename TVariableType>
+            typename TVariableType::Type& GetValue(TVariableType const& rVariable)
+            {
+                return GetData().GetValue(rVariable);
+            }
+            template<typename TVariableType>
+            typename TVariableType::Type const& GetValue(TVariableType const& rVariable) const
+            {
+                return GetData().GetValue(rVariable);
+            }
         /// @}
 
         /// @name Inquiry
@@ -90,6 +134,11 @@ class Geometry_Object : public Flags
             IndexType& Id() 
             {
                 return ID;
+            }
+            template<typename TDataType>
+            bool Has(Variable<TDataType> const& rVariable) const
+            {
+                return GetData().Has(rVariable);
             }
         /// @}
     protected:

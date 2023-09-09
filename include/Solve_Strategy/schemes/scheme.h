@@ -114,7 +114,6 @@ class Scheme : public Flags
              * @brief Performs all the required operations that should be done (for each step) after solving the solution step.
              * @details this function must be called only once per step.
              */
-
             virtual void FinalizeSolutionStep(Model_Part& rModelPart)
             {
                 Process_Info& rCurrentProcessInfo = rModelPart.GetProcessInfo();
@@ -146,11 +145,7 @@ class Scheme : public Flags
             {
     
             }
-            virtual void Clear()
-            {
-
-            }
-
+            
             virtual void Update(Model_Part& rModelPart,
                                 DofsContainerType& rDofSet,
                                 SpVectorType& rmpDx)
@@ -159,7 +154,6 @@ class Scheme : public Flags
                 this->UpdateVariables(rModelPart);
                 this->MoveMesh(rModelPart);
             }
-
             /**
              * @brief Performing the update of the solution Dofs
              * @details this function must be called only once per iteration
@@ -225,6 +219,42 @@ class Scheme : public Flags
                 pCurrentElement->CalculateLocalSystem(rLHS_Contribution, rRHS_Contribution, rCurrentProcessInfo);
                 pCurrentElement->EquationIdVector(rEquationId, rCurrentProcessInfo);
             }
+
+            /**
+             * Functions totally analogous to the precedent but applied to the "condition" objects
+             * @param pCurrentCondition: The condition to compute
+             * @param rLHS_Contribution: The LHS matrix contribution
+             * @param rRHS_Contribution: The RHS vector contribution
+             * @param rEquationId: The ID's of the element degrees of freedom
+             * @param rCurrentProcessInfo: The current process info instance
+             */
+            virtual void Condition_CalculateSystemContributions(Condition::Pointer pCurrentCondition,
+                                                                LocalMatrixType& rLHS_Contribution,
+                                                                LocalVectorType& rRHS_Contribution,
+                                                                Element::EquationIdVectorType& rEquationId,
+                                                                Process_Info& rCurrentProcessInfo)
+            {
+                pCurrentCondition->CalculateLocalSystem(rLHS_Contribution, rRHS_Contribution, rCurrentProcessInfo);
+                pCurrentCondition->EquationIdVector(rEquationId, rCurrentProcessInfo);
+            }
+
+            /**
+             * @brief Liberates internal storage for an element
+             */
+            virtual void Clear(Element::Pointer rCurrentElement)
+            {
+            }
+            /**
+             * @brief Liberates internal storage for a condition
+             */
+            virtual void Clear(Condition::Pointer rCurrentCondition)
+            {
+            }
+            virtual void Clear()
+            {
+
+            }
+
         /// @}
 
         /// @name Access

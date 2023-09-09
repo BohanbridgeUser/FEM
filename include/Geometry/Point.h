@@ -94,6 +94,14 @@ class Point:public Lotus_Vector<TDimension>
                 return *this;
             }
         }
+        double& operator[](const int& index)
+        {
+            return this->coordinate[index];
+        }
+        double operator[](const int& index) const
+        {
+            return this->coordinate[index];
+        }
         friend Point<TDimension> operator+(const Point<TDimension>& a, const Point<TDimension>& b)
         {
             if (TDimension  == 2) return  Point<TDimension>( a.coordinate[0]+b.coordinate[0],
@@ -138,7 +146,7 @@ class Point:public Lotus_Vector<TDimension>
         }
         std::array<double,3> Coordinates()
         {
-            return std::array<double,3>(this->x(),this->y(),this->z());
+            return std::array<double,3>{this->x(),this->y(),this->z()};
         }
         std::array<double,3> Coordinates() const
         {

@@ -72,7 +72,6 @@ void Solid_Element::FinalizeSolutionStep( const Process_Info& rCurrentProcessInf
 
     ConstitutiveLawOptions.Set(Constitutive_Law::COMPUTE_STRESS);
 
-
     for ( unsigned int PointNumber = 0; PointNumber < mConstitutiveLawVector.size(); PointNumber++ )
     {
 
@@ -96,7 +95,8 @@ void Solid_Element::FinalizeSolutionStep( const Process_Info& rCurrentProcessInf
       std::cout<<" Undo SELECTED "<<this->Id()<<std::endl;
     }
 }
-void Solid_Element::FinalizeStepVariables( ElementDataType & rVariables, const double& rPointNumber )
+void Solid_Element::FinalizeStepVariables( ElementDataType & rVariables,
+                                           const double& rPointNumber )
 {
   //to update the internal element variables
 }
@@ -236,8 +236,8 @@ void Solid_Element::CalculateKinematics(ElementDataType& rVariables, const doubl
     exit(0);
 }
 void Solid_Element::CalculateMaterialResponse(ElementDataType& rVariables,
-                                             Constitutive_Law::Parameters& rValues,
-                                             const int & rPointNumber)
+                                              Constitutive_Law::Parameters& rValues,
+                                              const int & rPointNumber)
 {
     //set general variables to constitutivelaw parameters
     this->SetElementData(rVariables,rValues,rPointNumber);

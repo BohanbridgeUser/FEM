@@ -12,6 +12,10 @@ class Linear_Solver
         /// @{
             typedef Linear_Solver<TSparseSpace,TDenseSpace> 
                                                                     ClassType;
+            typedef typename TSparseSpace::SparseMatrix
+                                                                 SpMatrixType;
+            typedef typename TSparseSpace::SparseVector
+                                                                 SpVectorType;
             LOTUS_POINTER_DEFINE(ClassType)
 
         /// @}
@@ -40,11 +44,28 @@ class Linear_Solver
 
         /// @name Operations
         /// @{
-            virtual void Clear() override
+            virtual void Clear()
             {
 
             }
 
+            virtual void Solve(const SpMatrixType& rA, SpVectorType& rDx, const SpVectorType& rb)  
+            {
+                Eigen::SparseLU<Eigen::SparseMatrix<double> > LU_Solver;
+                LU_Solver.compute(rA);
+                if(LU_Solver.info() != Eigen::Success)
+                {
+                    std::cerr << "Matrix Decomposiont Failed!\n";
+                    exit(0);
+                }
+                rDx = LU_Solver.solve(rb);
+                if(LU_Solver.info() != Eigen::Success)
+                {
+                    std::cerr << "Matrix Solving Failed!\n";
+                    exit(0);
+                }
+            }  
+            
         /// @}
 
 
@@ -57,7 +78,10 @@ class Linear_Solver
 
         /// @name Inquiry
         /// @{
-
+            bool AdditionalPhysicalDataIsNeeded()
+            {
+                return false;
+            }
 
         /// @}
 

@@ -41,16 +41,19 @@ class Geometry_Data
         //}
 
         // @ Constructor { 
-        Geometry_Data()
+        Geometry_Data(const Geometry_Dimension* pThisDimension)
+        :pGeometryDimension(pThisDimension)
         {
 
         }
-        Geometry_Data(IntegrationMethod Method,
-                        const IntegrationPointsContainerType& ThisPointsContainer, 
-                        const ShapeFunctionsValueContainerType& ThisShapeFunctionValueContainer,
-                        const ShapeFunctionsGradientsContainerType& ThisShapeFunctionsGradientsContainer)
-        :mIntegrationMethod(Method),
-        mGeometryShapeFunctionContainer(Method,
+        Geometry_Data(const Geometry_Dimension* pThisDimension,
+                      const IntegrationMethod& rThisIntegrationMethod,
+                      const IntegrationPointsContainerType& ThisPointsContainer, 
+                      const ShapeFunctionsValueContainerType& ThisShapeFunctionValueContainer,
+                      const ShapeFunctionsGradientsContainerType& ThisShapeFunctionsGradientsContainer)
+        :pGeometryDimension(pThisDimension),
+        mIntegrationMethod(rThisIntegrationMethod),
+        mGeometryShapeFunctionContainer(rThisIntegrationMethod,
                                         ThisPointsContainer,
                                         ThisShapeFunctionValueContainer,
                                         ThisShapeFunctionsGradientsContainer)
@@ -97,6 +100,7 @@ class Geometry_Data
             }
         //}
     private:
+        Geometry_Dimension const* pGeometryDimension;
         IntegrationMethod mIntegrationMethod;
         GeometryShapeFuncionContainer<IntegrationMethod> mGeometryShapeFunctionContainer;
 };

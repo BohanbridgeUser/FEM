@@ -75,8 +75,11 @@ class Boundary_Condition : public Condition
              * @return a Pointer to the new condition
              */
             Condition::SharedPointer Create(IndexType NewId,
-                        NodesContainerType const& ThisNodes,
-                        PropertiesType::Pointer pProperties ) const override;
+                                            NodesContainerType const& ThisNodes,
+                                            PropertiesType::Pointer pProperties ) const override;
+
+            Condition::SharedPointer  Clone(IndexType NewId,
+                                            NodesContainerType const& ThisNodes) const override;
 
             void Initialize(const Process_Info& rCurrentProcessInfo) override;
 
@@ -367,26 +370,26 @@ class Boundary_Condition : public Condition
              * Initialize System Matrices
              */
             virtual void InitializeSystemMatrices(MatrixType& rLeftHandSideMatrix,
-                            VectorType& rRightHandSideVector,
-                            Flags& rCalculationFlags);
+                                                  VectorType& rRightHandSideVector,
+                                                  Flags& rCalculationFlags);
 
             /**
              * Initialize General Variables
              */
             virtual void InitializeConditionVariables(ConditionVariables& rVariables,
-                                const Process_Info& rCurrentProcessInfo);
+                                                      const Process_Info& rCurrentProcessInfo);
 
             /**
              * Calculate Condition Kinematics
              */
             virtual void CalculateKinematics(ConditionVariables& rVariables,
-                            const double& rPointNumber);
+                                             const double& rPointNumber);
 
             /**
              * Calculates the condition contributions
              */
             virtual void CalculateConditionSystem(LocalSystemComponents& rLocalSystem,
-                            const Process_Info& rCurrentProcessInfo);
+                                                  const Process_Info& rCurrentProcessInfo);
 
             /**
              * Calculation and addition of the matrices of the LHS
@@ -406,8 +409,8 @@ class Boundary_Condition : public Condition
              * Calculation of the Load Stiffness Matrix which usually is subtracted to the global stiffness matrix
              */
             virtual void CalculateAndAddKuug(MatrixType& rLeftHandSideMatrix,
-                            ConditionVariables& rVariables,
-                            double& rIntegrationWeight);
+                                             ConditionVariables& rVariables,
+                                             double& rIntegrationWeight);
 
             /**
              * Calculation of the External Forces Vector for a force or pressure vector

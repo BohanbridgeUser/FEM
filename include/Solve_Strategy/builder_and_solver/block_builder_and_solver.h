@@ -89,38 +89,36 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
         /// @name Opeartions
         /// @{
             /**
-             * @brief Function to perform the building of the LHS,
-             * @details Depending on the implementation choosen the size of the matrix could be
-             * @details equal to the total number of Dofs or to the number of non constrained dofs
+             * @brief Function to perform the building and solving phase at the same time.
+             * @details It is ideally the fastest and safer function to use when it is possible to solve just after building
              */
-            void BuildLHS(SchemePointerType pScheme,
-                            Model_Part& rModelPart,
-                            GlobalMatrixType& rA) override
+            void BuildAndSolve(SchemePointerType pScheme,
+                                Model_Part& rModelPart,
+                                GlobalMatrixType& rA,
+                                GlobalVectorType& rDx,
+                                GlobalVectorType& rb) override
             {
-                GlobalVectorType tmp(rA.size1(), 0.0);
-                this->Build(pScheme, rModelPart, rA, tmp);
-            }
-
-            /**
-             * @brief Function to perform the build of the RHS.
-             * @details The vector could be sized as the total number of dofs or as the number of non constrained ones
-             */
-            void BuildRHS(SchemePointerType pScheme,
-                            Model_Part& rModelPart,
-                            GlobalVectorType& rb) override
-            {
-                BuildRHSNoDirichlet(pScheme,rModelPart,rb);
-                const int ndofs = static_cast<int>(this->mDofSet.size());
-                //NOTE: dofs are assumed to be numbered consecutively in the BlockBuilderAndSolver
-                for (int k = 0; k<ndofs; k++)
+                // double begin_time = OpenMPUtils::GetCurrentTime();
+                Build(pScheme, rModelPart, rA, rb);
+                // double end_time = OpenMPUtils::GetCurrentTime();
+                ApplyDirichletConditions(pScheme, rModelPart, rA, rDx, rb);
+                if (this->mEchoLevel == 3)
                 {
-                    typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
-                    const std::size_t i = dof_iterator->EquationId();
-                    if (dof_iterator->IsFixed())
-                        rb[i] = 0.0f;
+                    std::cerr << "LHS before solve" << "Matrix = " << rA << std::endl;
+                    std::cerr << "Dx before solve"  << "Solution = " << rDx << std::endl;
+                    std::cerr << "RHS before solve" << "Vector = " << rb << std::endl;
                 }
-            }
+                // begin_time = OpenMPUtils::GetCurrentTime();
+                SystemSolveWithPhysics(rA, rDx, rb, rModelPart);
+                // end_time = OpenMPUtils::GetCurrentTime();
+                if (this->mEchoLevel == 3)
+                {
+                    std::cout << "LHS after solve" << "Matrix = " << rA << std::endl;
+                    std::cout << "Dx after solve"  << "Solution = " << rDx << std::endl;
+                    std::cout <<"RHS after solve" << "Vector = " << rb << std::endl;
+                }
 
+            }
             /**
              * @brief Function to perform the building of the LHS and RHS
              * @details Equivalent (but generally faster) then performing BuildLHS and BuildRHS
@@ -207,93 +205,6 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                     }
                 }
             }
-
-            /**
-             * @brief This is a call to the linear system solver
-             */
-            void SystemSolve(GlobalMatrixType& rA,
-                            GlobalVectorType& rDx,
-                            GlobalVectorType& rb) override
-            {
-                double norm_b;
-                if (TSparseSpace::Size(rb) != 0)
-                    norm_b = TSparseSpace::TwoNorm(rb);
-                else
-                    norm_b = 0.00;
-
-                if (norm_b != 0.00)
-                {
-                    //do solve
-                    this->mpLinearSystemSolver->Solve(rA, rDx, rb);
-                }
-                else
-                    TSparseSpace::SetToZero(rDx);
-
-                //prints informations about the current time
-                if (this->mEchoLevel > 1)
-                {
-                    std::cout << *(this->mpLinearSystemSolver) << std::endl;
-                }
-            }
-
-            /**
-             * @brief Function to perform the building and solving phase at the same time.
-             * @details It is ideally the fastest and safer function to use when it is possible to solve just after building
-             */
-            void BuildAndSolve(SchemePointerType pScheme,
-                                Model_Part& rModelPart,
-                                GlobalMatrixType& rA,
-                                GlobalVectorType& rDx,
-                                GlobalVectorType& rb) override
-            {
-                // double begin_time = OpenMPUtils::GetCurrentTime();
-                Build(pScheme, rModelPart, rA, rb);
-                // double end_time = OpenMPUtils::GetCurrentTime();
-
-                // if (this->mEchoLevel > 1 && rModelPart.GetCommunicator().MyPID() == 0)
-                //   KRATOS_INFO("system_build_time") << end_time - begin_time << std::endl;
-
-                ApplyDirichletConditions(pScheme, rModelPart, rA, rDx, rb);
-
-                if (this->mEchoLevel == 3)
-                {
-                std::cerr << "LHS before solve" << "Matrix = " << rA << std::endl;
-                std::cerr << "Dx before solve"  << "Solution = " << rDx << std::endl;
-                std::cerr << "RHS before solve" << "Vector = " << rb << std::endl;
-                }
-
-                // begin_time = OpenMPUtils::GetCurrentTime();
-                SystemSolveWithPhysics(rA, rDx, rb, rModelPart);
-                // end_time = OpenMPUtils::GetCurrentTime();
-
-
-                // if (this->mEchoLevel > 1 && rModelPart.GetCommunicator().MyPID() == 0)
-                //   KRATOS_INFO("system_solve_time") << end_time - begin_time << std::endl;
-
-                if (this->mEchoLevel == 3)
-                {
-                std::cerr << "LHS after solve" << "Matrix = " << rA << std::endl;
-                std::cerr << "Dx after solve"  << "Solution = " << rDx << std::endl;
-                std::cerr <<"RHS after solve" << "Vector = " << rb << std::endl;
-                }
-
-            }
-
-            /**
-             * @brief Function to perform the building of the RHS and solving phase at the same time.
-             * @details  It corresponds to the previews, but the System's matrix is considered already built and only the RHS is built again
-             */
-            void BuildRHSAndSolve(SchemePointerType pScheme,
-                                    Model_Part& rModelPart,
-                                    GlobalMatrixType& rA,
-                                    GlobalVectorType& rDx,
-                                    GlobalVectorType& rb) override
-            {
-                BuildRHS(pScheme, rModelPart, rb);
-                SystemSolve(rA, rDx, rb);
-            }
-
-
             /**
              * @brief applies the dirichlet conditions.
              * @details This operation may be very heavy or completely
@@ -302,10 +213,10 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
              * @details should refer to the particular Builder And Solver choosen
              */
             void ApplyDirichletConditions(SchemePointerType pScheme,
-                                            Model_Part& rModelPart,
-                                            GlobalMatrixType& rA,
-                                            GlobalVectorType& rDx,
-                                            GlobalVectorType& rb) override
+                                          Model_Part& rModelPart,
+                                          GlobalMatrixType& rA,
+                                          GlobalVectorType& rDx,
+                                          GlobalVectorType& rb) override
             {
                 std::size_t system_size = rA.rows();
                 std::vector<double> scaling_factors (system_size, 0.0f);
@@ -364,6 +275,112 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 }
             }
 
+            /**
+             * @brief This is a call to the linear system solver
+             */
+            void SystemSolve(GlobalMatrixType& rA,
+                            GlobalVectorType& rDx,
+                            GlobalVectorType& rb) override
+            {
+                double norm_b;
+                if (TSparseSpace::Size(rb) != 0)
+                    norm_b = TSparseSpace::TwoNorm(rb);
+                else
+                    norm_b = 0.00;
+
+                if (norm_b != 0.00)
+                {
+                    //do solve
+                    this->mpLinearSystemSolver->Solve(rA, rDx, rb);
+                }
+                else
+                    TSparseSpace::SetToZero(rDx);
+
+                //prints informations about the current time
+                if (this->mEchoLevel > 1)
+                {
+                    std::cout << *(this->mpLinearSystemSolver) << std::endl;
+                }
+            }
+            
+            /**
+             * @brief Calculates system reactions
+             * @details A flag controls if reactions must be calculated
+             * @details An internal variable to store the reactions vector is needed
+             */
+            void CalculateReactions(SchemePointerType pScheme,
+                                    Model_Part& rModelPart,
+                                    GlobalMatrixType& rA,
+                                    GlobalVectorType& rDx,
+                                    GlobalVectorType& rb) override
+            {
+                TSparseSpace::SetToZero(rb);
+                //refresh RHS to have the correct reactions
+                BuildRHSNoDirichlet(pScheme, rModelPart, rb);
+                const int ndofs = static_cast<int>(this->mDofSet.size());
+                //NOTE: dofs are assumed to be numbered consecutively in the BlockBuilderAndSolver
+                for (int k = 0; k<ndofs; k++)
+                {
+                    typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
+                    const int i = (dof_iterator)->EquationId();
+                    if ( (dof_iterator)->IsFixed() ) {
+                        (dof_iterator)->GetSolutionStepReactionValue() = -rb[i];
+                    } else {
+                        (dof_iterator)->GetSolutionStepReactionValue() = 0.0;
+                    }
+                }
+            }
+
+            
+
+            /**
+             * @brief Function to perform the building of the LHS,
+             * @details Depending on the implementation choosen the size of the matrix could be
+             * @details equal to the total number of Dofs or to the number of non constrained dofs
+             */
+            void BuildLHS(SchemePointerType pScheme,
+                          Model_Part& rModelPart,
+                          GlobalMatrixType& rA) override
+            {
+                GlobalVectorType tmp(rA.size1(), 0.0);
+                this->Build(pScheme, rModelPart, rA, tmp);
+            }
+            /**
+             * @brief Function to perform the build of the RHS.
+             * @details The vector could be sized as the total number of dofs or as the number of non constrained ones
+             */
+            void BuildRHS(SchemePointerType pScheme,
+                          Model_Part& rModelPart,
+                          GlobalVectorType& rb) override
+            {
+                BuildRHSNoDirichlet(pScheme,rModelPart,rb);
+                const int ndofs = static_cast<int>(this->mDofSet.size());
+                //NOTE: dofs are assumed to be numbered consecutively in the BlockBuilderAndSolver
+                for (int k = 0; k<ndofs; k++)
+                {
+                    typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
+                    const std::size_t i = dof_iterator->EquationId();
+                    if (dof_iterator->IsFixed())
+                        rb[i] = 0.0f;
+                }
+            }
+
+            /**
+             * @brief Function to perform the building of the RHS and solving phase at the same time.
+             * @details  It corresponds to the previews, but the System's matrix is considered already built and only the RHS is built again
+             */
+            void BuildRHSAndSolve(SchemePointerType pScheme,
+                                    Model_Part& rModelPart,
+                                    GlobalMatrixType& rA,
+                                    GlobalVectorType& rDx,
+                                    GlobalVectorType& rb) override
+            {
+                BuildRHS(pScheme, rModelPart, rb);
+                SystemSolve(rA, rDx, rb);
+            }
+
+
+            
             /**
              * @brief Builds the list of the DofSets involved in the problem by "asking" to each element and condition its Dofs.
              * @details The list of dofs is stores insde the BuilderAndSolver as it is closely connected to the way the matrix and RHS are built
@@ -608,34 +625,7 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                 BaseType::FinalizeSolutionStep(pScheme, rModelPart, pA, pDx, pb);
             }
 
-            /**
-             * @brief Calculates system reactions
-             * @details A flag controls if reactions must be calculated
-             * @details An internal variable to store the reactions vector is needed
-             */
-            void CalculateReactions(SchemePointerType pScheme,
-                                    Model_Part& rModelPart,
-                                    GlobalMatrixType& rA,
-                                    GlobalVectorType& rDx,
-                                    GlobalVectorType& rb) override
-            {
-                TSparseSpace::SetToZero(rb);
-                //refresh RHS to have the correct reactions
-                BuildRHSNoDirichlet(pScheme, rModelPart, rb);
-                const int ndofs = static_cast<int>(this->mDofSet.size());
-                //NOTE: dofs are assumed to be numbered consecutively in the BlockBuilderAndSolver
-                for (int k = 0; k<ndofs; k++)
-                {
-                    typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
-                    const int i = (dof_iterator)->EquationId();
-                    if ( (dof_iterator)->IsFixed() ) {
-                        (dof_iterator)->GetSolutionStepReactionValue() = -rb[i];
-                    } else {
-                        (dof_iterator)->GetSolutionStepReactionValue() = 0.0;
-                    }
-                }
-            }
-
+    
             /**
              * @name Utility Operations
             */
@@ -686,9 +676,9 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
         /// @name Protected Operations
         /// @{
             void SystemSolveWithPhysics(GlobalMatrixType& rA,
-                                GlobalVectorType& rDx,
-                                GlobalVectorType& rb,
-                                Model_Part& rModelPart)
+                                        GlobalVectorType& rDx,
+                                        GlobalVectorType& rb,
+                                        Model_Part& rModelPart)
             {
                 double norm_b;
                 if (TSparseSpace::Size(rb) != 0)
@@ -835,13 +825,19 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                           Element::EquationIdVectorType& rEquationId)
             {
                 unsigned int local_size = rLHS_Contribution.rows();
-
                 for (unsigned int i_local = 0; i_local < local_size; i_local++)
                 {
+                    /**
+                     * @brief Assemble RHS
+                    */
                     unsigned int i_global = rEquationId[i_local];
                     double& r_a = rb[i_global];
                     const double& v_a = rRHS_Contribution(i_local);
                     r_a += v_a;
+
+                    /**
+                     * @brief Assemble LHS
+                    */
                     AssembleRowContribution(rA, rLHS_Contribution, i_global, i_local, rEquationId);
                 }
             }
@@ -988,57 +984,63 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                                                 const unsigned int i_local,
                                                 Element::EquationIdVectorType& rEquationId)
             {
-                double* values_vector = rA.value_data().begin();
-                std::size_t* index1_vector = rA.index1_data().begin();
-                std::size_t* index2_vector = rA.index2_data().begin();
+                // double* values_vector = rA.value_data().begin();
+                // std::size_t* index1_vector = rA.index1_data().begin();
+                // std::size_t* index2_vector = rA.index2_data().begin();
+                
+                // Eigen::SparseMatrix<double> ra;
+                // double* values = ra.valuePtr().begin()
 
-                size_t left_limit = index1_vector[i];
-                //	size_t right_limit = index1_vector[i+1];
+                // size_t left_limit = index1_vector[i];
 
-                //find the first entry
-                size_t last_pos = ForwardFind(rEquationId[0],left_limit,index2_vector);
-                size_t last_found = rEquationId[0];
+                // //find the first entry
+                // size_t last_pos = ForwardFind(rEquationId[0],left_limit,index2_vector);
+                // size_t last_found = rEquationId[0];
 
-                double& r_a = values_vector[last_pos];
-                const double& v_a = rAlocal(i_local,0);
-                r_a +=  v_a;
+                // double& r_a = values_vector[last_pos];
+                // const double& v_a = rAlocal(i_local,0);
+                // r_a +=  v_a;
 
-                //now find all of the other entries
-                size_t pos = 0;
-                for(unsigned int j=1; j<rEquationId.size(); j++)
+                // //now find all of the other entries
+                // size_t pos = 0;
+                // for(unsigned int j=0; j<rEquationId.size(); j++)
+                // {
+                //     unsigned int id_to_find = rEquationId[j];
+                //     if(id_to_find > last_found)
+                //         pos = ForwardFind(id_to_find,last_pos+1,index2_vector);
+                //     else
+                //         pos = BackwardFind(id_to_find,last_pos-1,index2_vector);
+
+                //     double& r = values_vector[pos];
+                //     const double& v = rAlocal(i_local,j);
+                //     r +=  v;
+
+                //     last_found = id_to_find;
+                //     last_pos = pos;
+                // }
+                for( unsigned int j=0;j<rEquationId.size();++j)
                 {
-                    unsigned int id_to_find = rEquationId[j];
-                    if(id_to_find > last_found)
-                        pos = ForwardFind(id_to_find,last_pos+1,index2_vector);
-                    else
-                        pos = BackwardFind(id_to_find,last_pos-1,index2_vector);
-
-                    double& r = values_vector[pos];
-                    const double& v = rAlocal(i_local,j);
-                    r +=  v;
-
-                    last_found = id_to_find;
-                    last_pos = pos;
+                    rA.coeffRef(i,rEquationId[j],rAlocal(i,j));
                 }
             }
 
-            inline unsigned int ForwardFind(const unsigned int id_to_find,
-                                            const unsigned int start,
-                                            const size_t* index_vector)
-            {
-                unsigned int pos = start;
-                while(id_to_find != index_vector[pos]) pos++;
-                return pos;
-            }
+            // inline unsigned int ForwardFind(const unsigned int id_to_find,
+            //                                 const unsigned int start,
+            //                                 const size_t* index_vector)
+            // {
+            //     unsigned int pos = start;
+            //     while(id_to_find != index_vector[pos]) pos++;
+            //     return pos;
+            // }
 
-            inline unsigned int BackwardFind(const unsigned int id_to_find,
-                                            const unsigned int start,
-                                            const size_t* index_vector)
-            {
-                unsigned int pos = start;
-                while(id_to_find != index_vector[pos]) pos--;
-                return pos;
-            }
+            // inline unsigned int BackwardFind(const unsigned int id_to_find,
+            //                                 const unsigned int start,
+            //                                 const size_t* index_vector)
+            // {
+            //     unsigned int pos = start;
+            //     while(id_to_find != index_vector[pos]) pos--;
+            //     return pos;
+            // }
         /// @}
 
 

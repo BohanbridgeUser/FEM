@@ -10,6 +10,8 @@
 #include "../Node/dof.h"
 #include "../process_info.h"
 #include "../Utility/smart_pointer.h"
+#include "../Utility/math_utility.h"
+
 class Condition : public Geometry_Object
 {
     public: 
@@ -55,20 +57,34 @@ class Condition : public Geometry_Object
             {
             
             }
-            Condition(GeometryType* mpThisGeometry, Properties& ThisProperties)
+            Condition(GeometryType* mpThisGeometry, Properties::Pointer ThisProperties)
             :Geometry_Object(mpThisGeometry),
-             mpProperties(&ThisProperties)
+             mpProperties(ThisProperties)
             {
             
+            }
+            Condition(IndexType NewID,
+                      NodesContainerType const& rThisNodes,
+                      Properties::Pointer pThisProPerties)
+            :Geometry_Object(NewID,rThisNodes),
+            mpProperties(pThisProPerties)
+            {
+
             }
             Condition(IndexType NewID, GeometryType* mpThisGeometry)
             :Geometry_Object(NewID,mpThisGeometry)
             {
 
             }
-            Condition(IndexType NewID, GeometryType* mpThisGeometry, Properties& ThisProperties)
+            Condition(IndexType NewID, GeometryType* mpThisGeometry, Properties::Pointer ThisProperties)
             :Geometry_Object(NewID,mpThisGeometry),
-             mpProperties(&ThisProperties)
+             mpProperties(ThisProperties)
+            {
+            
+            }
+            Condition(IndexType NewID, GeometryType::SharedPointer mpThisGeometry, Properties::Pointer ThisProperties)
+            :Geometry_Object(NewID,&(*mpThisGeometry)),
+             mpProperties(ThisProperties)
             {
             
             }
@@ -84,6 +100,12 @@ class Condition : public Geometry_Object
             {
 
             }
+            Condition(Condition* another)
+            :Geometry_Object(&(another->GetGeometry())),
+             mpProperties(&(another->GetProperties()))
+            {
+
+            }
             // Destructor
             virtual ~Condition()
             {
@@ -94,21 +116,33 @@ class Condition : public Geometry_Object
         /// @name Operations
         /// @{
             virtual Condition::SharedPointer Create(IndexType NewId,
-                                              NodesContainerType const& ThisNodes,
-                                              PropertiesType::Pointer pProperties ) const
+                                                    NodesContainerType const& ThisNodes,
+                                                    PropertiesType::Pointer pProperties ) const
             {
-                return make_shared<Condition>(NewId, GetGeometry().Create(ThisNodes), *pProperties);
+                return make_shared<Condition>(new Condition(NewId, GetGeometry().Create(ThisNodes), pProperties));
+            }
+
+            virtual Condition::SharedPointer Clone(IndexType NewId,
+                                                   NodesContainerType const& ThisNodes ) const
+            {
+                Condition NewCondition(NewId,GetGeometry().Create(ThisNodes), pGetProperties());
+                NewCondition.SetData(this->GetData());
+                NewCondition.SetFlags(this->GetFlag());
+                return make_shared<Condition>(NewCondition);
             }
 
             Properties& GetProperties()
             {
                 return *mpProperties;
             }
-            const Properties& GetProperties()const
+            Properties const& GetProperties()const
             {
                 return *mpProperties;
             }
-            
+            const PropertiesType::Pointer pGetProperties()const
+            {
+                return mpProperties;
+            }
             virtual int Check()
             {
                 return 0;
@@ -500,6 +534,13 @@ class Condition : public Geometry_Object
                 }
             }
 
+            /**
+             * @name Get Properties 
+            */
+            Properties::Pointer pGetProperties()
+            {
+                return mpProperties;
+            }
         /// @}
     private:
         Properties* mpProperties;

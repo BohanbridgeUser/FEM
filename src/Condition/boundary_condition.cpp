@@ -1,13 +1,12 @@
 #include "../../include/Condition/boundary_condition.h"
 
-/**
- * Flags related to the condition computation
- */
+/***********************************Define Flags*********************************************/
 LOTUS_CREATE_LOCAL_FLAGS( Boundary_Condition, COMPUTE_RHS_VECTOR, 0 );
 LOTUS_CREATE_LOCAL_FLAGS( Boundary_Condition, COMPUTE_LHS_MATRIX, 1 );
 
+/************************************Life Circle*********************************************/
 Boundary_Condition::Boundary_Condition()
-    : Condition()
+:Condition()
 {
 }
 Boundary_Condition::Boundary_Condition(IndexType NewId, 
@@ -16,9 +15,9 @@ Boundary_Condition::Boundary_Condition(IndexType NewId,
 {
 }
 Boundary_Condition::Boundary_Condition(IndexType NewId, 
-                                     GeometryType::Pointer pGeometry, 
-                                     PropertiesType::Pointer pProperties)
-:Condition(NewId, pGeometry, *pProperties)
+                                       GeometryType::Pointer pGeometry, 
+                                       PropertiesType::Pointer pProperties)
+:Condition(NewId, pGeometry, pProperties)
 {
     mThisIntegrationMethod = GetGeometry().GetDefaultIntegrationMethod();
 }
@@ -29,15 +28,24 @@ Boundary_Condition::Boundary_Condition( Boundary_Condition const& rOther )
 }
 
 Condition::SharedPointer Boundary_Condition::Create(IndexType NewId,
-                        NodesContainerType const& ThisNodes,
-                        PropertiesType::Pointer pProperties) const
+                                                    NodesContainerType const& ThisNodes,
+                                                    PropertiesType::Pointer pProperties) const
 {
-    return make_shared<Boundary_Condition>(NewId, GetGeometry().Create(ThisNodes), pProperties);
+    return std::make_shared<Boundary_Condition>(NewId, &(*GetGeometry().Create(ThisNodes)), pProperties);
 }
 
+Condition::SharedPointer Boundary_Condition::Clone(IndexType NewId,
+                                                   NodesContainerType const& ThisNodes) const
+{
+    Boundary_Condition NewCondition(NewId, &(*(GetGeometry().Create(ThisNodes))),pGetProperties());
+    NewCondition.SetData(this->GetData());
+    NewCondition.SetFlags(this->GetFlag());
+    return make_shared<Boundary_Condition>(NewCondition);
+}
 
+/************************************Utility Operations**************************************/
 void Boundary_Condition::GetDofList(DofsVectorType& rConditionDofList,
-				     const Process_Info& rCurrentProcessInfo) const
+				                    const Process_Info& rCurrentProcessInfo) const
 {
     rConditionDofList.resize(0);
     const SizeType number_of_nodes = GetGeometry().PointsNumber();
@@ -71,7 +79,7 @@ void Boundary_Condition::GetDofList(DofsVectorType& rConditionDofList,
   }
 
 void Boundary_Condition::EquationIdVector(EquationIdVectorType& rResult,
-					   const Process_Info& rCurrentProcessInfo) const
+					                      const Process_Info& rCurrentProcessInfo) const
 {
     const SizeType number_of_nodes = GetGeometry().PointsNumber();
     const SizeType& dimension       = GetGeometry().WorkingSpaceDimension();
@@ -307,10 +315,11 @@ unsigned int Boundary_Condition::GetDofsSize() const
     return size;
 
 }
-void Boundary_Condition::InitializeSystemMatrices(MatrixType& rLeftHandSideMatrix,
-						   VectorType& rRightHandSideVector,
-						   Flags& rCalculationFlags)
 
+/***********************************Initialization*******************************************/
+void Boundary_Condition::InitializeSystemMatrices(MatrixType& rLeftHandSideMatrix,
+						                          VectorType& rRightHandSideVector,
+						                          Flags& rCalculationFlags)
 {
     //resizing as needed the LHS
     unsigned int MatSize = this->GetDofsSize();
@@ -330,7 +339,6 @@ void Boundary_Condition::InitializeSystemMatrices(MatrixType& rLeftHandSideMatri
         rRightHandSideVector.setZero( MatSize ); //resetting RHS
     }
 }
-
 void Boundary_Condition::InitializeConditionVariables(ConditionVariables& rVariables, const Process_Info& rCurrentProcessInfo)
 {
     const SizeType number_of_nodes  = GetGeometry().PointsNumber();
@@ -348,14 +356,63 @@ void Boundary_Condition::InitializeConditionVariables(ConditionVariables& rVaria
     rVariables.SetShapeFunctionsGradients(GetGeometry().ShapeFunctionsLocalGradients( mThisIntegrationMethod ));
 
 }
-
-void Boundary_Condition::CalculateKinematics(ConditionVariables& rVariables,
-					      const double& rPointNumber)
+void Boundary_Condition::Initialize( const Process_Info& rCurrentProcessInfo )
 {
+
+}
+void Boundary_Condition::InitializeSolutionStep( const Process_Info& rCurrentProcessInfo )
+{
+
+InitializeExplicitContributions();
+
+}
+void Boundary_Condition::InitializeNonLinearIteration( const Process_Info& rCurrentProcessInfo )
+{
+
+}
+void Boundary_Condition::InitializeExplicitContributions()
+{
+    const SizeType number_of_nodes = GetGeometry().PointsNumber();
+    for ( SizeType i = 0; i < number_of_nodes; i++ )
+    {
+        if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_FORCE) && GetGeometry()[i].SolutionStepsDataHas(FORCE_RESIDUAL) ){
+            std::array<double, 3 > & ExternalForce = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_FORCE);
+            std::array<double, 3 > & ResidualForce = GetGeometry()[i].FastGetSolutionStepValue(FORCE_RESIDUAL);
+            ExternalForce.fill(0.0);
+            ResidualForce.fill(0.0);
+        }
+        if( HasVariableDof(ROTATION) ){
+            if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_MOMENT) && GetGeometry()[i].SolutionStepsDataHas(MOMENT_RESIDUAL) ){
+                std::array<double, 3 > & ExternalMoment = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_MOMENT);
+                std::array<double, 3 > & ResidualMoment = GetGeometry()[i].FastGetSolutionStepValue(MOMENT_RESIDUAL);
+                ExternalMoment.fill(0.0);
+                ResidualMoment.fill(0.0);
+            }
+	    }
+    }
 }
 
+/**********************************Calculation Operations****************************************/
+void Boundary_Condition::CalculateLocalSystem( MatrixType& rLeftHandSideMatrix, VectorType& rRightHandSideVector, const Process_Info& rCurrentProcessInfo )
+{
+    //create local system components
+    LocalSystemComponents LocalSystem;
+    //calculation flags
+    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_LHS_MATRIX);
+    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_RHS_VECTOR);
+
+    //Initialize sizes for the system components:
+    this->InitializeSystemMatrices( rLeftHandSideMatrix, rRightHandSideVector, LocalSystem.CalculationFlags );
+
+    //Set Variables to Local system components
+    LocalSystem.SetLeftHandSideMatrix(rLeftHandSideMatrix);
+    LocalSystem.SetRightHandSideVector(rRightHandSideVector);
+
+    //Calculate condition system
+    this->CalculateConditionSystem( LocalSystem, rCurrentProcessInfo );
+}
 void Boundary_Condition::CalculateConditionSystem(LocalSystemComponents& rLocalSystem,
-                        const Process_Info& rCurrentProcessInfo)
+                                                  const Process_Info& rCurrentProcessInfo)
 {
 
     //create and initialize condition variables:
@@ -382,8 +439,13 @@ void Boundary_Condition::CalculateConditionSystem(LocalSystemComponents& rLocalS
         }
     }
 }
-
-void Boundary_Condition::CalculateAndAddLHS(LocalSystemComponents& rLocalSystem, ConditionVariables& rVariables, double& rIntegrationWeight)
+void Boundary_Condition::CalculateKinematics(ConditionVariables& rVariables,
+					                         const double& rPointNumber)
+{
+}
+void Boundary_Condition::CalculateAndAddLHS(LocalSystemComponents& rLocalSystem,
+                                            ConditionVariables& rVariables,
+                                            double& rIntegrationWeight)
 {
     //contributions of the stiffness matrix calculated on the reference configuration
     MatrixType& rLeftHandSideMatrix = rLocalSystem.GetLeftHandSideMatrix();
@@ -391,8 +453,8 @@ void Boundary_Condition::CalculateAndAddLHS(LocalSystemComponents& rLocalSystem,
     this->CalculateAndAddKuug( rLeftHandSideMatrix, rVariables, rIntegrationWeight );
 }
 void Boundary_Condition::CalculateAndAddKuug(MatrixType& rLeftHandSideMatrix,
-					      ConditionVariables& rVariables,
-					      double& rIntegrationWeight)
+					                         ConditionVariables& rVariables,
+					                         double& rIntegrationWeight)
 
 {
     unsigned int MatSize = this->GetDofsSize();
@@ -400,23 +462,25 @@ void Boundary_Condition::CalculateAndAddKuug(MatrixType& rLeftHandSideMatrix,
       rLeftHandSideMatrix.resize(MatSize,MatSize);
     rLeftHandSideMatrix.setZero(MatSize,MatSize);
 }
-void Boundary_Condition::CalculateAndAddRHS(LocalSystemComponents& rLocalSystem, ConditionVariables& rVariables, double& rIntegrationWeight)
+void Boundary_Condition::CalculateAndAddRHS(LocalSystemComponents& rLocalSystem,
+                                            ConditionVariables& rVariables,
+                                            double& rIntegrationWeight)
 {
     VectorType& rRightHandSideVector = rLocalSystem.GetRightHandSideVector();
     // operation performed: rRightHandSideVector += ExtForce*IntToReferenceWeight
     this->CalculateAndAddExternalForces( rRightHandSideVector, rVariables, rIntegrationWeight );
 }
 void Boundary_Condition::CalculateAndAddExternalForces(VectorType& rRightHandSideVector,
-							ConditionVariables& rVariables,
-							double& rIntegrationWeight)
+							                           ConditionVariables& rVariables,
+							                           double& rIntegrationWeight)
 
 {
     std::cerr << "calling the base class CalculateAndAddExternalForces method for a boundary condition... " << std::endl;
 }
 double& Boundary_Condition::CalculateAndAddExternalEnergy(double& rEnergy,
-                            ConditionVariables& rVariables,
-                            double& rIntegrationWeight,
-                            const Process_Info& rCurrentProcessInfo)
+                                                          ConditionVariables& rVariables,
+                                                          double& rIntegrationWeight,
+                                                          const Process_Info& rCurrentProcessInfo)
 
 {
 
@@ -474,61 +538,7 @@ void Boundary_Condition::CalculateDampingMatrix( MatrixType& rDampingMatrix, con
     rDampingMatrix.resize(0, 0);
 }
 
-void Boundary_Condition::Initialize( const Process_Info& rCurrentProcessInfo )
-{
 
-}
-void Boundary_Condition::InitializeSolutionStep( const Process_Info& rCurrentProcessInfo )
-{
-
-InitializeExplicitContributions();
-
-}
-void Boundary_Condition::InitializeNonLinearIteration( const Process_Info& rCurrentProcessInfo )
-{
-
-}
-
-void Boundary_Condition::InitializeExplicitContributions()
-{
-    const SizeType number_of_nodes = GetGeometry().PointsNumber();
-    for ( SizeType i = 0; i < number_of_nodes; i++ )
-    {
-        if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_FORCE) && GetGeometry()[i].SolutionStepsDataHas(FORCE_RESIDUAL) ){
-            std::array<double, 3 > & ExternalForce = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_FORCE);
-            std::array<double, 3 > & ResidualForce = GetGeometry()[i].FastGetSolutionStepValue(FORCE_RESIDUAL);
-            ExternalForce.fill(0.0);
-            ResidualForce.fill(0.0);
-        }
-        if( HasVariableDof(ROTATION) ){
-            if( GetGeometry()[i].SolutionStepsDataHas(EXTERNAL_MOMENT) && GetGeometry()[i].SolutionStepsDataHas(MOMENT_RESIDUAL) ){
-                std::array<double, 3 > & ExternalMoment = GetGeometry()[i].FastGetSolutionStepValue(EXTERNAL_MOMENT);
-                std::array<double, 3 > & ResidualMoment = GetGeometry()[i].FastGetSolutionStepValue(MOMENT_RESIDUAL);
-                ExternalMoment.fill(0.0);
-                ResidualMoment.fill(0.0);
-            }
-	    }
-    }
-}
-
-void Boundary_Condition::CalculateLocalSystem( MatrixType& rLeftHandSideMatrix, VectorType& rRightHandSideVector, const Process_Info& rCurrentProcessInfo )
-{
-    //create local system components
-    LocalSystemComponents LocalSystem;
-    //calculation flags
-    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_LHS_MATRIX);
-    LocalSystem.CalculationFlags.Set(Boundary_Condition::COMPUTE_RHS_VECTOR);
-
-    //Initialize sizes for the system components:
-    this->InitializeSystemMatrices( rLeftHandSideMatrix, rRightHandSideVector, LocalSystem.CalculationFlags );
-
-    //Set Variables to Local system components
-    LocalSystem.SetLeftHandSideMatrix(rLeftHandSideMatrix);
-    LocalSystem.SetRightHandSideVector(rRightHandSideVector);
-
-    //Calculate condition system
-    this->CalculateConditionSystem( LocalSystem, rCurrentProcessInfo );
-}
 
 void Boundary_Condition::AddExplicitContribution(const VectorType& rRHS,
                         const Variable<VectorType>& rRHSVariable,

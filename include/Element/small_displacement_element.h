@@ -1,18 +1,55 @@
-#ifndef _BEAM_ELEMENT_H_
-#define _BEAM_ELEMENT_H_
-#include "../element.h"
-class Beam_Element : public Element
+#ifndef _SMALL_DISPLACEMENT_ELEMENT_H_
+#define _SMALL_DISPLACEMENT_ELEMENT_H_
+#include "solid_element.h"
+
+class Small_Displacement_Element : public Solid_Element
 {
     public:
         /// @name Type Define
         /// @{
-            LOTUS_POINTER_DEFINE(Beam_Element)
-            
+            LOTUS_POINTER_DEFINE(Small_Displacement_Element)
 
+            typedef GeometryType::SizeType
+                                                                            SizeType;
+            typedef Constitutive_Law
+                                                                 ConstitutiveLawType;
+            typedef ConstitutiveLawType::Pointer
+                                                          ConstitutiveLawPointerType;
+            typedef ConstitutiveLawType::StressMeasure
+                                                                   StressMeasureType;
+            
         /// @}
 
 
         /// @name Life Circle
+        /// @{
+
+
+        /// @}
+
+
+        /// @name Operators
+        /// @{
+
+
+        /// @}
+
+
+        /// @name Operations
+        /// @{
+
+
+        /// @}
+
+
+        /// @name Access
+        /// @{
+
+
+        /// @}
+
+
+        /// @name Inquiry
         /// @{
 
 
@@ -104,4 +141,6 @@ class Beam_Element : public Element
 
         /// @}
 };
+
+
 #endif
