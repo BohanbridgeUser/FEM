@@ -3,6 +3,8 @@
 #include "geometry.h"
 #include "../Container/geometry_container.h"
 #include "Point.h"
+#include "../Quadrature/hexahedron_gauss_legendre_integration_points.h"
+
 template <typename TPointType>
 class Hexahedron:public Geometry<TPointType>
 {

@@ -4,6 +4,7 @@
 #include "../Geometry/geometry_object.h"
 #include "../Container/geometry_container.h"
 #include "../Geometry/quadrilateral_3d_4.h"
+#include "../Geometry/hexahedron.h"
 #include "../Node/node.h"
 #include "../Element/element.h"
 #include "../Condition/condition.h"

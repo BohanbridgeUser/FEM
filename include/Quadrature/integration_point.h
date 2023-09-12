@@ -8,11 +8,14 @@ class Integration_Point:public Point<3>
     public:
         // @ Constructor {
         /* Default */
+        typedef Point<3>
+                                                            PointType;
         Integration_Point()
         {
             
         }
-        Integration_Point(const Integration_Point& another):Point<3>(another),mWeight(another.mWeight)
+        Integration_Point(const Integration_Point& another)
+        :Point<3>(another),mWeight(another.mWeight)
         {
 
         }
