@@ -73,7 +73,7 @@ class Geometry
         /// @{ 
             // Constructor  
                 Geometry()
-                :mGeometry_Data(GeometryDataInstance())
+                :mGeometry_Data(&GeometryDataInstance())
                 {
                     number++;
                     ID = number;
@@ -81,7 +81,8 @@ class Geometry
                 Geometry(const int& id, 
                          PointsContainerType& Points)
                 :pPoints(Points),
-                 ID(id)
+                 ID(id),
+                 mGeometry_Data(&GeometryDataInstance())
                 {
                     number++;
                 }
@@ -90,24 +91,18 @@ class Geometry
                          const Geometry_Data& ThisGeometryData)
                 :pPoints(Points),
                  ID(id),
-                 mGeometry_Data(ThisGeometryData)
+                 mGeometry_Data(&ThisGeometryData)
                 {
                     number++;
                 }
                 Geometry(const PointsContainerType& Points,
                          Geometry_Data const& pThisGeometryData = GeometryDataInstance())
                 :pPoints(Points),
-                mGeometry_Data(pThisGeometryData)
+                mGeometry_Data(&pThisGeometryData)
                 {
                     ID = ++number;
                 }
 
-                Geometry(PointsContainerType& Points)
-                :pPoints(Points)
-                {
-                    number++;
-                    ID = number;
-                }
                 Geometry(const Geometry<TPointType>& another)
                 :ID(another.ID),
                  pPoints(another.pPoints),
@@ -493,7 +488,7 @@ class Geometry
         PointsContainerType pPoints;
         static Geometry_Type GeometryType; 
         static int number;
-        const Geometry_Data mGeometry_Data;
+        Geometry_Data const *mGeometry_Data;
         static const Geometry_Dimension mGeometry_Dimension;
         Data_Value_Container mData;
 
