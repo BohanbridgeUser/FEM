@@ -82,7 +82,7 @@ class Geometry_Data
             {
                 return mGeometryShapeFunctionContainer.ShapeFunctionsValues(ThisMethod);
             }
-            int GetIntegrationPointsNum(Geometry_Data::IntegrationMethod& ThisMethod)const
+            int GetIntegrationPointsNum(Geometry_Data::IntegrationMethod const& ThisMethod)const
             {
                 return mGeometryShapeFunctionContainer.GetIntegrationPointsNum(ThisMethod);
             }

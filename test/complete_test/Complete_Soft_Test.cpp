@@ -27,19 +27,27 @@ int main()
     for (auto iterator=V_PP.begin();iterator!=V_PP.end();++iterator)
         std::cout << "Point " << iterator-V_PP.begin() << " " << *iterator;
     
-    // Quadrilateral_3d_4<Point<3> > Q_3d_4s[64];
-    // for (int i=0;i<8;++i) 
-    // {
-    //     for (int j=0;j<8;++j) 
-    //     {
-    //         Q_3d_4s[i*8+j] = Quadrilateral_3d_4<Point<3> >(P_C.GetValue(i*8+j),P_C.GetValue(i*8+j+1),P_C.GetValue((i+1)*8+j),P_C.GetValue((i+1)*8+j+1));
-    //     }
-    // }
-    // typedef Quadrilateral_3d_4<Point<3> > geomelem;
-    // Geometry_Container<geomelem> G_C;
-    // for(int i=0;i<64;++i) G_C.Insert(Q_3d_4s[i]);
-    
-
+    Hexahedron<Point<3> >* H_3d_8s[8*8*8];
+    int cnt = 0;
+    for (int i=0;i<8;++i) 
+    {
+        for (int j=0;j<8;++j) 
+        {
+            for(int k=0;k<8;++k)
+            {
+                H_3d_8s[cnt] = new Hexahedron(cnt,V_PP[i*81+j*9+k],V_PP[(i+1)*81+j*9+k],V_PP[(i+1)*81+(j+1)*9+k],V_PP[i*81+(j+1)*9+k],
+                                                V_PP[i*81+j*9+(k+1)],V_PP[(i+1)*81+j*9+(k+1)],V_PP[(i+1)*81+(j+1)*9+(k+1)],V_PP[i*81+(j+1)*9+(k+1)]);
+                cnt++;
+            }
+        }
+    }
+    typedef Hexahedron<Point<3> > Geomelem;
+    Geometry_Container<Geomelem> G_C;
+    for(int i=0;i<8*8*8;++i) 
+    {
+        G_C.Insert(*H_3d_8s[i]);
+        std::cout << G_C.At(i);
+    }
     // /* Mesh Model */
     // std::cout << "********************Mesh Model********************\n";
     // Node Ns[81];

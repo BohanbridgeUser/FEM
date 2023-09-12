@@ -64,6 +64,8 @@ class Geometry
                                                   ShapeFunctionsGradientsContainerType;
 
             /* JacobiansType */
+            typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>
+                                                                          JacobianType;
             typedef std::vector<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> > 
                                                                          JacobiansType;
             
@@ -190,7 +192,7 @@ class Geometry
              */
             virtual ClassType::SharedPointer Create(const IndexType NewGeometryId,PointsContainerType const& rThisPoints) const
             {
-                return make_shared<ClassType>(new ClassType( NewGeometryId, rThisPoints, mGeometry_Data));
+                return make_shared<ClassType>(new ClassType( NewGeometryId, rThisPoints, *mGeometry_Data));
             }
             /**
              * @brief Creates a new geometry pointer
@@ -231,7 +233,7 @@ class Geometry
              */
             virtual ClassType::SharedPointer Create(const IndexType NewGeometryId,const ClassType& rGeometry) const
             {
-                auto p_geometry = std::make_shared<ClassType>(new ClassType(NewGeometryId, rGeometry.pPoints, mGeometry_Data));
+                auto p_geometry = std::make_shared<ClassType>(new ClassType(NewGeometryId, rGeometry.pPoints, *mGeometry_Data));
                 p_geometry->SetData(rGeometry.GetData());
                 return p_geometry;
             }
@@ -259,7 +261,7 @@ class Geometry
             */
             JacobiansType& Jacobian( JacobiansType& rResult ) const
             {
-                Jacobian( rResult, mGeometry_Data.DefaultIntegrationMethod() );
+                Jacobian( rResult, mGeometry_Data->DefaultIntegrationMethod() );
                 return rResult;
             }
             virtual JacobiansType& Jacobian( JacobiansType& rResult,
@@ -272,7 +274,7 @@ class Geometry
                 }
                 return rResult;
             }
-            virtual Matrix& Jacobian( Matrix& rResult, IndexType IntegrationPointIndex, IntegrationMethod ThisMethod ) const
+            virtual JacobianType& Jacobian( JacobianType& rResult, IndexType IntegrationPointIndex, IntegrationMethod ThisMethod ) const
             {
                 const SizeType working_space_dimension = this->WorkingSpaceDimension();
                 const SizeType local_space_dimension = this->LocalSpaceDimension();
@@ -295,7 +297,48 @@ class Geometry
 
                 return rResult;
             }
+            /** Jacobian in given point. This method calculate jacobian
+            matrix in given point.
 
+            @param rCoordinates point which jacobians has to
+            be calculated in it.
+
+            @return Matrix of double which is jacobian matrix \f$ J \f$ in given point.
+
+            @see DeterminantOfJacobian
+            @see InverseOfJacobian
+            */
+            virtual JacobianType& Jacobian( JacobianType& rResult, PointType const& rCoordinates ) const
+            {
+                const SizeType working_space_dimension = this->WorkingSpaceDimension();
+                const SizeType local_space_dimension = this->LocalSpaceDimension();
+                const SizeType points_number = this->PointsNumber();
+                if(rResult.rows() != working_space_dimension || rResult.cols() != local_space_dimension)
+                    rResult.resize( working_space_dimension, local_space_dimension );
+                JacobianType shape_functions_gradients(points_number, local_space_dimension);
+                ShapeFunctionsLocalGradients( shape_functions_gradients, rCoordinates );
+                rResult.setZero();
+                for (IndexType i = 0; i < points_number; ++i ) 
+                {
+                    const std::array<double, 3>& r_coordinates = (*this)[i].Coordinates();
+                    for(IndexType k = 0; k< working_space_dimension; ++k) 
+                    {
+                        const double value = r_coordinates[k];
+                        for(IndexType m = 0; m < local_space_dimension; ++m) 
+                        {
+                            rResult(k,m) += value * shape_functions_gradients(i,m);
+                        }
+                    }
+                }
+                return rResult;
+            }
+            virtual Matrix& ShapeFunctionsLocalGradients( Matrix& rResult, const PointType& rPoint ) const
+            {
+                std::cerr << "Calling base class ShapeFunctionsLocalGradients method instead of derived class one. Please check the definition of derived class. " << *this << std::endl;
+                exit(0);
+                return rResult;
+            }
+            
         /// @}
 
         /// @name Access 
@@ -320,6 +363,10 @@ class Geometry
             {
                 return pPoints;
             }
+            PointsContainerType const& pPointsVector() const
+            {
+                return pPoints;
+            }
             int& GetID()
             {
                 return ID;
@@ -334,7 +381,7 @@ class Geometry
             }
             IntegrationMethod GetDefaultIntegrationMethod() const
             {
-                return mGeometry_Data.DefaultIntegrationMethod();
+                return mGeometry_Data->DefaultIntegrationMethod();
             }
             int PointsNumber() const
             {
@@ -342,25 +389,25 @@ class Geometry
             }
             const Geometry_Data& GetGeometryData() const
             {
-                return mGeometry_Data;
+                return *mGeometry_Data;
             }
             const IntegrationPointsVector& IntegrationPoints(const IntegrationMethod& ThisMethod)const
             {
-                return mGeometry_Data.IntegrationPoints(ThisMethod);
+                return mGeometry_Data->IntegrationPoints(ThisMethod);
             }
             int IntegrationPointsNumber(const IntegrationMethod& ThisIntegrationMethod) const
             {
-                return mGeometry_Data.IntegrationPoints(ThisIntegrationMethod).size();
+                return mGeometry_Data->IntegrationPoints(ThisIntegrationMethod).size();
             }
             const ShapeFunctionValueType&
             ShapeFunctionsValues(const IntegrationMethod& ThisIntegrationMethod) const
             {
-                return mGeometry_Data.ShapeFunctionsValues(ThisIntegrationMethod);
+                return mGeometry_Data->ShapeFunctionsValues(ThisIntegrationMethod);
             }
             const ShapeFunctionGradientsType& 
             ShapeFunctionsLocalGradients( const IntegrationMethod& ThisMethod ) const
             {
-                return mGeometry_Data.ShapeFunctionsLocalGradients( ThisMethod );
+                return mGeometry_Data->ShapeFunctionsLocalGradients( ThisMethod );
             }
 
         /// @}
@@ -478,17 +525,46 @@ class Geometry
                 os << "Geometry # " << ID << std::endl;
                 for(auto it=pPoints.begin();it<pPoints.end();++it)
                 {
-                    os << "Point" << ID << " " << (*it);
+                    os << "Point " << it-pPoints.begin() << " " << (*it);
                 }
             }
         /// @}
     protected:
-        int ID;
+        /// @name Protected Static Member 
+        /// @{
+
+        /// @}
+
+        /// @name Protected Member 
+        /// @{
+            int ID;
+        /// @}
+        
+        /// @name Protected Operators
+        /// @{
+
+        /// @}
+
+        /// @name Protected Operations
+        /// @{
+            /**
+             * @brief Checks if the geometry points are valid
+             * Checks if the geometry points are valid from the pointer value
+             * Points are not valid when the pointer value is null
+             * @return true All points are valid
+             * @return false At least one point has nullptr value
+             */
+            // bool AllPointsAreValid() const
+            // {
+            //     return std::none_of(pPoints.begin(), pPoints.end(), [](const auto& ppPoint){return ppPoint == nullptr;});
+            // }
+
+        /// @}
     private:
         PointsContainerType pPoints;
         static Geometry_Type GeometryType; 
         static int number;
-        Geometry_Data const *mGeometry_Data;
+        Geometry_Data const* mGeometry_Data;
         static const Geometry_Dimension mGeometry_Dimension;
         Data_Value_Container mData;
 

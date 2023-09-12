@@ -86,7 +86,7 @@ class GeometryShapeFuncionContainer
             {
                 return mShapeFunctionsLocalGradients[static_cast<int>(ThisMethod)];
             }
-            int GetIntegrationPointsNum(IntegrationMethod& ThisMethod)const
+            int GetIntegrationPointsNum(IntegrationMethod const& ThisMethod)const
             {
                 return mIntegrationPoints[static_cast<int>(ThisMethod)].size();
             }
