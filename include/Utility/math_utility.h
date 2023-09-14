@@ -43,4 +43,21 @@ static inline void AddVector(const VectorType& rInputVector,VectorType& rOutputV
     for(unsigned int i=0; i<rInputVector.size(); i++)
         rOutputVector[InitialRow+i] += rInputVector[i];
 }
+
+template<typename TMatrixType>
+static inline double GerneralizedDet(TMatrixType const& rA)
+{
+    if (rA.rows() == rA.cols()) 
+    {
+        return rA.determinant();
+    } else if (rA.rows() < rA.cols()) 
+    { // Right determinant
+        const MatrixType AAT = rA * rA.transpose();
+        return std::sqrt(AAT.determinant());
+    } else 
+    { // Left determinant
+        const MatrixType ATA = rA.transpose() * rA;
+        return std::sqrt(ATA.determinant());
+    }
+}
 #endif

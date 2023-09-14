@@ -11,7 +11,7 @@ int main()
 {
     /* Geometry Model */
     std::cout << "********************Geometry Model********************\n";
-    std::vector<Point<3> > V_PP;
+    std::vector<Point<3>* > V_PP;
     for (int i=0;i<9;++i)
     {
         for (int j=0;j<9;++j)
@@ -19,13 +19,13 @@ int main()
             for(int k=0;k<9;++k)
             {
                 Point<3> *pP = new Point<3>(1.00*i,1.00*j,1.00*k);
-                V_PP.push_back(*pP);
+                V_PP.push_back(pP);
             }
         }
     }
     
-    for (auto iterator=V_PP.begin();iterator!=V_PP.end();++iterator)
-        std::cout << "Point " << iterator-V_PP.begin() << " " << *iterator;
+    // for (auto iterator=V_PP.begin();iterator!=V_PP.end();++iterator)
+    //     std::cout << "Point " << iterator-V_PP.begin() << " " << *iterator;
     
     Hexahedron<Point<3> >* H_3d_8s[8*8*8];
     int cnt = 0;
@@ -35,48 +35,50 @@ int main()
         {
             for(int k=0;k<8;++k)
             {
-                H_3d_8s[cnt] = new Hexahedron(cnt,V_PP[i*81+j*9+k],V_PP[(i+1)*81+j*9+k],V_PP[(i+1)*81+(j+1)*9+k],V_PP[i*81+(j+1)*9+k],
-                                                V_PP[i*81+j*9+(k+1)],V_PP[(i+1)*81+j*9+(k+1)],V_PP[(i+1)*81+(j+1)*9+(k+1)],V_PP[i*81+(j+1)*9+(k+1)]);
+                H_3d_8s[cnt] = new Hexahedron(cnt,*V_PP[i*81+j*9+k],*V_PP[(i+1)*81+j*9+k],*V_PP[(i+1)*81+(j+1)*9+k],*V_PP[i*81+(j+1)*9+k],
+                                                *V_PP[i*81+j*9+(k+1)],*V_PP[(i+1)*81+j*9+(k+1)],*V_PP[(i+1)*81+(j+1)*9+(k+1)],*V_PP[i*81+(j+1)*9+(k+1)]);
                 cnt++;
             }
         }
     }
     typedef Hexahedron<Point<3> > Geomelem;
     Geometry_Container<Geomelem> G_C;
-    for(int i=0;i<8*8*8;++i) 
+    for(int i=0;i<cnt;++i) 
     {
         G_C.Insert(*H_3d_8s[i]);
-        std::cout << G_C.At(i);
+
     }
-    // /* Mesh Model */
-    // std::cout << "********************Mesh Model********************\n";
-    // Node Ns[81];
-    // for (int i=0;i<81;++i)
+    /* Mesh Model */
+    std::cout << "********************Mesh Model********************\n";
+    std::vector<Node*> V_Node;
+    for (int i=0;i<V_PP.size();++i)
+    {
+        Node* N = new Node(*V_PP[i]);
+        V_Node.push_back(N);
+    }
+    // for (int i=0;i<V_Node.size();++i)
     // {
-    //     Ns[i] = Node(P[i]);
-    // }
-    // for (int i=0;i<81;++i)
-    // {
-    //     std::cout << Ns[i];
-    // }    
-    // std::vector<Node> N_V;
-    // for (int i=0;i<81;++i)
-    // {
-    //     N_V.push_back(Ns[i]);
-    // }
-    // for (int i=0;i<81;++i)
-    // {
-    //     std::cout << N_V[i];
-    // }
-    // Quadrilateral_3d_4<Node > Q_3d_4Ns[64];
-    // for (int i=0;i<8;++i) 
-    // {
-    //     for (int j=0;j<8;++j) 
-    //     {
-    //         Q_3d_4Ns[i*8+j] = Quadrilateral_3d_4<Node >(N_V[i*8+j],N_V[i*8+j+1],N_V[(i+1)*8+j],N_V[(i+1)*8+j+1]);
-    //     }
-    // }
-    // Properties Prop;
+    //     std::cout << *V_Node[i];
+    // } 
+
+    Hexahedron<Node >* H_3d_8Ns[cnt];
+    cnt =0 ;
+    for (int i=0;i<8;++i) 
+    {
+        for (int j=0;j<8;++j) 
+        {
+            for(int k=0;k<8;++k)
+            {
+                H_3d_8Ns[cnt] = new Hexahedron(cnt,*V_Node[i*81+j*9+k],*V_Node[(i+1)*81+j*9+k],*V_Node[(i+1)*81+(j+1)*9+k],*V_Node[i*81+(j+1)*9+k],
+                                                *V_Node[i*81+j*9+(k+1)],*V_Node[(i+1)*81+j*9+(k+1)],*V_Node[(i+1)*81+(j+1)*9+(k+1)],*V_Node[i*81+(j+1)*9+(k+1)]);
+                cnt++;
+            }
+        }
+    }
+    Properties Prop;
+    Prop.Id() = 1;
+    Prop.SetValue(DENSITY,7850.00);
+    
     // std::vector<double> V_E,V_M,V_P;
     // V_E.push_back(2.1E9);
     // V_M.push_back(7850.00);

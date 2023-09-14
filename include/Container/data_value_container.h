@@ -27,19 +27,24 @@ public:
     LOTUS_POINTER_DEFINE(Data_Value_Container);
 
     /// Type of the container used for variables
-    typedef std::pair<const Variable_Data*, void*> ValueType;
+    typedef std::pair<const Variable_Data*, void*> 
+                                                            ValueType;
 
     /// Type of the container used for variables
-    typedef std::vector<ValueType> ContainerType;
+    typedef std::vector<ValueType> 
+                                                        ContainerType;
 
     /// Type of the container used for variables
-    typedef std::vector<ValueType>::iterator iterator;
+    typedef std::vector<ValueType>::iterator 
+                                                             iterator;
 
     /// Type of the container used for variables
-    typedef std::vector<ValueType>::const_iterator const_iterator;
+    typedef std::vector<ValueType>::const_iterator 
+                                                       const_iterator;
 
     /// Type of the container used for variables
-    typedef std::vector<ValueType>::size_type SizeType;
+    typedef std::vector<ValueType>::size_type 
+                                                             SizeType;
 
     ///@}
     ///@name Life Cycle

@@ -45,7 +45,7 @@ class GeometryShapeFuncionContainer
         {
 
         }
-        GeometryShapeFuncionContainer(IntegrationMethod Method,
+        GeometryShapeFuncionContainer(const IntegrationMethod& Method,
                                       const IntegrationPointsContainerType& ThisIntegrationPoints,
                                       const ShapeFunctionsValueContainerType& ThisShapeFunctionValueContainer,
                                       const ShapeFunctionsGradientsContainerType& ThisShapeFunctionsLocalGradients)

@@ -6,6 +6,8 @@
 #include "geometry_data.h"
 #include "../Quadrature/integration_point.h"
 #include "../Container/data_value_container.h"
+#include "../Utility/math_utility.h"
+
 #include <vector>
 #include <array>
 #include <memory>
@@ -261,7 +263,7 @@ class Geometry
             */
             JacobiansType& Jacobian( JacobiansType& rResult ) const
             {
-                Jacobian( rResult, mGeometry_Data->DefaultIntegrationMethod() );
+                Jacobian( rResult, mGeometry_Data->GetIntegrationMethod() );
                 return rResult;
             }
             virtual JacobiansType& Jacobian( JacobiansType& rResult,
@@ -285,16 +287,18 @@ class Geometry
 
                 rResult.setZero(rResult.rows(),rResult.cols());
                 const SizeType points_number = this->PointsNumber();
-                for (IndexType i = 0; i < points_number; ++i ) {
+                for (IndexType i = 0; i < points_number; ++i ) 
+                {
                     const std::array<double, 3>& r_coordinates = (*this)[i].Coordinates();
-                    for(IndexType k = 0; k< working_space_dimension; ++k) {
+                    for(IndexType k = 0; k< working_space_dimension; ++k) 
+                    {
                         const double value = r_coordinates[k];
-                        for(IndexType m = 0; m < local_space_dimension; ++m) {
+                        for(IndexType m = 0; m < local_space_dimension; ++m) 
+                        {
                             rResult(k,m) += value * r_shape_functions_gradient_in_integration_point(i,m);
                         }
                     }
                 }
-
                 return rResult;
             }
             /** Jacobian in given point. This method calculate jacobian
@@ -329,6 +333,24 @@ class Geometry
                             rResult(k,m) += value * shape_functions_gradients(i,m);
                         }
                     }
+                }
+                return rResult;
+            }
+            Vector& DeterminantOfJacobian(Vector& rResult)const
+            {
+                DeterminantOfJacobian( rResult, mGeometry_Data->GetIntegrationMethod() );
+                return rResult;
+            }
+            virtual Vector& DeterminantOfJacobian(Vector& rResult, IntegrationMethod const& rThisMethod) const
+            {
+                if(rResult.size() != this->IntegrationPointsNumber(rThisMethod))
+                    rResult.resize(this->IntegrationPointsNumber(rThisMethod));
+                
+                Matrix J(this->WorkingSpaceDimension(),this->LocalSpaceDimension());
+                for (unsigned int pnt=0;pnt<this->IntegrationPointsNumber(rThisMethod);++pnt)
+                {
+                    this->Jacobian(J,pnt,rThisMethod);
+                    rResult[pnt] = GerneralizedDet(J);
                 }
                 return rResult;
             }

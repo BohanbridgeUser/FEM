@@ -142,7 +142,7 @@ class Hexahedron:public Geometry<TPointType>
             {
                 const IntegrationPointsContainerType IntegrationPts = AllIntegrationPoints();
                 const IntegrationPointsVector IntegrationPtsVector = IntegrationPts[static_cast<int>(rThisMethod)];
-                int Integration_Points_Number = mGeometryData.GetIntegrationPointsNum(rThisMethod);
+                int Integration_Points_Number = IntegrationPtsVector.size();
                 ShapeFunctionValueType result(Integration_Points_Number,8);
                 for (int i=0;i<Integration_Points_Number;++i)
                 {
@@ -326,7 +326,11 @@ class Hexahedron:public Geometry<TPointType>
                 // if (this->AllPointsAreValid()) {
                     JacobiansType jacobian;
                     this->Jacobian( jacobian);
-                    rOStream << "    Jacobian in the origin: \n" << jacobian[1];
+                    for (auto it=jacobian.begin();it!=jacobian.end();++it)
+                    {
+                        rOStream << "\n    Jacobian at integration point     " << it-jacobian.begin() << " \n" << *it;
+                    }
+                    
                     std::cout << std::endl;
                 // }
             }

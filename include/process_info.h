@@ -5,7 +5,9 @@ class Process_Info
 {
 public:
     /// @name Define {
-    LOTUS_POINTER_DEFINE(Process_Info)
+        LOTUS_POINTER_DEFINE(Process_Info)
+        typedef size_t
+                                                        IndexType;
     /// @ }
 
     /// @name Life Circle 
@@ -22,8 +24,21 @@ public:
 
         }
     /// @}
+
+    /// @name Operators
+    /// @{
+
+    /// @}
+
+    /// @name Operations
+    /// @{
+        IndexType GetSolutionStepIndex() const
+        {
+            return mSolutionStepIndex;
+        }
+    /// @}
 private:
-    int mSolutionStepIndex;
+    IndexType mSolutionStepIndex;
     Process_Info::SharedPointer mpPreviousSolutionPointer;
     Process_Info::SharedPointer mpPreviousTimeStepInfo;
 };

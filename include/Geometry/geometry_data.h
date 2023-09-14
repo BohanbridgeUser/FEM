@@ -90,6 +90,10 @@ class Geometry_Data
             {
                 return mGeometryShapeFunctionContainer.DefaultIntegrationMethod();
             }
+            IntegrationMethod GetIntegrationMethod() const
+            {
+                return mIntegrationMethod;
+            }
             const IntegrationPointsVector& IntegrationPoints(const IntegrationMethod& ThisMethod)const
             {
                 return mGeometryShapeFunctionContainer.IntegrationPoints(ThisMethod);

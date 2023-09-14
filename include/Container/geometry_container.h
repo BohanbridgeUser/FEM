@@ -11,8 +11,10 @@ class Geometry_Container
         /// @name Define 
         /// @{
             LOTUS_POINTER_DEFINE(Geometry_Container<TGeometryType>)
-            typedef std::unordered_map<int, TGeometryType* ,std::hash<int> > ContainerType;
-            typedef int Key_Type;
+            typedef std::unordered_map<int, TGeometryType* ,std::hash<int> > 
+                                                                            ContainerType;
+            typedef int 
+                                                                                 Key_Type;
         /// @}
         
         /// @name Life Circle
@@ -51,7 +53,7 @@ class Geometry_Container
             }
             TGeometryType& At(const Key_Type& k)
             {
-                return *Container.at(k);
+                return *(Container.at(k));
             }
             int Size()const 
             {

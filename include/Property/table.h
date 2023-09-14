@@ -30,11 +30,14 @@ public:
     /// Pointer definition of Table
     LOTUS_POINTER_DEFINE(Table);
 
-    typedef std::array<TResultType, TResultsColumns>  result_row_type;
+    typedef std::array<TResultType, TResultsColumns>  
+                                                                    result_row_type;
 
-    typedef std::pair<TArgumentType, result_row_type> RecordType;
+    typedef std::pair<TArgumentType, result_row_type> 
+                                                                         RecordType;
 
-    typedef std::vector<RecordType> TableContainerType;
+    typedef std::vector<RecordType> 
+                                                                 TableContainerType;
 
     ///@}
     ///@name Life Cycle

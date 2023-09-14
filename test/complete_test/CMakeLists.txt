@@ -11,6 +11,8 @@ ELSE(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     FIND_PACKAGE(Boost REQUIRED)
 ENDIF()
 
+SET(CMAKE_CXX_STANDARD 17)
+
 FILE(GLOB_RECURSE SRC_DIR_LIST "../../src/*.cpp" "../../src/*.c" "*.cpp")	#遍历获取source/路径下所有的*.cpp和*.c文件列表
 
 IF(${Boost_FOUND})
