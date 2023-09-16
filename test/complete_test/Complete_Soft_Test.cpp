@@ -1,5 +1,6 @@
 #include "../../include/Model/model.h"
 #include "../../include/Element/solid_element.h"
+#include "../../include/Element/small_displacement_element.h"
 #include "../../include/Condition/point_load_condition.h"
 #include "../../include/Variable/variable.h"
 #include "../../include/Solve_Strategy/builder_and_solver/block_builder_and_solver.h"
@@ -78,17 +79,17 @@ int main()
     Properties Prop;
     Prop.Id() = 1;
     Prop.SetValue(DENSITY,7850.00);
-    
-    // std::vector<double> V_E,V_M,V_P;
-    // V_E.push_back(2.1E9);
-    // V_M.push_back(7850.00);
-    // V_P.push_back(1.2E-5);
+    Prop.SetValue(ELASTICITY_MODULUS,2.1E9);
+    Prop.SetValue(POISON,0.31);
+    std::cout << "Property DENSITY           : " << Prop.GetValue(DENSITY) << std::endl;
+    std::cout << "Property ELASTICITY_MODULUS: " << Prop.GetValue(ELASTICITY_MODULUS)<< std::endl;
+    std::cout << "Property POISON            : " << Prop.GetValue(POISON)<< std::endl;
 
-    // std::vector<Solid_Element> E_V;
-    // for (int i=0;i<64;++i) 
-    // {
-    //     E_V.push_back(Solid_Element(i,&Q_3d_4Ns[i],&Prop));
-    // }
+    std::vector<Solid_Element> E_V;
+    for (int i=0;i<64;++i) 
+    {
+        E_V.push_back(Solid_Element(i,H_3d_8Ns[i],&Prop));
+    }
 
     // Condition Cond;
     // std::vector<Condition> C_V;

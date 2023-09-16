@@ -23,20 +23,40 @@ class Small_Displacement_Element : public Solid_Element
 
         /// @name Life Circle
         /// @{
+            Small_Displacement_Element();
 
+            Small_Displacement_Element(IndexType NewId,
+                                       GeometryType::Pointer pThisGeometry);
+
+            Small_Displacement_Element(IndexType NewId,
+                                       GeometryType::Pointer pThisGeometry,
+                                       Properties::Pointer pThisProperties);
+            
+            Small_Displacement_Element(Small_Displacement_Element const& another);
+
+            ~Small_Displacement_Element() override;
 
         /// @}
 
 
         /// @name Operators
         /// @{
-
+            Small_Displacement_Element& operator=(Small_Displacement_Element const& another);
 
         /// @}
 
 
         /// @name Operations
         /// @{
+            Element::SharedPointer Create(IndexType NewId,
+                                          NodesContainerType const& rNodes,
+                                          Properties::Pointer pProperties) const override;
+
+            Element::SharedPointer Clone(IndexType NewId,
+                                         NodesContainerType const& rNodes) const override;
+
+            int Check(Process_Info const& rCurrentProcessInfo)const override;
+
 
 
         /// @}

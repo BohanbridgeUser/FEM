@@ -91,6 +91,21 @@ class Element:public Geometry_Object
 
         ///@name Operations 
         ///@{
+            virtual Element::SharedPointer Create(IndexType NewId,
+                                    NodesContainerType const& rNodes,
+                                    Properties::Pointer pProperties) const
+            {
+                std::cerr << "Calling Base Class Create Method!\n";
+                return std::make_shared<Element>(NewId,&(*GetGeometry().Create(rNodes)),pProperties);
+            }
+            virtual Element::SharedPointer Clone(IndexType NewId,
+                                    NodesContainerType const& rNodes) const
+            {
+                std::cerr << "Calling Base Class Create Method!\n";
+                return std::make_shared<Element>(NewId,&(*GetGeometry().Create(rNodes)),pGetProperties());
+            }
+
+
             /**
              * This method provides the place to perform checks on the completeness of the input
              * and the compatibility with the problem options as well as the contitutive laws selected
@@ -180,6 +195,14 @@ class Element:public Geometry_Object
             Properties GetProperties()const
             {
                 return *mpProperties;
+            }
+            Properties::Pointer& pGetProperties()
+            {
+                return mpProperties;
+            }
+            Properties::Pointer pGetProperties() const
+            {
+                return mpProperties;
             }
             /**
              * this determines the elemental equation ID vector for all elemental

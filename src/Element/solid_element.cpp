@@ -5,6 +5,7 @@ LOTUS_CREATE_LOCAL_FLAGS(Solid_Element,COMPUTE_RHS_VECTOR ,0)
 LOTUS_CREATE_LOCAL_FLAGS(Solid_Element,COMPUTE_LHS_MATRIX ,1)
 LOTUS_CREATE_LOCAL_FLAGS(Solid_Element,FINALIZED_STEP     ,2)
 
+
 /********************************************Initialization**************************************************/
 void Solid_Element::Initialize(const Process_Info& rCurrentProcessInfo)
 {
@@ -417,6 +418,19 @@ void Solid_Element::CalculatePerturbedLeftHandSide( MatrixType& rLeftHandSideMat
 }
 
 /************************************************ @name Utility Operations ****************************************/
+Element::SharedPointer Solid_Element::Create(IndexType NewId,
+                                             NodesContainerType const& rNodes,
+                                             Properties::Pointer pProperties) const
+{
+    return std::make_shared<Solid_Element>(NewId,&(*GetGeometry().Create(rNodes)),pProperties);
+}
+Element::SharedPointer Solid_Element::Clone(IndexType NewId,
+                                            NodesContainerType const& rNodes)const
+{
+    return std::make_shared<Solid_Element>(NewId,&(*GetGeometry().Create(rNodes)),pGetProperties());
+}
+
+
 void Solid_Element::EquationIdVector( EquationIdVectorType& rResult, const Process_Info& rCurrentProcessInfo ) const
 {
     const SizeType number_of_nodes = GetGeometry().size();

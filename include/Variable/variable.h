@@ -119,7 +119,6 @@ class Variable : public Variable_Data
         /// @name Operators
         /// @{
 
-
         /// @}
 
 
@@ -160,6 +159,70 @@ class Variable : public Variable_Data
             {
                 (*static_cast<TDataType* >(pDestination) ) = (*static_cast<const TDataType* >(pSource) );
             }
+
+            /**
+             * @brief AssignZero is a special case of Assign for which variable zero value used as source.
+             * @details This method is useful for initializing arrays or resetting values in memory.
+             * @param pDestination The pointer of the destination variable
+             */
+            void AssignZero(void* pDestination) const override
+            {
+                //(*static_cast<TDataType* >(pDestination) ) = mZero;
+                new (pDestination) TDataType(mZero);
+            }
+
+            /**
+             * @brief Delete removes an object of variable type from memory.
+             * @details It calls a destructor of objects to prevent memory leak and frees the memory allocated for this object assuming that the object is allocated in heap.
+             * @param pSource The pointer of the variable to be deleted
+             */
+            void Delete(void* pSource) const override
+            {
+                delete static_cast<TDataType* >(pSource);
+            }
+
+            /**
+             * @brief This method allocates the data of the variable
+             * @param pData A pointer to the data to be allocated
+             */
+            void Allocate(void** pData) const override
+            {
+                *pData = new TDataType;
+            }
+
+            /**
+             * @brief This method returns the variable type
+             * @return The type of the variable
+             */
+            static const VariableType& StaticObject()
+            {
+                const static Variable<TDataType> static_object("NONE");
+                return static_object;
+            }
+
+            TDataType& GetValue(void* pSource) const
+            {
+                return GetValueByIndex(static_cast<TDataType*>(pSource),GetComponentIndex());
+            }
+
+            const TDataType& GetValue(const void* pSource) const
+            {
+                return GetValueByIndex(static_cast<TDataType*>(pSource),GetComponentIndex());
+            }
+
+            /**
+             * @brief This method returns the zero value of the variable type
+             * @return The zero value of the corresponding variable
+             */
+            const TDataType& Zero() const
+            {
+                return mZero;
+            }
+
+            const void* pZero() const override {
+            return &mZero;
+            }
+
         /// @}
 
 
@@ -285,6 +348,21 @@ class Variable : public Variable_Data
 
         /// @name Private Operations
         /// @{
+            
+            /// This is the default function for getting a value by index considering continuous memory indexing
+            /** It is templated so one can create specialized version of this for types with different structure
+            **/
+            template<typename TValueType>
+            TDataType& GetValueByIndex(TValueType* pValue, std::size_t index) const
+            {
+                return *static_cast<TDataType*>(pValue + index);
+            }
+
+            template<typename TValueType>
+            const TDataType& GetValueByIndex(const TValueType* pValue, std::size_t index) const
+            {
+                return *static_cast<const TDataType*>(pValue + index);
+            }
 
         /// @}
 

@@ -42,7 +42,9 @@ class Solid_Element : public Element
             struct ElementData
             {
             private:
-                //variables including all integration points
+                /**
+                 * @param pDN_De Shape Functions Gradients Values @param pNcontainer Shap Functions Values
+                */
                 const GeometryType::ShapeFunctionGradientsType* pDN_De;
                 const Matrix* pNcontainer;
                 const Process_Info* pProcessInfo;
@@ -193,12 +195,12 @@ class Solid_Element : public Element
             {
 
             }
-            Solid_Element(int NewId, GeometryType::Pointer pGeometry)
+            Solid_Element(IndexType NewId, GeometryType::Pointer pGeometry)
             :BaseType(NewId,pGeometry)
             {
 
             }
-            Solid_Element(int NewId, GeometryType::Pointer pGeometry, typename PropertiesType::Pointer pProperties)
+            Solid_Element(IndexType NewId, GeometryType::Pointer pGeometry, typename PropertiesType::Pointer pProperties)
             :BaseType(NewId,pGeometry,pProperties)
             {
 
@@ -244,6 +246,13 @@ class Solid_Element : public Element
 
         /// @name Operations
         /// @{
+            virtual Element::SharedPointer Create(IndexType NewId,
+                                          NodesContainerType const& rNodes,
+                                          Properties::Pointer pProperties) const override;
+            virtual Element::SharedPointer Clone(IndexType NewId,
+                                    NodesContainerType const& rNodes) const override;
+
+
             void GetDofList(DofsVectorType& rElementalDofList, const Process_Info& rCurrentProcessInfo) const override
             {
                 rElementalDofList.resize(0);
@@ -259,8 +268,8 @@ class Solid_Element : public Element
             }
 
             void CalculateLocalSystem(MatrixType& rLeftHandSideMatrix,
-			      VectorType& rRightHandSideVector,
-			      const Process_Info& rCurrentProcessInfo) override;
+			                          VectorType& rRightHandSideVector,
+			                          const Process_Info& rCurrentProcessInfo) override;
 
              /**
              * Called to initialize the element.
