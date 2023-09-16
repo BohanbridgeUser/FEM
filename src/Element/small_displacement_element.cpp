@@ -52,7 +52,7 @@
 /// @name Operations
 /// @{
     Element::SharedPointer Small_Displacement_Element::Create(IndexType NewId,
-                                                              GeometryType::Pointer rNodes,
+                                                              NodesContainerType const& rNodes,
                                                               Properties::Pointer pProperties) const
     {
         return std::make_shared<Small_Displacement_Element>(NewId,&(*GetGeometry().Create(rNodes)),pProperties);
@@ -64,7 +64,37 @@
     }
     int Small_Displacement_Element::Check(Process_Info const& rCurrentProcessInfo) const
     {
-        
+        int ErrorCode = 1;
+        ErrorCode = Solid_Element::Check(rCurrentProcessInfo);
+
+        for (SizeType i=0;i<this->GetGeometry().size();++i)
+        {
+            Node const& rNode = this->GetGeometry()[i];
+            /// @brief Check Solution Step Data DISPLACEMENT
+            if (!rNode.SolutionStepData().Has(DISPLACEMENT))
+            {
+                std::cerr << "Node " << i << " missing Variable DISPLACEMENT! in SolutionStepData \n";
+                exit(0);
+            }
+
+            /// @brief Check Dofs
+            if (!rNode.HasDofFor(DISPLACEMENT_X))
+            {
+                std::cerr << "Node " << i << "missing Dof of DISPLACEMENT_X !\n";
+                exit(0);
+            }
+            if (!rNode.HasDofFor(DISPLACEMENT_Y))
+            {
+                std::cerr << "Node " << i << "missing Dof of DISPLACEMENT_X !\n";
+                exit(0);
+            }
+            if ((rCurrentProcessInfo[SPACE_DIMENSION] == 3) && !rNode.HasDofFor(DISPLACEMENT_Z))
+            {
+                
+            }
+
+        }
+        return ErrorCode;
     }
 
 /// @}

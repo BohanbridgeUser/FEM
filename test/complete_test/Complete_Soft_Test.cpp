@@ -8,6 +8,7 @@
 #include "../../include/Solve_Strategy/convergencecriterias/convergencecriterias.h"
 #include "../../include/Solve_Strategy/schemes/scheme.h"
 #include "../../include/Container/lotus_flags.h"
+#include "../../include/process_info.h"
 int main()
 {
     /* Geometry Model */

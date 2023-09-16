@@ -449,7 +449,6 @@ class Geometry
             {
                 return mGeometry_Dimension.GetLocalSpaceDimension();
             }
-
              /**
              * @brief This method calculate and return length, area or volume of this geometry depending to it's dimension.
              * @details For one dimensional geometry it returns its length, for two dimensional it gives area and for three dimensional geometries it gives its volume.
