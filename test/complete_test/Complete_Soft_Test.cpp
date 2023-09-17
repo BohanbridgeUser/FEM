@@ -52,11 +52,11 @@ int main()
     }
     /* Mesh Model */
     std::cout << "********************Mesh Model********************\n";
-    std::vector<Node*> V_Node;
+    std::vector<Node> V_Node;
     for (int i=0;i<V_PP.size();++i)
     {
         Node* N = new Node(*V_PP[i]);
-        V_Node.push_back(N);
+        V_Node.push_back(*N);
     }
     // for (int i=0;i<V_Node.size();++i)
     // {
@@ -71,8 +71,8 @@ int main()
         {
             for(int k=0;k<8;++k)
             {
-                H_3d_8Ns[cnt] = new Hexahedron(cnt,*V_Node[i*81+j*9+k],*V_Node[(i+1)*81+j*9+k],*V_Node[(i+1)*81+(j+1)*9+k],*V_Node[i*81+(j+1)*9+k],
-                                                *V_Node[i*81+j*9+(k+1)],*V_Node[(i+1)*81+j*9+(k+1)],*V_Node[(i+1)*81+(j+1)*9+(k+1)],*V_Node[i*81+(j+1)*9+(k+1)]);
+                H_3d_8Ns[cnt] = new Hexahedron(cnt,V_Node[i*81+j*9+k],V_Node[(i+1)*81+j*9+k],V_Node[(i+1)*81+(j+1)*9+k],V_Node[i*81+(j+1)*9+k],
+                                                V_Node[i*81+j*9+(k+1)],V_Node[(i+1)*81+j*9+(k+1)],V_Node[(i+1)*81+(j+1)*9+(k+1)],V_Node[i*81+(j+1)*9+(k+1)]);
                 cnt++;
             }
         }
@@ -86,21 +86,31 @@ int main()
     std::cout << "Property ELASTICITY_MODULUS: " << Prop.GetValue(ELASTICITY_MODULUS)<< std::endl;
     std::cout << "Property POISON            : " << Prop.GetValue(POISON)<< std::endl;
 
-    std::vector<Solid_Element> E_V;
+    std::vector<Small_Displacement_Element> E_V;
     for (int i=0;i<64;++i) 
     {
-        E_V.push_back(Solid_Element(i,H_3d_8Ns[i],&Prop));
+        E_V.push_back(Small_Displacement_Element(i,H_3d_8Ns[i],&Prop));
     }
 
-    // Condition Cond;
-    // std::vector<Condition> C_V;
-    // C_V.push_back(Cond);
-    // Mesh<Node,Properties,Solid_Element,Condition> 
-    //                     mesh(&N_V,Prop,E_V,C_V);
-    // for(int i=0;i<mesh.Elements().size();++i)
-    // {
-    //     std::cout << "Element ID: " << i+1 << std::endl;
-    //     std::cout << mesh.Elements()[i];
-    // }
+
+    /******************************Condition*********************************/
+    std::vector<Point3D<Node>> V_P3D;
+    for(int i=8;i<729;i+=9)
+    {
+        Point3D<Node>* temp = new Point3D<Node>(&V_Node[i]);
+        V_P3D.push_back(*temp);
+    }
+    for (auto it=V_P3D.begin();it!=V_P3D.end();++it)
+        std::cout << *it;
+
+    std::vector<Point_Load_Condition> C_V;
+    for (auto it=V_P3D.begin();it!=V_P3D.end();++it)
+    {
+        C_V.push_back(Point_Load_Condition(it-V_P3D.begin(),&(*it),&Prop));
+    }
+    Mesh<Node,Properties,Small_Displacement_Element,Point_Load_Condition> 
+                         mesh(&V_Node,Prop,E_V,C_V);
+
+    
     return 0;
 }

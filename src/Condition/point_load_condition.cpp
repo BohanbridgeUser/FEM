@@ -6,18 +6,18 @@ Point_Load_Condition::Point_Load_Condition()
 {
 
 }
-Point_Load_Condition::Point_Load_Condition(IndexType& NewId,
+Point_Load_Condition::Point_Load_Condition(IndexType NewId,
                                            GeometryType::Pointer pThisGeometry)                                    
 :Load_Condition(NewId,pThisGeometry)
 {
 
 }
-Point_Load_Condition::Point_Load_Condition(IndexType& NewId,
+Point_Load_Condition::Point_Load_Condition(IndexType NewId,
                                            GeometryType::Pointer pThisGeometry,
                                            Properties::Pointer pThisProperties)
 :Load_Condition(NewId,pThisGeometry,pThisProperties)
 {
-
+    mThisIntegrationMethod = GetGeometry().GetDefaultIntegrationMethod();
 }
 Point_Load_Condition::Point_Load_Condition(Point_Load_Condition const& another)
 :Load_Condition(another)

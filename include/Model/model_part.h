@@ -5,6 +5,7 @@
 #include "../Container/geometry_container.h"
 #include "../Geometry/quadrilateral_3d_4.h"
 #include "../Geometry/hexahedron.h"
+#include "../Geometry/point3d.h"
 #include "../Node/node.h"
 #include "../Element/element.h"
 #include "../Condition/condition.h"

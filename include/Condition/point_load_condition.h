@@ -15,9 +15,9 @@ class Point_Load_Condition : public Load_Condition
         /// @name Life Circle
         /// @{
             Point_Load_Condition();
-            Point_Load_Condition(IndexType& NewId,
+            Point_Load_Condition(IndexType NewId,
                                  GeometryType::Pointer pThisGeometry);
-            Point_Load_Condition(IndexType& NewId,
+            Point_Load_Condition(IndexType NewId,
                                  GeometryType::Pointer pThisGeometry,
                                  Properties::Pointer pThisProperties);
             Point_Load_Condition(Point_Load_Condition const& another);

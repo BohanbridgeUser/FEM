@@ -7,7 +7,10 @@
 #include "Element/element.h"
 #include <unordered_map>
 #include <vector>
-template<typename TNodeType, typename TPropertiesType, typename TElementType, typename TConditionType>
+template<typename TNodeType,
+         typename TPropertiesType,
+         typename TElementType,
+         typename TConditionType>
 class Mesh
 {
     public:

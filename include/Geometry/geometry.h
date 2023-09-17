@@ -71,6 +71,8 @@ class Geometry
             typedef std::vector<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> > 
                                                                          JacobiansType;
             
+            typedef Vector
+                                                                            NormalType;
         //}
 
         /// @name Life Circle 
@@ -590,6 +592,34 @@ class Geometry
                 return 0.0;
             }
 
+            /**
+             * @brief This method gives you number of all edges of this geometry.
+             * @details For example, for a hexahedron, this would be 12
+             * @return SizeType containes number of this geometry edges.
+             * @see EdgesNumber()
+             * @see Edges()
+             * @see GenerateEdges()
+             * @see FacesNumber()
+             * @see Faces()
+             * @see GenerateFaces()
+             */
+            virtual SizeType EdgesNumber() const
+            {
+                std::cerr << "Calling base class EdgesNumber method instead of derived class one. Please check the definition of derived class. " << *this << std::endl;
+                exit(0);
+            }
+             /**
+             * @brief Returns the number of faces of the current geometry.
+             * @details This is only implemented for 3D geometries, since 2D geometries only have edges but no faces
+             * @see EdgesNumber
+             * @see Edges
+             * @see Faces
+             */
+            virtual SizeType FacesNumber() const
+            {
+                std::cerr << "Calling base class FacesNumber method instead of derived class one. Please check the definition of derived class. " << *this << std::endl;
+                exit(0);
+            }
         /// @}
 
         /// @name Input and Output
@@ -715,7 +745,10 @@ class Geometry
             }
         /// @}
 };
-template<typename TPointType> int Geometry<TPointType>::number = 0;
-template<typename TPointType> typename Geometry<TPointType>::Geometry_Type Geometry<TPointType>::GeometryType = Geometry_Type::Origin;
-template<typename TPointType> const Geometry_Dimension Geometry<TPointType>::mGeometry_Dimension = Geometry_Dimension(3,3);
+template<typename TPointType> 
+int Geometry<TPointType>::number = 0;
+template<typename TPointType> 
+typename Geometry<TPointType>::Geometry_Type Geometry<TPointType>::GeometryType = Geometry_Type::Origin;
+template<typename TPointType> 
+const Geometry_Dimension Geometry<TPointType>::mGeometry_Dimension = Geometry_Dimension(3,3);
 #endif

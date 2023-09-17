@@ -98,7 +98,7 @@
     Initial_State::Initial_State(const Matrix& rInitialDeformationGradientMatrix)
         : mReferenceCounter(0)
     {
-        const SizeType dimension = rInitialDeformationGradientMatrix.size1();
+        const SizeType dimension = rInitialDeformationGradientMatrix.rows();
         const SizeType voigt_size = (dimension == 3) ? 6 : 3;
         if(dimension <= 0) 
         {
@@ -189,7 +189,7 @@
     /**
      * @brief This method returns the initial strain vector if was set before
      */
-    const Vector& Initial_State::GetInitialStrainVector() const
+    const Initial_State::Vector& Initial_State::GetInitialStrainVector() const
     {
         return mInitialStrainVector;
     }
@@ -197,7 +197,7 @@
     /**
      * @brief This method returns the initial stress vector if was set before
      */
-    const Vector& Initial_State::GetInitialStressVector() const
+    const Initial_State::Vector& Initial_State::GetInitialStressVector() const
     {
         return mInitialStressVector;
     }
@@ -205,7 +205,7 @@
     /**
      * @brief This method returns the initial stress vector if was set before
      */
-    const Matrix& Initial_State::GetInitialDeformationGradientMatrix() const
+    const Initial_State::Matrix& Initial_State::GetInitialDeformationGradientMatrix() const
     {
         return mInitialDeformationGradientMatrix;
     }
