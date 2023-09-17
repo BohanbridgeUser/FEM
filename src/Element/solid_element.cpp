@@ -417,6 +417,15 @@ void Solid_Element::CalculatePerturbedLeftHandSide( MatrixType& rLeftHandSideMat
         }
 }
 
+Solid_Element::Matrix& Solid_Element::CalculateTotalDeltaPosition(Matrix & rDeltaPosition)
+{
+
+    const GeometryType& rGeometry = GetGeometry();
+
+    ElementUtility::CalculateTotalDeltaPosition(rDeltaPosition,rGeometry);
+    return rDeltaPosition;
+}
+
 /************************************************ @name Utility Operations ****************************************/
 Element::SharedPointer Solid_Element::Create(IndexType NewId,
                                              NodesContainerType const& rNodes,

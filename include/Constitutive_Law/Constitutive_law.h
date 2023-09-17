@@ -9,6 +9,7 @@
 #include "../Linear_Solver/sparse_space.h"
 #include "../process_info.h"
 #include "../Property/properties.h"
+#include "initial_state.h"
 
 #include <Eigen/Eigen>
 
@@ -31,9 +32,9 @@ class Constitutive_Law : public Flags
                                                                      Vector;
             typedef typename DenseSpace::Matrix
                                                                      Matrix;
-            typedef typename SparseSpace::SparseMatrix 
+            typedef typename DenseSpace::Matrix
                                                         VoigtSizeMatrixType;           // Constitutive Matrix
-            typedef typename SparseSpace::SparseMatrix 
+            typedef typename DenseSpace::Matrix 
                                                DeformationGradientMatrixType; // Def. gradient tensor
             LOTUS_POINTER_DEFINE(Constitutive_Law)
 
@@ -582,6 +583,41 @@ class Constitutive_Law : public Flags
              * @note This function HAS TO BE IMPLEMENTED by any derived class
              */
             virtual SizeType GetStrainSize() const;
+
+            /**
+             * @return The working space dimension of the current constitutive law
+             * @note This function HAS TO BE IMPLEMENTED by any derived class
+             */
+            virtual SizeType WorkingSpaceDimension();
+        
+            /**
+             * This function is designed to be called once to check compatibility with element
+             * @param rFeatures
+             */
+            virtual void GetLawFeatures(Features& rFeatures);
+
+        /// @}
+
+
+        /// @name Inquiry
+        /// @{
+            /**
+             * @return The initial state of strains/stresses/F
+             */
+            Initial_State::Pointer pGetInitialState()
+            {
+                return mpInitialState;
+            }
+
+            /**
+             * @return The reference to initial state of strains/stresses/F
+             */
+            Initial_State& GetInitialState()
+            {
+                return *mpInitialState;
+            }
+
+
         /// @}
     protected:
         /// @name Protected Static Member Variables
@@ -637,7 +673,7 @@ class Constitutive_Law : public Flags
 
         /// @name Private Member Variables
         /// @{
-
+            Initial_State::Pointer mpInitialState = nullptr;
 
         /// @}
 

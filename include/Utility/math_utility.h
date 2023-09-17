@@ -1,6 +1,8 @@
 #ifndef _MATH_UTILITY_H_
 #define _MATH_UTILITY_H_
+#include "../Node/node.h"
 #include "../Geometry/geometry.h"
+
 
 /**
  * Transform a rotation vector to a skew symmetric matrix
@@ -60,4 +62,5 @@ static inline double GerneralizedDet(TMatrixType const& rA)
         return std::sqrt(ATA.determinant());
     }
 }
+
 #endif

@@ -2,6 +2,7 @@
 #define _SMALL_DISPLACEMENT_ELEMENT_H_
 #include "solid_element.h"
 
+
 class Small_Displacement_Element : public Solid_Element
 {
     public:
@@ -100,6 +101,44 @@ class Small_Displacement_Element : public Solid_Element
 
         /// @name Protected Operations
         /// @{
+            /**
+             * Calculation of the Geometric Stiffness Matrix
+             */
+
+            void CalculateAndAddKuug(MatrixType& rLeftHandSideMatrix,
+                                     ElementDataType& rVariables,
+                                     double& rIntegrationWeight) override;
+            /**
+             * Set Variables of the Element to the Parameters of the Constitutive Law
+             */
+            void SetElementData(ElementDataType& rVariables,
+                                Constitutive_Law::Parameters& rValues,
+                                const int & rPointNumber) override;
+
+            /**
+             * Calculate Element Kinematics
+             */
+            void CalculateKinematics(ElementDataType& rVariables,
+                                     const double& rPointNumber) override;
+
+            /**
+             * Initialize Element General Variables
+             */
+            void InitializeElementData(ElementDataType & rVariables,
+                                       const Process_Info& rCurrentProcessInfo) override;
+
+
+            /**
+             * Calculation of the Infinitesimal Strain Vector
+             */
+            virtual void CalculateInfinitesimalStrain(const Matrix& rH,
+                                                      Vector& rStrainVector);
+
+            /**
+             * Calculation of the Displacement Gradient H
+             */
+            void CalculateDisplacementGradient(Matrix& rH,
+                                               const Matrix& rDN_DX);
 
 
         /// @}

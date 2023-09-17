@@ -2,6 +2,7 @@
 #define _SOLID_ELEMENT_H_
 #include "element.h"
 #include "../Variable/variables.h"
+#include "../Utility/element_utility.h"
 
 #include <Eigen/Eigen>
 class Solid_Element : public Element
@@ -281,7 +282,7 @@ class Solid_Element : public Element
              * Initialize Element General Variables
              */
             virtual void InitializeElementData(ElementDataType & rVariables,
-                                const Process_Info& rCurrentProcessInfo);
+                                               const Process_Info& rCurrentProcessInfo);
             
             /**
              * Initialize Material Properties on the Constitutive Law
@@ -307,7 +308,7 @@ class Solid_Element : public Element
              * Finalize Element Internal Variables
              */
             virtual void FinalizeStepVariables(ElementDataType & rVariables,
-                            const double& rPointNumber);
+                                               const double& rPointNumber);
             
             /**
              * Initialize System Matrices
@@ -363,31 +364,31 @@ class Solid_Element : public Element
              * Calculation of the Material Stiffness Matrix. Kuum = BT * C * B
              */
             virtual void CalculateAndAddKuum(MatrixType& rLeftHandSideMatrix,
-                                            ElementDataType& rVariables,
-                                            double& rIntegrationWeight);
+                                             ElementDataType& rVariables,
+                                             double& rIntegrationWeight);
 
             /**
              * Calculation of the Geometric Stiffness Matrix. Kuug = BT * S
              */
             virtual void CalculateAndAddKuug(MatrixType& rLeftHandSideMatrix,
-                                            ElementDataType& rVariables,
-                                            double& rIntegrationWeight);
+                                             ElementDataType& rVariables,
+                                             double& rIntegrationWeight);
 
             /**
              * Calculation of the External Forces Vector. Fe = N * t + N * b
              */
             virtual void CalculateAndAddExternalForces(VectorType& rRightHandSideVector,
-                                ElementDataType& rVariables,
-                                Vector& rVolumeForce,
-                                double& rIntegrationWeight);
+                                                       ElementDataType& rVariables,
+                                                       Vector& rVolumeForce,
+                                                       double& rIntegrationWeight);
 
 
             /**
              * Calculation of the Internal Forces Vector. Fi = B * sigma
              */
             virtual void CalculateAndAddInternalForces(VectorType& rRightHandSideVector,
-                                ElementDataType & rVariables,
-                                double& rIntegrationWeight);
+                                                       ElementDataType & rVariables,
+                                                       double& rIntegrationWeight);
 
             /**
              * Calculation of the Integration Weight
@@ -404,13 +405,13 @@ class Solid_Element : public Element
              * Transform Element General Variables
              */
             virtual void TransformElementData(ElementDataType & rVariables,
-                            const double& rPointNumber);
+                                              const double& rPointNumber);
 
             /**
              * Calculation of the tangent via perturbation of the dofs variables : testing purposes
              */
             void CalculatePerturbedLeftHandSide (MatrixType& rLeftHandSideMatrix,
-                            const Process_Info& rCurrentProcessInfo);
+                                                 const Process_Info& rCurrentProcessInfo);
 
             /**
              * This function provides the place to perform checks on the completeness of the input.
@@ -485,6 +486,10 @@ class Solid_Element : public Element
         /// @name Protected Operations
         /// @{
 
+            /**
+             * Calculation of the Total Position Increment
+             */
+            virtual Matrix& CalculateTotalDeltaPosition(Matrix & rDeltaPosition);
 
         /// @}
 

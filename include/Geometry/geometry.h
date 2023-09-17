@@ -335,6 +335,75 @@ class Geometry
                     }
                 }
                 return rResult;
+            }   
+            /** Jacobians for given  method. This method
+            calculate jacobians matrices in all integrations points of
+            given integration method.
+
+            @param ThisMethod integration method which jacobians has to
+            be calculated in its integration points.
+
+            @return JacobiansType a Vector of jacobian
+            matrices \f$ J_i \f$ where \f$ i=1,2,...,n \f$ is the integration
+            point index of given integration method.
+
+            @param DeltaPosition Matrix with the nodes position increment which describes
+            the configuration where the jacobian has to be calculated.
+
+            @see DeterminantOfJacobian
+            @see InverseOfJacobian
+            */
+            virtual JacobiansType& Jacobian( JacobiansType& rResult, IntegrationMethod ThisMethod, Matrix & DeltaPosition ) const
+            {
+                if( rResult.size() != this->IntegrationPointsNumber( ThisMethod ) )
+                    rResult.resize( this->IntegrationPointsNumber( ThisMethod ));
+
+                for ( unsigned int pnt = 0; pnt < this->IntegrationPointsNumber( ThisMethod ); pnt++ ) {
+                    this->Jacobian( rResult[pnt], pnt, ThisMethod, DeltaPosition);
+                }
+                return rResult;
+            }
+            /** Jacobian in specific integration point of given integration
+            method. This method calculate jacobian matrix in given
+            integration point of given integration method.
+
+            @param IntegrationPointIndex index of integration point which jacobians has to
+            be calculated in it.
+
+            @param ThisMethod integration method which jacobians has to
+            be calculated in its integration points.
+
+            @param rDeltaPosition Matrix with the nodes position increment which describes
+            the configuration where the jacobian has to be calculated.
+
+            @return Matrix<double> Jacobian matrix \f$ J_i \f$ where \f$
+            i \f$ is the given integration point index of given
+            integration method.
+
+            @see DeterminantOfJacobian
+            @see InverseOfJacobian
+            */
+            virtual Matrix& Jacobian( Matrix& rResult, IndexType IntegrationPointIndex, IntegrationMethod ThisMethod, const Matrix& rDeltaPosition ) const
+            {
+                const SizeType working_space_dimension = this->WorkingSpaceDimension();
+                const SizeType local_space_dimension = this->LocalSpaceDimension();
+                if(rResult.rows() != working_space_dimension || rResult.cols() != local_space_dimension)
+                    rResult.resize( working_space_dimension, local_space_dimension);
+
+                const Matrix& r_shape_functions_gradient_in_integration_point = ShapeFunctionsLocalGradients( ThisMethod )[ IntegrationPointIndex ];
+
+                rResult.setZero();
+                const SizeType points_number = this->PointsNumber();
+                for (IndexType i = 0; i < points_number; ++i ) {
+                    const std::array<double, 3>& r_coordinates = (*this)[i].Coordinates();
+                    for(IndexType k = 0; k< working_space_dimension; ++k) {
+                        const double value = r_coordinates[k] - rDeltaPosition(i,k);
+                        for(IndexType m = 0; m < local_space_dimension; ++m) {
+                            rResult(k,m) += value * r_shape_functions_gradient_in_integration_point(i,m);
+                        }
+                    }
+                }
+                return rResult;
             }
             Vector& DeterminantOfJacobian(Vector& rResult)const
             {
