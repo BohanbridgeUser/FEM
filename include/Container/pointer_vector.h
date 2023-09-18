@@ -1,0 +1,451 @@
+
+#ifndef _POINTER_VECTOR_H_
+#define _POINTER_VECTOR_H_
+
+
+
+// System includes
+#include <functional>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <vector>
+
+// External includes
+#include <boost/iterator/indirect_iterator.hpp>
+
+
+// Project includes
+#include "../define.h"
+
+
+/// PointerVector is a  container like stl vector but using a vector to store pointers to its data.
+/** PointerVector is a container like stl vector
+    but using a vector to store pointers its data. Many methods are
+    copied from boost ptr_container library. There is modification
+    to make it capable to work with shared pointers.
+
+    This Container unlike the boost one does not free the memory by
+    itself and relies on using of counted pointers or manual
+    deleting.
+ */
+template<class TDataType,
+         class TPointerType = typename TDataType::Pointer,
+         class TContainerType = std::vector<TPointerType> >
+class PointerVector final
+{
+public:
+    ///@name Type Definitions
+    ///@{
+
+    /// Pointer definition of PointerVector
+    LOTUS_POINTER_DEFINE(PointerVector);
+
+    /// data type stores in this container.
+    typedef TDataType data_type;
+    typedef TDataType value_type;
+    typedef TPointerType pointer;
+    typedef const TPointerType const_pointer;
+    typedef TDataType& reference;
+    typedef const TDataType& const_reference;
+    typedef TContainerType ContainerType;
+
+    typedef boost::indirect_iterator<typename TContainerType::iterator>                iterator;
+    typedef boost::indirect_iterator<typename TContainerType::const_iterator>          const_iterator;
+    typedef boost::indirect_iterator<typename TContainerType::reverse_iterator>        reverse_iterator;
+    typedef boost::indirect_iterator<typename TContainerType::const_reverse_iterator>  const_reverse_iterator;
+
+    typedef typename TContainerType::size_type size_type;
+    typedef typename TContainerType::iterator ptr_iterator;
+    typedef typename TContainerType::const_iterator ptr_const_iterator;
+    typedef typename TContainerType::reverse_iterator ptr_reverse_iterator;
+    typedef typename TContainerType::const_reverse_iterator ptr_const_reverse_iterator;
+    typedef typename TContainerType::difference_type difference_type;
+
+    ///@}
+    ///@name Life Cycle
+    ///@{
+
+    /// Default constructor.
+    PointerVector() : mData() {}
+
+    template <class TInputIteratorType>
+    PointerVector(TInputIteratorType First, TInputIteratorType Last)
+        : mData(First, Last)
+    {
+    }
+
+    PointerVector(const PointerVector& rOther) :  mData(rOther.mData) {}
+
+    explicit PointerVector(const TContainerType& rContainer) :  mData(rContainer)
+    {
+    }
+
+    explicit PointerVector(std::size_t NewSize) :  mData(NewSize)
+    {
+    }
+
+    /// Destructor.
+    ~PointerVector() {}
+
+    ///@}
+    ///@name Operators
+    ///@{
+
+    PointerVector& operator=(const PointerVector& rOther)
+    {
+        mData = rOther.mData;
+        return *this;
+    }
+
+    TDataType& operator[](const size_type& i)
+    {
+        return *(mData[i]);
+    }
+
+    TDataType const& operator[](const size_type& i) const
+    {
+        return *(mData[i]);
+    }
+
+    pointer& operator()(const size_type& i)
+    {
+        return mData[i];
+    }
+
+    const_pointer& operator()(const size_type& i) const
+    {
+        return mData[i];
+    }
+
+    bool operator==( const PointerVector& r ) const // nothrow
+    {
+        if( size() != r.size() )
+            return false;
+        else
+            return std::equal(mData.begin(), mData.end(), r.mData.begin(), this->EqualKeyTo());
+    }
+
+    ///@}
+    ///@name Operations
+    ///@{
+
+    iterator                   begin()
+    {
+        return iterator( mData.begin() );
+    }
+    const_iterator             begin() const
+    {
+        return const_iterator( mData.begin() );
+    }
+    iterator                   end()
+    {
+        return iterator( mData.end() );
+    }
+    const_iterator             end() const
+    {
+        return const_iterator( mData.end() );
+    }
+    reverse_iterator           rbegin()
+    {
+        return reverse_iterator( mData.rbegin() );
+    }
+    const_reverse_iterator     rbegin() const
+    {
+        return const_reverse_iterator( mData.rbegin() );
+    }
+    reverse_iterator           rend()
+    {
+        return reverse_iterator( mData.rend() );
+    }
+    const_reverse_iterator     rend() const
+    {
+        return const_reverse_iterator( mData.rend() );
+    }
+    ptr_iterator               ptr_begin()
+    {
+        return mData.begin();
+    }
+    ptr_const_iterator         ptr_begin() const
+    {
+        return mData.begin();
+    }
+    ptr_iterator               ptr_end()
+    {
+        return mData.end();
+    }
+    ptr_const_iterator         ptr_end() const
+    {
+        return mData.end();
+    }
+    ptr_reverse_iterator       ptr_rbegin()
+    {
+        return mData.rbegin();
+    }
+    ptr_const_reverse_iterator ptr_rbegin() const
+    {
+        return mData.rbegin();
+    }
+    ptr_reverse_iterator       ptr_rend()
+    {
+        return mData.rend();
+    }
+    ptr_const_reverse_iterator ptr_rend() const
+    {
+        return mData.rend();
+    }
+
+    reference        front()       /* nothrow */
+    {
+        assert( !empty() );
+        return *(mData.front());
+    }
+    const_reference  front() const /* nothrow */
+    {
+        assert( !empty() );
+        return *(mData.front());
+    }
+    reference        back()        /* nothrow */
+    {
+        assert( !empty() );
+        return *(mData.back());
+    }
+    const_reference  back() const  /* nothrow */
+    {
+        assert( !empty() );
+        return *(mData.back());
+    }
+
+    size_type size() const
+    {
+        return mData.size();
+    }
+
+    size_type max_size() const
+    {
+        return mData.max_size();
+    }
+
+    void swap(PointerVector& rOther)
+    {
+        mData.swap(rOther.mData);
+    }
+
+    void push_back(const TPointerType& x)
+    {
+        mData.push_back(x);
+    }
+
+    void push_back(TPointerType&& rX)
+    {
+        mData.push_back(std::move(rX));
+    }
+
+    template<class... Args>
+    void emplace_back(Args&&... args) 
+    {
+        mData.emplace_back(std::forward<Args>(args)...);
+    }
+
+    iterator insert(iterator Position, const TPointerType pData)
+    {
+        return iterator(mData.insert(Position, pData));
+    }
+
+    template <class InputIterator>
+    void insert(InputIterator First, InputIterator Last)
+    {
+        for(; First != Last; ++First)
+            insert(*First);
+    }
+
+
+    iterator erase(iterator pos)
+    {
+        return iterator(mData.erase(pos.base()));
+    }
+
+    iterator erase( iterator first, iterator last )
+    {
+        return iterator( mData.erase( first.base(), last.base() ) );
+    }
+
+    void clear()
+    {
+        mData.clear();
+    }
+
+    void resize(size_type dim)
+    {
+        mData.resize(dim);
+    }
+
+    void reserve(size_type dim)
+    {
+        mData.reserve(dim);
+    }
+
+    int capacity()
+    {
+        return mData.capacity();
+    }
+
+    ///@}
+    ///@name Access
+    ///@{
+
+    /** Gives a reference to underly normal container. */
+    TContainerType& GetContainer()
+    {
+        return mData;
+    }
+
+    /** Gives a constant reference to underly normal container. */
+    const TContainerType& GetContainer() const
+    {
+        return mData;
+    }
+
+    ///@}
+    ///@name Inquiry
+    ///@{
+
+    bool empty() const
+    {
+        return mData.empty();
+    }
+
+    ///@}
+    ///@name Input and output
+    ///@{
+
+    /// Turn back information as a string.
+    std::string Info() const
+    {
+        std::stringstream buffer;
+        buffer << "PointerVector (size = " << size() << ") : ";
+
+        return buffer.str();
+    }
+
+    /// Print information about this object.
+    void PrintInfo(std::ostream& rOStream) const
+    {
+        rOStream << Info();
+    }
+
+    /// Print object's data.
+    void PrintData(std::ostream& rOStream) const
+    {
+        std::copy(begin(), end(), std::ostream_iterator<TDataType>(rOStream, "\n "));
+    }
+
+    ///@}
+
+protected:
+    ///@name Protected static Member Variables
+    ///@{
+
+
+    ///@}
+    ///@name Protected member Variables
+    ///@{
+
+
+    ///@}
+    ///@name Protected Operators
+    ///@{
+
+
+    ///@}
+    ///@name Protected Operations
+    ///@{
+
+
+    ///@}
+    ///@name Protected  Access
+    ///@{
+
+
+    ///@}
+    ///@name Protected Inquiry
+    ///@{
+
+
+    ///@}
+    ///@name Protected LifeCycle
+    ///@{
+
+
+    ///@}
+
+private:
+
+    ///@name Static Member Variables
+    ///@{
+
+
+    ///@}
+    ///@name Member Variables
+    ///@{
+
+    TContainerType mData;
+
+    ///@}
+    ///@name Private Operators
+    ///@{
+
+
+    ///@}
+    ///@name Private Operations
+    ///@{
+
+    ///@}
+    ///@name Serialization
+    ///@{
+
+
+    ///@}
+    ///@name Private  Access
+    ///@{
+
+
+    ///@}
+    ///@name Private Inquiry
+    ///@{
+
+
+    ///@}
+    ///@name Un accessible methods
+    ///@{
+
+
+    ///@}
+
+}; // Class PointerVector
+
+///@}
+
+///@name Type Definitions
+///@{
+
+
+///@}
+///@name Input and output
+///@{
+
+/// output stream function
+template<class TDataType,
+         class TPointerType,
+         class TContainerType>
+inline std::ostream& operator << (std::ostream& rOStream,
+                                  const PointerVector<TDataType, TPointerType, TContainerType>& rThis)
+{
+    rThis.PrintInfo(rOStream);
+    rOStream << std::endl;
+    rThis.PrintData(rOStream);
+
+    return rOStream;
+}
+
+#endif  

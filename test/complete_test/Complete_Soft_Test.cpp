@@ -1,5 +1,4 @@
 #include "../../include/Model/model.h"
-#include "../../include/Element/solid_element.h"
 #include "../../include/Element/small_displacement_element.h"
 #include "../../include/Condition/point_load_condition.h"
 #include "../../include/Variable/variable.h"
@@ -111,6 +110,7 @@ int main()
     Mesh<Node,Properties,Small_Displacement_Element,Point_Load_Condition> 
                          mesh(&V_Node,Prop,E_V,C_V);
 
+    
     
     return 0;
 }
