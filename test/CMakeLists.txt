@@ -24,5 +24,5 @@ ADD_SUBDIRECTORY(geometry_test)
 ADD_SUBDIRECTORY(model_test)
 ADD_SUBDIRECTORY(solver_test)
 ADD_SUBDIRECTORY(complete_test)
-
+ADD_SUBDIRECTORY(graphics)
 
