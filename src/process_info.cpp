@@ -158,7 +158,7 @@
             exit(0);
         } 
 
-        return &(*mpPreviousTimeStepInfo);
+        return mpPreviousTimeStepInfo;
     }
 
     const Process_Info::Pointer Process_Info::pGetPreviousTimeStepInfo(IndexType StepsBefore) const
@@ -176,7 +176,7 @@
             exit(0);
         } 
 
-        return &(*mpPreviousTimeStepInfo);
+        return mpPreviousTimeStepInfo;
     }
 
     Process_Info& Process_Info::FindSolutionStepInfo(IndexType ThisIndex)
@@ -206,7 +206,7 @@
             exit(0);
         } 
 
-        return &(*mpPreviousSolutionStepInfo);
+        return mpPreviousSolutionStepInfo;
     }
 
     const Process_Info::Pointer Process_Info::pGetPreviousSolutionStepInfo(IndexType StepsBefore) const
@@ -223,7 +223,7 @@
             std::cerr << "No previous time step exists." << std::endl;
             exit(0);
         } 
-        return &(*mpPreviousSolutionStepInfo);
+        return mpPreviousSolutionStepInfo;
     }
 
 /// @}

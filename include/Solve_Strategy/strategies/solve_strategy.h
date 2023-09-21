@@ -22,6 +22,8 @@ class Solve_Strategy : public Flags
             /* Utility Define */
             typedef Solver_Local_Flags
                                                                               LocalFlagType;
+            typedef ModelPart
+                                                                                 Model_Part;
             typedef Model_Part::DofsVectorType 
                                                                              DofsVectorType; 
             typedef Model_Part                                             

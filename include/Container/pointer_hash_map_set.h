@@ -36,21 +36,32 @@ public:
     LOTUS_POINTER_DEFINE(PointerHashMapSet);
 
     /// Key type for searching in this container.
-    typedef decltype(std::declval<TGetKeyType>()(std::declval<TDataType>())) key_type;
+    typedef decltype(std::declval<TGetKeyType>()(std::declval<TDataType>())) 
+                                                                                key_type;
 
     /// Data type stores in this container.
-    typedef TDataType data_type;
-    typedef TDataType value_type;
-    typedef TPointerType pointer_type;
-    typedef TDataType& reference;
-    typedef const TDataType& const_reference;
+    typedef TDataType 
+                                                                               data_type;
+    typedef TDataType 
+                                                                              value_type;
+    typedef TPointerType 
+                                                                            pointer_type;
+    typedef TDataType& 
+                                                                               reference;
+    typedef const TDataType& 
+                                                                         const_reference;
 	// typedef std::unordered_map<key_type, TPointerType, THashType> ContainerType;
-    typedef std::unordered_map<typename std::remove_reference<key_type>::type, TPointerType, THashType> ContainerType;
+    typedef std::unordered_map<typename std::remove_reference<key_type>::type, TPointerType, THashType> 
+                                                                           ContainerType;
 
-    typedef typename ContainerType::size_type size_type;
-    typedef typename ContainerType::iterator ptr_iterator;
-    typedef typename ContainerType::const_iterator ptr_const_iterator;
-    typedef typename ContainerType::difference_type difference_type;
+    typedef typename ContainerType::size_type 
+                                                                               size_type;
+    typedef typename ContainerType::iterator 
+                                                                            ptr_iterator;
+    typedef typename ContainerType::const_iterator 
+                                                                      ptr_const_iterator;
+    typedef typename ContainerType::difference_type 
+                                                                         difference_type;
 
 	///@}
 
@@ -108,8 +119,10 @@ public:
 	///@{
 
 
-	typedef iterator_adaptor iterator;
-	typedef const_iterator_adaptor const_iterator;
+	typedef iterator_adaptor 
+                                                                                iterator;
+	typedef const_iterator_adaptor 
+                                                                          const_iterator;
 
 	///@}
     ///@name Life Cycle
@@ -456,7 +469,7 @@ private:
         return TGetKeyType()(**i);
     }
 
-    key_type KeyOf(const TDataType & i)
+    key_type KeyOf(TDataType const& i)
     {
         return TGetKeyType()(i);
     }

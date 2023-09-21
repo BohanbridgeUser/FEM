@@ -7,8 +7,8 @@
 #include "../Quadrature/integration_point.h"
 #include "../Container/data_value_container.h"
 #include "../Utility/math_utility.h"
+#include "../Container/pointer_vector.h"
 
-#include <vector>
 #include <array>
 #include <memory>
 template<class TPointType>
@@ -26,7 +26,7 @@ class Geometry
                 Hexahedron
             };
 
-            LOTUS_POINTER_DEFINE(Geometry<TPointType>)
+            LOTUS_SHARED_POINTER_DEFINE(Geometry<TPointType>)
             typedef Geometry<TPointType>
                                                                             ClassType;
             typedef TPointType 
@@ -35,7 +35,7 @@ class Geometry
                                                                              SizeType;
             typedef size_t
                                                                             IndexType;
-            typedef std::vector<PointType> 
+            typedef PointerVector<PointType> 
                                                                   PointsContainerType;
             // @ Integration Points Define
             typedef Geometry_Data::IntegrationMethod
@@ -70,9 +70,20 @@ class Geometry
                                                                           JacobianType;
             typedef std::vector<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> > 
                                                                          JacobiansType;
-            
             typedef Vector
                                                                             NormalType;
+
+            /// PointsArrayType typedefs
+            typedef typename PointsContainerType::iterator 
+                                                                             iterator;
+            typedef typename PointsContainerType::const_iterator 
+                                                                       const_iterator;
+            typedef typename PointsContainerType::ptr_iterator 
+                                                                         ptr_iterator;
+            typedef typename PointsContainerType::ptr_const_iterator 
+                                                                   ptr_const_iterator;
+            typedef typename PointsContainerType::difference_type 
+                                                                      difference_type;
         //}
 
         /// @name Life Circle 
@@ -84,7 +95,7 @@ class Geometry
                     number++;
                     ID = number;
                 }
-                Geometry(const int& id, 
+                Geometry(const IndexType& id, 
                          PointsContainerType& Points)
                 :pPoints(Points),
                  ID(id),
@@ -92,7 +103,7 @@ class Geometry
                 {
                     number++;
                 }
-                Geometry(const int& id,
+                Geometry(const IndexType& id,
                          const PointsContainerType& Points,
                          const Geometry_Data& ThisGeometryData)
                 :pPoints(Points),
@@ -125,7 +136,7 @@ class Geometry
                 {
                     number++;
                 }
-                Geometry(Geometry<TPointType>* another)
+                Geometry(Geometry<TPointType>::Pointer another)
                 :ID(another->ID),
                  pPoints(another->pPoints),
                  mGeometry_Data(another->mGeometry_Data),
@@ -164,6 +175,30 @@ class Geometry
                 mData = mThisData;
             }
 
+             /// Sets Id of this Geometry
+            void SetId(const IndexType Id)
+            {
+                // The first bit of the Id is used to detect if Id
+                // is int or hash of name. Second bit defines if Id
+                // is self assigned or not.
+                if(IsIdGeneratedFromString(Id)
+                    || IsIdSelfAssigned(Id))
+                {
+                    std::cerr<< "Id: " << Id << " out of range. The Id must me lower than 2^62 = 4.61e+18. "
+                    << "Geometry being recognized as generated from string: " << IsIdGeneratedFromString(Id)
+                    << ", self assigned: " << IsIdSelfAssigned(Id) << "."
+                    << std::endl;
+                    exit(0);
+                }
+                ID = Id;
+            }
+            /// Sets Id with the use of the name of this geometry
+            void SetId(const std::string& rName)
+            {
+                ID = GenerateId(rName);
+            }
+
+    /// Gets the correspond
             /**
              * @brief Creates a new geometry pointer
              * @param rThisPoints the nodes of the new geometry
@@ -196,7 +231,7 @@ class Geometry
              */
             virtual ClassType::SharedPointer Create(const IndexType NewGeometryId,PointsContainerType const& rThisPoints) const
             {
-                return make_shared<ClassType>(new ClassType( NewGeometryId, rThisPoints, *mGeometry_Data));
+                return std::make_shared<ClassType>(NewGeometryId, rThisPoints, *mGeometry_Data);
             }
             /**
              * @brief Creates a new geometry pointer
@@ -237,7 +272,7 @@ class Geometry
              */
             virtual ClassType::SharedPointer Create(const IndexType NewGeometryId,const ClassType& rGeometry) const
             {
-                auto p_geometry = std::make_shared<ClassType>(new ClassType(NewGeometryId, rGeometry.pPoints, *mGeometry_Data));
+                auto p_geometry = std::make_shared<ClassType>(NewGeometryId, rGeometry.pPoints, *mGeometry_Data);
                 p_geometry->SetData(rGeometry.GetData());
                 return p_geometry;
             }
@@ -432,6 +467,22 @@ class Geometry
                 return rResult;
             }
             
+
+            /// Gets the corresponding hash-Id to a string name
+            static inline IndexType GenerateId(const std::string& rName)
+            {
+                // Create id hash from provided name.
+                std::hash<std::string> string_hash_generator;
+                auto id = string_hash_generator(rName);
+
+                // Sets first bit to one.
+                SetIdGeneratedFromString(id);
+
+                // Sets second bit to zero.
+                SetIdNotSelfAssigned(id);
+
+                return id;
+            }
         /// @}
 
         /// @name Access 
@@ -460,11 +511,15 @@ class Geometry
             {
                 return pPoints;
             }
-            int& GetID()
+            IndexType& GetID()
             {
                 return ID;
             }
-            int GetID() const
+            IndexType GetID() const
+            {
+                return ID;
+            }
+            IndexType const& Id() const
             {
                 return ID;
             }
@@ -657,7 +712,7 @@ class Geometry
 
         /// @name Protected Member 
         /// @{
-            int ID;
+            IndexType ID;
         /// @}
         
         /// @name Protected Operators

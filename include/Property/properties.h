@@ -18,7 +18,7 @@ class Properties : public Indexed_Object
     public:
         ///@name Define 
         ///@{ 
-            LOTUS_POINTER_DEFINE(Properties)
+            LOTUS_SHARED_POINTER_DEFINE(Properties)
             typedef size_t  
                                                                                 IndexType;
             typedef size_t

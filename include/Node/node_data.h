@@ -14,6 +14,10 @@ class Node_Data
         LOTUS_POINTER_DEFINE(Node_Data)
         typedef size_t
                                                                                         IndexType;
+        typedef size_t
+                                                                                         SizeType;
+        typedef double
+                                                                                        BlockType;                                                                                 
         typedef std::vector<double> 
                                                             SolutionOneStepNodalDataContainerType;
         typedef Variables_List_Data_Value_Container 
@@ -23,28 +27,16 @@ class Node_Data
         ///@name Life circle 
         ///@{    
             // Contructor
-            Node_Data()
-            {
-                nodenum++;
-                nodeID = nodenum;
-            }
-            Node_Data(const int& ID):nodeID(ID)
-            {
-                nodenum++;
-            }     
-            Node_Data(const int& ID, const SolutionStepsNodalDataContainerType& ThisSolution)
-            :nodeID(ID),
-            mSolutionStepsNodalData(ThisSolution)
-            {
-                nodenum++;
-            }   
-            Node_Data(const Node_Data& another)
-            :nodeID(another.nodeID),
-            mSolutionStepsNodalData(another.mSolutionStepsNodalData)
-            {
-                nodenum++;
-            }
-        
+            Node_Data(IndexType TheId);
+
+            Node_Data(IndexType TheId,
+                      Variables_List::Pointer pVariablesList,
+                      SizeType NewQueueSize = 1);
+
+            Node_Data(IndexType TheId,
+                      Variables_List::Pointer pVariablesList,
+                      BlockType const * ThisData, 
+                      SizeType NewQueueSize = 1);
             // Destructor 
             ~Node_Data()
             {
@@ -53,11 +45,11 @@ class Node_Data
         ///@}
 
         ///@name Operations {
-            int GetID()const
+            IndexType Id()const
             {
                 return nodeID;
             }
-            int& GetID()
+            IndexType& Id()
             {
                 return nodeID;
             }
@@ -80,7 +72,7 @@ class Node_Data
             }
         /// @}
     private:
-        int nodeID;
+        IndexType nodeID;
         static int nodenum;
         SolutionStepsNodalDataContainerType mSolutionStepsNodalData;
 };

@@ -12,7 +12,7 @@ class Element:public Geometry_Object
     public:
         ///@name Define 
         ///@{ 
-        LOTUS_POINTER_DEFINE(Element)   
+        LOTUS_SHARED_POINTER_DEFINE(Element)   
         typedef Element 
                                                         ElementType;
         typedef Geometry_Object 
@@ -26,7 +26,7 @@ class Element:public Geometry_Object
         typedef Geometry_Data 
                                                    GeometryDataType;
         typedef Properties
-                                                     PropertiesTpye;
+                                                     PropertiesType;
         typedef Dof 
                                                             DofType;
         typedef std::vector<Dof::Pointer> 
@@ -46,30 +46,28 @@ class Element:public Geometry_Object
             {
 
             }
-            Element(const int& NewID,typename GeometryType::Pointer ThismpGeometry)
-            :Geometry_Object(ThismpGeometry),
-             Index(NewID),
+            Element(const IndexType& NewID,typename GeometryType::Pointer ThismpGeometry)
+            :Geometry_Object(NewID,ThismpGeometry),
              mpProperties()
             {
                 
             }
-            Element(const int& NewID,typename GeometryType::Pointer ThismpGeometry, Properties::Pointer ThisProperties)
-            :Geometry_Object(ThismpGeometry),
-             Index(NewID),
+            Element(const IndexType& NewID,
+                    typename GeometryType::Pointer ThismpGeometry, 
+                    Properties::Pointer ThisProperties)
+            :Geometry_Object(NewID,ThismpGeometry),
              mpProperties(ThisProperties)
             {
                 
             }
             Element(const Element& another)
             :Geometry_Object(another.mpGeometry),
-             Index(another.Index),
              mpProperties(another.mpProperties)
             {
 
             }
             Element(Element&& another)
-            :Geometry_Object(&(another.GetGeometry())),
-             Index(another.Index),
+            :Geometry_Object(another.mpGeometry),
              mpProperties(another.mpProperties)
             {
                 another.mpProperties = nullptr;
@@ -96,13 +94,27 @@ class Element:public Geometry_Object
                                     Properties::Pointer pProperties) const
             {
                 std::cerr << "Calling Base Class Create Method!\n";
-                return std::make_shared<Element>(NewId,&(*GetGeometry().Create(rNodes)),pProperties);
+                return std::make_shared<Element>(NewId,GetGeometry().Create(rNodes),pProperties);
             }
             virtual Element::SharedPointer Clone(IndexType NewId,
                                     NodesContainerType const& rNodes) const
             {
                 std::cerr << "Calling Base Class Create Method!\n";
-                return std::make_shared<Element>(NewId,&(*GetGeometry().Create(rNodes)),pGetProperties());
+                return std::make_shared<Element>(NewId,GetGeometry().Create(rNodes),pGetProperties());
+            }
+             /**
+             * @brief It creates a new element pointer
+             * @param NewId the ID of the new element
+             * @param pGeom the geometry to be employed
+             * @param pProperties the properties assigned to the new element
+             * @return a Pointer to the new element
+             */
+            virtual Pointer Create(IndexType NewId,
+                                GeometryType::Pointer pGeom,
+                                PropertiesType::Pointer pProperties) const
+            {
+                std::cerr << "Please implement the Second Create method in your derived Element" << Info() << std::endl;
+                return std::make_shared<Element>(NewId, pGeom, pProperties);
             }
 
 
@@ -221,18 +233,11 @@ class Element:public Geometry_Object
 
         /// @name Inquiry
         /// @{
-            int ElementID()const
-            {
-                return Index;
-            }
-            int& ElementID()
-            {
-                return Index;
-            }
+
         /// @}
     protected:
-        int Index;
+
     private:
-        Properties* mpProperties;
+        Properties::Pointer mpProperties;
 };
 #endif

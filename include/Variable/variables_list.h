@@ -42,7 +42,7 @@ class Variables_List
                                                   ptr_const_reverse_iterator;
             typedef VariablesContainerType::difference_type 
                                                              difference_type;
-            LOTUS_POINTER_DEFINE(Variables_List)
+            LOTUS_SHARED_POINTER_DEFINE(Variables_List)
         /// @}
 
 

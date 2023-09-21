@@ -11,7 +11,7 @@ class Process_Info : public Data_Value_Container , public Flags
     public:
         /// @name Type Define
         /// @{
-            LOTUS_POINTER_DEFINE(Process_Info)
+            LOTUS_SHARED_POINTER_DEFINE(Process_Info)
             typedef size_t
                                                             IndexType;
             typedef size_t

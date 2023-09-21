@@ -52,7 +52,7 @@ class Point3D : public Geometry<TPointType>
             Point3D(typename PointType::Pointer pFirstPoint)
             :BaseType(PointsArrayType(), msGeometryData)
             {
-                BaseType::pPointsVector().push_back(*pFirstPoint);
+                BaseType::pPointsVector().push_back(pFirstPoint);
             }
             Point3D(const PointsArrayType& ThisPoints)
             :BaseType(ThisPoints, msGeometryData)

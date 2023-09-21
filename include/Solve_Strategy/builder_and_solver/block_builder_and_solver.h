@@ -36,6 +36,8 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
                                                                   LocalVectorType;
             typedef typename BaseType::LocalMatrixType          
                                                                   LocalMatrixType;
+            typedef ModelPart     
+                                                                       Model_Part;                                       
             typedef typename Model_Part::NodesContainerType         
                                                                NodesContainerType;
             typedef typename Model_Part::ElementsContainerType  

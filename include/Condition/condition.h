@@ -17,7 +17,7 @@ class Condition : public Geometry_Object
     public: 
         ///@name Define
         ///@{
-            LOTUS_POINTER_DEFINE(Condition)
+            LOTUS_SHARED_POINTER_DEFINE(Condition)
             typedef Condition                               
                                                                      ConditionType;
             typedef Geometry_Object 
@@ -51,13 +51,13 @@ class Condition : public Geometry_Object
             {
                 
             }
-            Condition(GeometryType* mpThisGeometry)
+            Condition(GeometryType::Pointer mpThisGeometry)
             :Geometry_Object(mpThisGeometry),
              mpProperties()
             {
             
             }
-            Condition(GeometryType* mpThisGeometry, Properties::Pointer ThisProperties)
+            Condition(GeometryType::Pointer mpThisGeometry, Properties::Pointer ThisProperties)
             :Geometry_Object(mpThisGeometry),
              mpProperties(ThisProperties)
             {
@@ -66,24 +66,21 @@ class Condition : public Geometry_Object
             Condition(IndexType NewID,
                       NodesContainerType const& rThisNodes,
                       Properties::Pointer pThisProPerties)
-            :Geometry_Object(NewID,rThisNodes),
+            :Geometry_Object(NewID,GeometryType::Pointer(new GeometryType(rThisNodes))),
             mpProperties(pThisProPerties)
             {
 
             }
-            Condition(IndexType NewID, GeometryType* mpThisGeometry)
+            Condition(IndexType NewID,
+                      GeometryType::Pointer mpThisGeometry)
             :Geometry_Object(NewID,mpThisGeometry)
             {
 
             }
-            Condition(IndexType NewID, GeometryType* mpThisGeometry, Properties::Pointer ThisProperties)
+            Condition(IndexType NewID,
+                      GeometryType::Pointer mpThisGeometry,
+                      Properties::Pointer ThisProperties)
             :Geometry_Object(NewID,mpThisGeometry),
-             mpProperties(ThisProperties)
-            {
-            
-            }
-            Condition(IndexType NewID, GeometryType::SharedPointer mpThisGeometry, Properties::Pointer ThisProperties)
-            :Geometry_Object(NewID,&(*mpThisGeometry)),
              mpProperties(ThisProperties)
             {
             
@@ -95,14 +92,14 @@ class Condition : public Geometry_Object
 
             }
             Condition(Condition&& another)
-            :Geometry_Object(&(another.GetGeometry())),
-             mpProperties(&(another.GetProperties()))
+            :Geometry_Object(another.mpGeometry),
+             mpProperties(another.mpProperties)
             {
 
             }
             Condition(Condition* another)
-            :Geometry_Object(&(another->GetGeometry())),
-             mpProperties(&(another->GetProperties()))
+            :Geometry_Object(another->mpGeometry),
+             mpProperties(another->mpProperties)
             {
 
             }
@@ -120,6 +117,21 @@ class Condition : public Geometry_Object
                                                     PropertiesType::Pointer pProperties ) const
             {
                 return make_shared<Condition>(new Condition(NewId, GetGeometry().Create(ThisNodes), pProperties));
+            }
+            /**
+             * @brief It creates a new condition pointer
+             * @param NewId the ID of the new condition
+             * @param pGeom the geometry to be employed
+             * @param pProperties the properties assigned to the new condition
+             * @return a Pointer to the new condition
+             */
+            virtual Pointer Create(IndexType NewId,
+                                GeometryType::Pointer pGeom,
+                                PropertiesType::Pointer pProperties) const
+            {
+                std::cerr << "Please implement the Second Create method in your derived Condition" << Info() << std::endl;
+                exit(0);
+                return std::make_shared<Condition>(NewId, pGeom, pProperties);
             }
 
             virtual Condition::SharedPointer Clone(IndexType NewId,
@@ -543,7 +555,7 @@ class Condition : public Geometry_Object
             }
         /// @}
     private:
-        Properties* mpProperties;
+        Properties::Pointer mpProperties;
 };
 
 #endif

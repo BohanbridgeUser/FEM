@@ -23,8 +23,10 @@ class Builder_And_Solver
                                                                                          SchemeType;
             typedef typename SchemeType::Pointer
                                                                                   SchemePointerType;
-            typedef Model_Part
+            typedef ModelPart
                                                                                       ModelPartType;
+            typedef ModelPart
+                                                                                         Model_Part;
             typedef Model_Part::DofType                                                 
                                                                                             DofType;
             typedef Model_Part::DofsVectorType

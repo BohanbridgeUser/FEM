@@ -431,12 +431,12 @@ Element::SharedPointer Solid_Element::Create(IndexType NewId,
                                              NodesContainerType const& rNodes,
                                              Properties::Pointer pProperties) const
 {
-    return std::make_shared<Solid_Element>(NewId,&(*GetGeometry().Create(rNodes)),pProperties);
+    return std::make_shared<Solid_Element>(NewId,GetGeometry().Create(rNodes),pProperties);
 }
 Element::SharedPointer Solid_Element::Clone(IndexType NewId,
                                             NodesContainerType const& rNodes)const
 {
-    return std::make_shared<Solid_Element>(NewId,&(*GetGeometry().Create(rNodes)),pGetProperties());
+    return std::make_shared<Solid_Element>(NewId,GetGeometry().Create(rNodes),pGetProperties());
 }
 
 

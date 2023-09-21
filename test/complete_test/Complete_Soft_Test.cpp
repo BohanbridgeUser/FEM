@@ -43,38 +43,20 @@ int main()
         }
     }
     typedef Hexahedron<Point<3> > Geomelem;
-    Geometry_Container<Geomelem> G_C;
+    GeometryContainer<Geomelem> G_C;
     for(int i=0;i<cnt;++i) 
     {
-        G_C.Insert(*H_3d_8s[i]);
+        G_C.AddGeometry(H_3d_8s[i]);
 
     }
     /* Mesh Model */
     std::cout << "********************Mesh Model********************\n";
-    std::vector<Node> V_Node;
-    for (int i=0;i<V_PP.size();++i)
+    Mesh<Node,Properties,Element,Condition> mesh;
+    std::vector<Node*> V_P_N;
+    for(int i=0;i<cnt;++i)
     {
-        Node* N = new Node(*V_PP[i]);
-        V_Node.push_back(*N);
-    }
-    // for (int i=0;i<V_Node.size();++i)
-    // {
-    //     std::cout << *V_Node[i];
-    // } 
-
-    Hexahedron<Node >* H_3d_8Ns[cnt];
-    cnt =0 ;
-    for (int i=0;i<8;++i) 
-    {
-        for (int j=0;j<8;++j) 
-        {
-            for(int k=0;k<8;++k)
-            {
-                H_3d_8Ns[cnt] = new Hexahedron(cnt,V_Node[i*81+j*9+k],V_Node[(i+1)*81+j*9+k],V_Node[(i+1)*81+(j+1)*9+k],V_Node[i*81+(j+1)*9+k],
-                                                V_Node[i*81+j*9+(k+1)],V_Node[(i+1)*81+j*9+(k+1)],V_Node[(i+1)*81+(j+1)*9+(k+1)],V_Node[i*81+(j+1)*9+(k+1)]);
-                cnt++;
-            }
-        }
+        Node* N_P = new Node(i,*V_PP[i]);
+        mesh.AddNode(Node::Pointer(N_P));
     }
     Properties Prop;
     Prop.Id() = 1;
@@ -84,31 +66,43 @@ int main()
     std::cout << "Property DENSITY           : " << Prop.GetValue(DENSITY) << std::endl;
     std::cout << "Property ELASTICITY_MODULUS: " << Prop.GetValue(ELASTICITY_MODULUS)<< std::endl;
     std::cout << "Property POISON            : " << Prop.GetValue(POISON)<< std::endl;
+    mesh.AddProperties(Properties::Pointer(&Prop));
+    
+    // Hexahedron<Node >* H_3d_8Ns[cnt];
+    // cnt =0 ;
+    // for (int i=0;i<8;++i) 
+    // {
+    //     for (int j=0;j<8;++j) 
+    //     {
+    //         for(int k=0;k<8;++k)
+    //         {
+    //             H_3d_8Ns[cnt] = new Hexahedron(cnt,V_Node[i*81+j*9+k],V_Node[(i+1)*81+j*9+k],V_Node[(i+1)*81+(j+1)*9+k],V_Node[i*81+(j+1)*9+k],
+    //                                             V_Node[i*81+j*9+(k+1)],V_Node[(i+1)*81+j*9+(k+1)],V_Node[(i+1)*81+(j+1)*9+(k+1)],V_Node[i*81+(j+1)*9+(k+1)]);
+    //             cnt++;
+    //         }
+    //     }
+    // }
+    
 
-    std::vector<Small_Displacement_Element> E_V;
-    for (int i=0;i<64;++i) 
-    {
-        E_V.push_back(Small_Displacement_Element(i,H_3d_8Ns[i],&Prop));
-    }
+    // std::vector<Small_Displacement_Element> E_V;
+    // for (int i=0;i<64;++i) 
+    // {
+    //     E_V.push_back(Small_Displacement_Element(i,Geometry<Node>::Pointer(H_3d_8Ns[i]),Properties::Pointer(&Prop)));
+    // }
 
 
-    /******************************Condition*********************************/
-    std::vector<Point3D<Node>> V_P3D;
-    for(int i=8;i<729;i+=9)
-    {
-        Point3D<Node>* temp = new Point3D<Node>(&V_Node[i]);
-        V_P3D.push_back(*temp);
-    }
-    for (auto it=V_P3D.begin();it!=V_P3D.end();++it)
-        std::cout << *it;
+    // /******************************Condition*********************************/
+    // using Mesh_This = Mesh<Node,Properties,Small_Displacement_Element,Point_Load_Condition>; 
+    // Mesh_This mesh;
+    // for(int i=8;i<729;i+=9)
+    // {
+    //     mesh.AddNode(Node::Pointer(&V_Node[i]));
+    // }
+    // for (auto it=mesh.NodesBegin();it!=mesh.NodesEnd();++it)
+    //     std::cout << *it;
 
-    std::vector<Point_Load_Condition> C_V;
-    for (auto it=V_P3D.begin();it!=V_P3D.end();++it)
-    {
-        C_V.push_back(Point_Load_Condition(it-V_P3D.begin(),&(*it),&Prop));
-    }
-    Mesh<Node,Properties,Small_Displacement_Element,Point_Load_Condition> 
-                         mesh(&V_Node,Prop,E_V,C_V);
+    // // Mesh<Node,Properties,Small_Displacement_Element,Point_Load_Condition> 
+    // //                      mesh(&V_Node,Prop,E_V,C_V);
 
     
     

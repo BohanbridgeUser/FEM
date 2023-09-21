@@ -30,12 +30,12 @@ Condition::SharedPointer Point_Load_Condition::Create(IndexType NewId,
                                                       NodesContainerType const& rThisNodes,
                                                       Properties::Pointer pThisProperties)const
 {
-    return std::make_shared<Point_Load_Condition>(NewId,&(*GetGeometry().Create(rThisNodes)),pThisProperties);
+    return std::make_shared<Point_Load_Condition>(NewId,GetGeometry().Create(rThisNodes),pThisProperties);
 }
 Condition::SharedPointer Point_Load_Condition::Clone(IndexType NewId,
                                                      NodesContainerType const& rThisNodes)const
 {
-    Point_Load_Condition NewCondition(NewId,&(*GetGeometry().Create(rThisNodes)),pGetProperties());
+    Point_Load_Condition NewCondition(NewId,GetGeometry().Create(rThisNodes),pGetProperties());
     NewCondition.SetData(this->GetData());
     NewCondition.SetFlags(this->GetFlag());
     return std::make_shared<Point_Load_Condition>(NewCondition);

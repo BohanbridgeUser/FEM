@@ -4,6 +4,7 @@
 #include "../Container/geometry_container.h"
 #include "Point.h"
 #include "../Quadrature/hexahedron_gauss_legendre_integration_points.h"
+#include "../Quadrature/quadrature.h"
 
 /**
  *             v
@@ -31,10 +32,8 @@ class Hexahedron:public Geometry<TPointType>
                                                                          GeometryType;
             typedef TPointType 
                                                                             PointType;
-            typedef std::vector<PointType> 
-                                                                     PointsVectorType;
-            typedef std::vector<PointType> 
-                                                                      PointsContainer;
+            typedef PointerVector<PointType> 
+                                                                  PointsContainerType;
 
             // @ Integration Points Define
             typedef Geometry_Data::IntegrationMethod
@@ -80,7 +79,7 @@ class Hexahedron:public Geometry<TPointType>
             :GeometryType()
             {
             }
-            Hexahedron(const int& NewId,PointsContainer& points)
+            Hexahedron(const int& NewId,PointsContainerType& points)
             :GeometryType(NewId,points,mGeometryData)
             {
             }
@@ -89,16 +88,16 @@ class Hexahedron:public Geometry<TPointType>
                        TPointType& point4,TPointType& point5,
                        TPointType& point6,TPointType& point7,
                        TPointType& point8)
-            :GeometryType(NewId,PointsVectorType(),mGeometryData)
+            :GeometryType(NewId,PointsContainerType(),mGeometryData)
             {
-                this->pPointsVector().push_back(point1);
-                this->pPointsVector().push_back(point2);
-                this->pPointsVector().push_back(point3);
-                this->pPointsVector().push_back(point4);
-                this->pPointsVector().push_back(point5);
-                this->pPointsVector().push_back(point6);
-                this->pPointsVector().push_back(point7);
-                this->pPointsVector().push_back(point8);
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point1));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point2));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point3));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point4));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point5));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point6));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point7));
+                this->pPointsVector().push_back(typename TPointType::Pointer(&point8));
             }
             Hexahedron(const Hexahedron<TPointType>& another)
             :GeometryType(another)

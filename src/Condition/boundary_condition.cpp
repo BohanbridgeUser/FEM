@@ -31,13 +31,13 @@ Condition::SharedPointer Boundary_Condition::Create(IndexType NewId,
                                                     NodesContainerType const& ThisNodes,
                                                     PropertiesType::Pointer pProperties) const
 {
-    return std::make_shared<Boundary_Condition>(NewId, &(*GetGeometry().Create(ThisNodes)), pProperties);
+    return std::make_shared<Boundary_Condition>(NewId, GetGeometry().Create(ThisNodes), pProperties);
 }
 
 Condition::SharedPointer Boundary_Condition::Clone(IndexType NewId,
                                                    NodesContainerType const& ThisNodes) const
 {
-    Boundary_Condition NewCondition(NewId, &(*(GetGeometry().Create(ThisNodes))),pGetProperties());
+    Boundary_Condition NewCondition(NewId, GetGeometry().Create(ThisNodes),pGetProperties());
     NewCondition.SetData(this->GetData());
     NewCondition.SetFlags(this->GetFlag());
     return make_shared<Boundary_Condition>(NewCondition);

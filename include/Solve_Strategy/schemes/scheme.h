@@ -23,8 +23,10 @@ class Scheme : public Flags
                                                                                             DofType;
             typedef std::vector<DofType>                                          
                                                                                   DofsContainerType;
-            typedef Model_Part
+            typedef ModelPart
                                                                                       ModelPartType;
+            typedef ModelPart
+                                                                                         Model_Part;
             typedef Model_Part::NodesContainerType                               
                                                                                  NodesContainerType;
             typedef Model_Part::ElementsContainerType                         

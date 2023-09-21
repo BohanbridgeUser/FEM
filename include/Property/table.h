@@ -1,6 +1,6 @@
 #ifndef _TABLE_H
 #define _TABLE_H_
-
+#pragma once
 // System includes
 #include <string>
 #include <iostream>
@@ -20,7 +20,9 @@
  * @tparam TResultType The type of result obtained
  * @tparam TResultsColumns The number of columns considered
  */
-template<class TArgumentType, class TResultType = TArgumentType, std::size_t TResultsColumns = 1>
+template<typename TArgumentType,
+         typename TResultType = TArgumentType, 
+         std::size_t TResultsColumns = 1>
 class Table
 {
 public:
@@ -28,7 +30,7 @@ public:
     ///@{
 
     /// Pointer definition of Table
-    LOTUS_POINTER_DEFINE(Table);
+    LOTUS_SHARED_POINTER_DEFINE(Table);
 
     typedef std::array<TResultType, TResultsColumns>  
                                                                     result_row_type;
@@ -373,7 +375,7 @@ public:
     ///@{
 
     /// Pointer definition of Table
-    LOTUS_POINTER_DEFINE(Table);
+    LOTUS_SHARED_POINTER_DEFINE(Table);
 
     typedef double TResultType;
     typedef double TArgumentType;
@@ -405,9 +407,10 @@ public:
 
     /// Matrix constructor. the template parameter must have (i,j) access operator and  size1 methods defined.
     template<class TMatrixType>
-    Table(TMatrixType const& ThisMatrix): mData()
+    Table(TMatrixType const& ThisMatrix)
+    :mData()
     {
-        for(unsigned int i = 0 ; i < ThisMatrix.size1() ; i++)
+        for(unsigned int i = 0 ; i < ThisMatrix.rows() ; i++)
             PushBack(ThisMatrix(i,0), ThisMatrix(i,1));
     }
 

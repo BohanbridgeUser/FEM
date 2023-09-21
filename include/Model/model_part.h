@@ -12,6 +12,7 @@
 
 // Project includes
 #include "../define.h"
+#include "../components.h"
 #include "../process_info.h"
 #include "../Container/data_value_container.h"
 #include "../mesh.h"
@@ -24,8 +25,12 @@
 #include "../Container/pointer_hash_map_set.h"
 #include "../Container/flags.h"
 #include "../Variable/variable.h"
+#include "../Container/geometry_container.h"
+#include "../Geometry/point3d.h"
+#include "../Geometry/hexahedron.h"
+#include "../Geometry/quadrilateral_3d_4.h"
 
-
+#include <algorithm>
 //forward declaring Model to be avoid cross references
 class Model;
 
@@ -194,24 +199,22 @@ public:
     /**
     * Contains all geometries, which can be addressed by specific identifiers.
     */
-    typedef Geometry_Container<GeometryType> 
+    typedef GeometryContainer<GeometryType> 
                                                        GeometryContainerType;
-
     /// Geometry Iterator
-    typedef typename GeometryContainerType::GeometryIterator GeometryIterator;
-
+    typedef typename GeometryContainerType::GeometryIterator 
+                                                            GeometryIterator;
     /// Const Geometry Iterator
-    typedef typename GeometryContainerType::GeometryConstantIterator GeometryConstantIterator;
-
+    typedef typename GeometryContainerType::GeometryConstantIterator 
+                                                    GeometryConstantIterator;
     /// Geometry Hash Map Container. Stores with hash of Ids to corresponding geometries.
-    typedef typename GeometryContainerType::GeometriesMapType GeometriesMapType;
-
+    typedef typename GeometryContainerType::GeometriesMapType 
+                                                           GeometriesMapType;
     /// The container of the sub model parts. A hash table is used.
     /**
     */
     typedef PointerHashMapSet<ModelPart, std::hash< std::string >, GetModelPartName, std::shared_ptr<ModelPart> >  
                                                     SubModelPartsContainerType;
-
     /// Iterator over the sub model parts of this model part.
     /**	Note that this iterator only iterates over the next level of
     	sub model parts and does not go through the hierarchy of the
@@ -219,7 +222,6 @@ public:
     */
     typedef SubModelPartsContainerType::iterator 
                                                           SubModelPartIterator;
-
     /// Constant iterator over the sub model parts of this model part.
     /**	Note that this iterator only iterates over the next level of
     	sub model parts and does not go through the hierarchy of the
@@ -228,6 +230,13 @@ public:
     typedef SubModelPartsContainerType::const_iterator 
                                                   SubModelPartConstantIterator;
 
+    typedef Variable_Data                                   
+                                                                  VariableData;
+    typedef Variables_List                                   
+                                                                 VariablesList;                                                              
+    
+    LOTUS_POINTER_DEFINE(ModelPart)
+    
     ///@}
     ///@name Flags
     ///@{
@@ -320,7 +329,6 @@ public:
     template<class TIteratorType >
     void AddNodes(TIteratorType nodes_begin,  TIteratorType nodes_end, IndexType ThisIndex = 0)
     {
-        KRATOS_TRY
         ModelPart::NodesContainerType  aux;
         ModelPart::NodesContainerType  aux_root; //they may not exist in the root
         ModelPart* root_model_part = &this->GetRootModelPart();
@@ -335,8 +343,12 @@ public:
             }
             else //if it does exist verify it is the same node
             {
-                if(&(*it_found) != &(*it))//check if the pointee coincides
-                    KRATOS_ERROR << "attempting to add a new node with Id :" << it_found->Id() << ", unfortunately a (different) node with the same Id already exists" << std::endl;
+                if(&(*it_found) != &(*it))
+                {
+                     //check if the pointee coincides
+                    std::cerr<< "attempting to add a new node with Id :" << it_found->Id() << ", unfortunately a (different) node with the same Id already exists" << std::endl;
+                    exit(0);
+                }
                 else
                     aux.push_back( *(it.base()) );
             }
@@ -360,12 +372,11 @@ public:
             current_part = &(current_part->GetParentModelPart());
         }
 
-        KRATOS_CATCH("")
     }
 
     /** Inserts a node in the current mesh.
      */
-    NodeType::Pointer CreateNewNode(int Id, double x, double y, double z, VariablesList::Pointer pNewVariablesList, IndexType ThisIndex = 0);
+    NodeType::Pointer CreateNewNode(int Id, double x, double y, double z, Variables_List::Pointer pNewVariablesList, IndexType ThisIndex = 0);
 
     NodeType::Pointer CreateNewNode(IndexType Id, double x, double y, double z, IndexType ThisIndex = 0);
 
@@ -497,10 +508,12 @@ public:
     {
         if (!HasNodalSolutionStepVariable(ThisVariable)) {
             // This error prevents memory leaks if variables are being added to a non-empty modelpart
-            KRATOS_ERROR_IF((this->GetRootModelPart()).Nodes().size() != 0)
-                << "Attempting to add the variable \"" << ThisVariable.Name()
+            if((this->GetRootModelPart()).Nodes().size() != 0)
+            {
+                std::cerr << "Attempting to add the variable \"" << ThisVariable.Name()
                 << "\" to the model part with name \"" << this->Name() << "\" which is not empty" << std::endl;
-
+                exit(0);
+            }
             mpVariablesList->Add(ThisVariable);
         }
     }
@@ -606,178 +619,6 @@ public:
         return mTables.GetContainer();
     }
 
-    ///@}
-    ///@name MasterSlaveConstraints
-    ///@{
-
-    SizeType NumberOfMasterSlaveConstraints(IndexType ThisIndex = 0) const
-    {
-        return GetMesh(ThisIndex).NumberOfMasterSlaveConstraints();
-    }
-
-    MasterSlaveConstraintContainerType& MasterSlaveConstraints(IndexType ThisIndex = 0)
-    {
-        return GetMesh(ThisIndex).MasterSlaveConstraints();
-    }
-
-    const MasterSlaveConstraintContainerType& MasterSlaveConstraints(IndexType ThisIndex = 0) const
-    {
-        return GetMesh(ThisIndex).MasterSlaveConstraints();
-    }
-
-    MasterSlaveConstraintConstantIteratorType  MasterSlaveConstraintsBegin(IndexType ThisIndex = 0) const
-    {
-        return GetMesh(ThisIndex).MasterSlaveConstraintsBegin();
-    }
-
-    MasterSlaveConstraintConstantIteratorType  MasterSlaveConstraintsEnd(IndexType ThisIndex = 0) const
-    {
-        return GetMesh(ThisIndex).MasterSlaveConstraintsEnd();
-    }
-
-    MasterSlaveConstraintIteratorType  MasterSlaveConstraintsBegin(IndexType ThisIndex = 0)
-    {
-        return GetMesh(ThisIndex).MasterSlaveConstraintsBegin();
-    }
-
-    MasterSlaveConstraintIteratorType  MasterSlaveConstraintsEnd(IndexType ThisIndex = 0)
-    {
-        return GetMesh(ThisIndex).MasterSlaveConstraintsEnd();
-    }
-
-    /** Inserts a master-slave constraint in the current modelpart.
-     */
-    void AddMasterSlaveConstraint(MasterSlaveConstraintType::Pointer pNewMasterSlaveConstraint, IndexType ThisIndex = 0);
-
-    /** Inserts a list of master-slave constraints to a submodelpart provided their Id. Does nothing if applied to the top model part
-     */
-    void AddMasterSlaveConstraints(std::vector<IndexType> const& MasterSlaveConstraintIds, IndexType ThisIndex = 0);
-
-    /** Inserts a list of pointers to Master-Slave constraints
-     */
-    template<class TIteratorType >
-    void AddMasterSlaveConstraints(TIteratorType constraints_begin,  TIteratorType constraints_end, IndexType ThisIndex = 0)
-    {
-        KRATOS_TRY
-        ModelPart::MasterSlaveConstraintContainerType  aux;
-        ModelPart::MasterSlaveConstraintContainerType  aux_root;
-        ModelPart* root_model_part = &this->GetRootModelPart();
-
-        for(TIteratorType it = constraints_begin; it!=constraints_end; it++)
-        {
-            auto it_found = root_model_part->MasterSlaveConstraints().find(it->Id());
-            if(it_found == root_model_part->MasterSlaveConstraintsEnd()) //node does not exist in the top model part
-            {
-                aux_root.push_back( *(it.base()) );
-                aux.push_back( *(it.base()) );
-            }
-            else //if it does exist verify it is the same node
-            {
-                if(&(*it_found) != &(*it))//check if the pointee coincides
-                    KRATOS_ERROR << "attempting to add a new master-slave constraint with Id :" << it_found->Id() << ", unfortunately a (different) master-slave constraint with the same Id already exists" << std::endl;
-                else
-                    aux.push_back( *(it.base()) );
-            }
-        }
-
-        for(auto it = aux_root.begin(); it!=aux_root.end(); it++)
-                root_model_part->MasterSlaveConstraints().push_back( *(it.base()) );
-        root_model_part->MasterSlaveConstraints().Unique();
-
-        //add to all of the leaves
-
-        ModelPart* current_part = this;
-        while(current_part->IsSubModelPart())
-        {
-            for(auto it = aux.begin(); it!=aux.end(); it++)
-                current_part->MasterSlaveConstraints().push_back( *(it.base()) );
-
-            current_part->MasterSlaveConstraints().Unique();
-
-            current_part = &(current_part->GetParentModelPart());
-        }
-
-        KRATOS_CATCH("")
-    }
-
-    /**
-     * @brief Creates a new master-slave constraint in the current modelpart.
-     * @todo Replace these 3 functions by one that perfectly forwards arguments, then just define these 3 interfaces on the pybind side
-     */
-    MasterSlaveConstraint::Pointer CreateNewMasterSlaveConstraint(const std::string& ConstraintName,
-                                                                                    IndexType Id,
-                                                                                    DofsVectorType& rMasterDofsVector,
-                                                                                    DofsVectorType& rSlaveDofsVector,
-                                                                                    const MatrixType& RelationMatrix,
-                                                                                    const VectorType& ConstantVector,
-                                                                                    IndexType ThisIndex = 0);
-
-    MasterSlaveConstraint::Pointer CreateNewMasterSlaveConstraint(const std::string& ConstraintName,
-                                                                                    IndexType Id,
-                                                                                    NodeType& rMasterNode,
-                                                                                    const DoubleVariableType& rMasterVariable,
-                                                                                    NodeType& rSlaveNode,
-                                                                                    const DoubleVariableType& rSlaveVariable,
-                                                                                    const double Weight,
-                                                                                    const double Constant,
-                                                                                    IndexType ThisIndex = 0);
-
-    /**
-     * @brief Remove the master-slave constraint with given Id from mesh with ThisIndex in this modelpart and all its subs.
-     */
-    void RemoveMasterSlaveConstraint(IndexType MasterSlaveConstraintId, IndexType ThisIndex = 0);
-
-    /**
-     * @brief Remove given master-slave constraint from mesh with ThisIndex in this modelpart and all its subs.
-     */
-    void RemoveMasterSlaveConstraint(MasterSlaveConstraintType& ThisMasterSlaveConstraint, IndexType ThisIndex = 0);
-
-    /**
-     * @brief Remove the master-slave constraint with given Id from mesh with ThisIndex in parents, itself and children.
-     */
-    void RemoveMasterSlaveConstraintFromAllLevels(IndexType MasterSlaveConstraintId, IndexType ThisIndex = 0);
-
-    /**
-     * @brief Remove given master-slave constraint from mesh with ThisIndex in parents, itself and children.
-     */
-    void RemoveMasterSlaveConstraintFromAllLevels(MasterSlaveConstraintType& ThisMasterSlaveConstraint, IndexType ThisIndex = 0);
-
-    /**
-     * @brief It erases all constraints identified by "IdentifierFlag" by removing the pointer.
-     * @details Pointers are erased from this level downwards nodes will be automatically destructured when no pointer is left to them
-     * @param IdentifierFlag The flag that identifies the constraints to remove
-     */
-    void RemoveMasterSlaveConstraints(Flags IdentifierFlag = TO_ERASE);
-
-    /**
-     * @brief It erases all constraints identified by "IdentifierFlag" by removing the pointer.
-     * @details Pointers will be erase from all levels nodes will be automatically destructured when no pointer is left to them
-     * @param IdentifierFlag The flag that identifies the constraints to remove
-     */
-    void RemoveMasterSlaveConstraintsFromAllLevels(Flags IdentifierFlag = TO_ERASE);
-
-    /**
-     * @brief Returns if the MasterSlaveConstraint corresponding to it's identifier exists
-     * @param MasterSlaveConstraintId The ID of master-slave constraint
-     * @param ThisIndex The mesh index
-     */
-    bool HasMasterSlaveConstraint(
-        const IndexType MasterSlaveConstraintId,
-        IndexType ThisIndex = 0
-        ) const
-    {
-        return GetMesh(ThisIndex).HasMasterSlaveConstraint(MasterSlaveConstraintId);
-    }
-
-    /** Returns the MasterSlaveConstraint::Pointer  corresponding to it's identifier */
-    MasterSlaveConstraintType::Pointer pGetMasterSlaveConstraint(IndexType ConstraintId, IndexType ThisIndex = 0);
-
-    /** Returns a reference MasterSlaveConstraint corresponding to it's identifier */
-    MasterSlaveConstraintType& GetMasterSlaveConstraint(IndexType MasterSlaveConstraintId, IndexType ThisIndex = 0);
-    /** Returns a const reference MasterSlaveConstraint corresponding to it's identifier */
-    const MasterSlaveConstraintType& GetMasterSlaveConstraint(IndexType MasterSlaveConstraintId, IndexType ThisIndex = 0) const ;
-
-    ///@}
     ///@name Properties
     ///@{
 
@@ -1006,7 +847,6 @@ public:
     template<class TIteratorType >
     void AddElements(TIteratorType elements_begin,  TIteratorType elements_end, IndexType ThisIndex = 0)
     {
-        KRATOS_TRY
         ModelPart::ElementsContainerType  aux;
         ModelPart::ElementsContainerType  aux_root;
         ModelPart* root_model_part = &this->GetRootModelPart();
@@ -1022,7 +862,11 @@ public:
             else //if it does exist verify it is the same node
             {
                 if(&(*it_found) != &(*it))//check if the pointee coincides
-                    KRATOS_ERROR << "attempting to add a new element with Id :" << it_found->Id() << ", unfortunately a (different) element with the same Id already exists" << std::endl;
+                {
+                    std::cerr << "attempting to add a new element with Id :" << it_found->Id() << ", unfortunately a (different) element with the same Id already exists" << std::endl;
+                    exit(0);
+                }
+                    
                 else
                     aux.push_back( *(it.base()) );
             }
@@ -1044,8 +888,6 @@ public:
 
             current_part = &(current_part->GetParentModelPart());
         }
-
-        KRATOS_CATCH("")
     }
 
     /// Creates new element with a node ids list.
@@ -1055,7 +897,7 @@ public:
 
     /// Creates new element with a nodes list.
     ElementType::Pointer CreateNewElement(std::string ElementName,
-        IndexType Id, Geometry< Node >::PointsArrayType pElementNodes,
+        IndexType Id, Geometry< Node >::PointsContainerType pElementNodes,
         PropertiesType::Pointer pProperties, IndexType ThisIndex = 0);
 
     /// Creates new element with pointer to geometry.
@@ -1197,7 +1039,6 @@ public:
     template<class TIteratorType >
     void AddConditions(TIteratorType conditions_begin,  TIteratorType conditions_end, IndexType ThisIndex = 0)
     {
-        KRATOS_TRY
         ModelPart::ConditionsContainerType  aux;
         ModelPart::ConditionsContainerType  aux_root;
         ModelPart* root_model_part = &this->GetRootModelPart();
@@ -1213,7 +1054,11 @@ public:
             else //if it does exist verify it is the same node
             {
                 if(&(*it_found) != &(*it))//check if the pointee coincides
-                    KRATOS_ERROR << "attempting to add a new Condition with Id :" << it_found->Id() << ", unfortunately a (different) Condition with the same Id already exists" << std::endl;
+                {
+                    std::cerr  << "attempting to add a new Condition with Id :" << it_found->Id() << ", unfortunately a (different) Condition with the same Id already exists" << std::endl;
+                    exit(0);
+                }
+                    
                 else
                     aux.push_back( *(it.base()) );
             }
@@ -1236,8 +1081,6 @@ public:
 
             current_part = &(current_part->GetParentModelPart());
         }
-
-        KRATOS_CATCH("")
     }
 
     /// Creates new condition with a node ids list.
@@ -1247,7 +1090,7 @@ public:
 
     /// Creates new condition with a nodes list.
     ConditionType::Pointer CreateNewCondition(std::string ConditionName,
-            IndexType Id, Geometry< Node >::PointsArrayType pConditionNodes,
+            IndexType Id, Geometry< Node >::PointsContainerType pConditionNodes,
             PropertiesType::Pointer pProperties, IndexType ThisIndex = 0);
 
     /// Creates new condition with pointer to geometry.
@@ -1393,7 +1236,7 @@ public:
      */
     GeometryType::Pointer CreateNewGeometry(
         const std::string& rGeometryTypeName,
-        GeometryType::PointsArrayType pGeometryNodes
+        GeometryType::PointsContainerType pGeometryNodes
         );
 
     /**
@@ -1427,7 +1270,7 @@ public:
     GeometryType::Pointer CreateNewGeometry(
         const std::string& rGeometryTypeName,
         const IndexType GeometryId,
-        GeometryType::PointsArrayType pGeometryNodes
+        GeometryType::PointsContainerType pGeometryNodes
         );
 
     /**
@@ -1463,7 +1306,7 @@ public:
     GeometryType::Pointer CreateNewGeometry(
         const std::string& rGeometryTypeName,
         const std::string& rGeometryIdentifierName,
-        GeometryType::PointsArrayType pGeometryNodes
+        GeometryType::PointsContainerType pGeometryNodes
         );
 
         /**
@@ -1488,7 +1331,6 @@ public:
     template<class TIteratorType >
     void AddGeometries(TIteratorType GeometryBegin,  TIteratorType GeometriesEnd, IndexType ThisIndex = 0)
     {
-        KRATOS_TRY
         std::vector<GeometryType::Pointer> aux, aux_root;
         ModelPart* p_root_model_part = &this->GetRootModelPart();
 
@@ -1499,7 +1341,8 @@ public:
                 aux.push_back( it.operator->() );
             } else { // If it does exist verify it is the same geometry
                 if(&(*it_found) != &(*it)) { // Check if the pointee coincides
-                    KRATOS_ERROR << "Attempting to add a new geometry with Id :" << it_found->Id() << ", unfortunately a (different) element with the same Id already exists" << std::endl;
+                    std::cerr << "Attempting to add a new geometry with Id :" << it_found->Id() << ", unfortunately a (different) element with the same Id already exists" << std::endl;
+                    exit(0);
                 } else {
                     aux.push_back( it.operator->() );
                 }
@@ -1521,7 +1364,6 @@ public:
             p_current_part = &(p_current_part->GetParentModelPart());
         }
 
-        KRATOS_CATCH("")
     }
 
     /// Returns the Geometry::Pointer corresponding to the Id
@@ -1707,32 +1549,32 @@ public:
     ///@name Access
     ///@{
 
-    ProcessInfo& GetProcessInfo()
+    Process_Info & GetProcessInfo()
     {
         return *mpProcessInfo;
     }
 
-    ProcessInfo const& GetProcessInfo() const
+    Process_Info  const& GetProcessInfo() const
     {
         return *mpProcessInfo;
     }
 
-    ProcessInfo::Pointer pGetProcessInfo()
+    Process_Info ::Pointer pGetProcessInfo()
     {
         return mpProcessInfo;
     }
 
-    const ProcessInfo::Pointer pGetProcessInfo() const
+    const Process_Info::Pointer pGetProcessInfo() const
     {
         return mpProcessInfo;
     }
 
-    void SetProcessInfo(ProcessInfo::Pointer pNewProcessInfo)
+    void SetProcessInfo(Process_Info::Pointer pNewProcessInfo)
     {
         mpProcessInfo = pNewProcessInfo;
     }
 
-    void SetProcessInfo(ProcessInfo& NewProcessInfo)
+    void SetProcessInfo(Process_Info& NewProcessInfo)
     {
         *mpProcessInfo = NewProcessInfo;
     }
@@ -1780,26 +1622,6 @@ public:
     std::string const& Name() const
     {
         return mName;
-    }
-
-    Communicator& GetCommunicator()
-    {
-        return *mpCommunicator;
-    }
-
-    Communicator const& GetCommunicator() const
-    {
-        return *mpCommunicator;
-    }
-
-    Communicator::Pointer pGetCommunicator()
-    {
-        return mpCommunicator;
-    }
-
-    void SetCommunicator(Communicator::Pointer pNewCommunicator)
-    {
-        mpCommunicator = pNewCommunicator;
     }
 
     ///@}
@@ -1859,11 +1681,6 @@ public:
         return (mpParentModelPart != NULL);
     }
 
-    bool IsDistributed() const
-    {
-        return mpCommunicator->IsDistributed();
-    }
-
     ///@}
     ///@name Input and output
     ///@{
@@ -1920,7 +1737,7 @@ private:
 
     IndexType mBufferSize; /// The buffers size of the database
 
-    ProcessInfo::Pointer mpProcessInfo; /// The process info instance
+    Process_Info::Pointer mpProcessInfo; /// The process info instance
 
     TablesContainerType mTables; /// The tables contained on the model part
 
@@ -1929,8 +1746,6 @@ private:
     GeometryContainerType mGeometries; /// The container of geometries
 
     VariablesList::Pointer mpVariablesList; /// The variable list
-
-    Communicator::Pointer mpCommunicator; /// The communicator
 
     ModelPart* mpParentModelPart = NULL; /// The parent model part of the current model part
 
@@ -1961,7 +1776,11 @@ private:
             list_indexes.push_back(std::stoi(index_string));
         }
 
-        KRATOS_ERROR_IF(list_indexes.size() == 0) << "Properties:: Empty list of indexes when reading suproperties" << std::endl;
+        if(list_indexes.size() == 0)
+        {
+            std::cerr  << "Properties:: Empty list of indexes when reading suproperties" << std::endl;
+            exit(0);
+        }
 
         return list_indexes;
     }

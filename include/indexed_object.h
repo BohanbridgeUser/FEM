@@ -15,6 +15,8 @@ class Indexed_Object
                                                                     IndexType;
             typedef size_t
                                                                    ResultType;
+            typedef ResultType
+                                                                  result_type;
 
         /// @}
 

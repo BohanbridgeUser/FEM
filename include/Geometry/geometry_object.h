@@ -6,12 +6,18 @@
 #include "../Geometry/geometry.h"
 #include "../Container/flags.h"
 #include "../Container/lotus_flags.h"
-class Geometry_Object : public Flags
+#include "../indexed_object.h"
+
+class Geometry_Object : public Indexed_Object, public Flags
 {
     public:
         ///@name Define 
         ///@{
             LOTUS_POINTER_DEFINE(Geometry_Object)
+            typedef size_t
+                                                               IndexType;
+            typedef size_t
+                                                                SizeType;                                        
             typedef Flags
                                                                 FlagType;
             typedef Node                            
@@ -30,48 +36,39 @@ class Geometry_Object : public Flags
         ///@{ 
             // Constructor
             Geometry_Object()
-            :FlagType()
+            :Indexed_Object(),
+            FlagType()
             {
-                numbers++;
-                ID = numbers;
                 mpGeometry = nullptr;
             }
-            Geometry_Object(GeometryType* ThismpGeometry)
-            :FlagType(),
+            Geometry_Object(GeometryType::Pointer ThismpGeometry)
+            :Indexed_Object(),
+            FlagType(),
             mpGeometry(ThismpGeometry)
             {
-                ID = ++numbers;
             }
-            Geometry_Object(IndexType NewID, NodesContainerType const& rThisNodes)
-            :FlagType(),
-            ID(NewID),
-            mpGeometry(GeometryType::Pointer(new GeometryType(rThisNodes)))
-            {
-                numbers++;
-            }
-            Geometry_Object(IndexType NewID, GeometryType* ThismpGeometry)
-            :FlagType(),
+            Geometry_Object(IndexType NewID,
+                            GeometryType::Pointer ThismpGeometry)
+            :Indexed_Object(NewID),
+            FlagType(),
             mpGeometry(ThismpGeometry)
             {
-                numbers++;
-                ID = NewID;
             }
             Geometry_Object(ClassType& another)
-            :FlagType(),
+            :Indexed_Object(another),
+            FlagType(another),
             mpGeometry(another.mpGeometry)
             {
-                ID = ++numbers;
             }
             Geometry_Object(ClassType&& another)
-            :FlagType(),
+            :Indexed_Object(another),
+            FlagType(),
             mpGeometry(another.mpGeometry)
             {
-                ID = ++numbers;
             }
             // Destructor 
             virtual ~Geometry_Object()
             {
-                if (numbers > 0 ) --numbers;
             }
         ///@}
 
@@ -129,11 +126,11 @@ class Geometry_Object : public Flags
         /// @{
             IndexType Id() const
             {
-                return ID;
+                return this->Id();
             }
             IndexType& Id() 
             {
-                return ID;
+                return this->Id();
             }
             template<typename TDataType>
             bool Has(Variable<TDataType> const& rVariable) const
@@ -142,8 +139,6 @@ class Geometry_Object : public Flags
             }
         /// @}
     protected:
-        IndexType ID;
-        static int numbers;
-        GeometryType* mpGeometry;
+        GeometryType::Pointer mpGeometry;
 };
 #endif

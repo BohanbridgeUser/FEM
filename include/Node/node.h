@@ -11,11 +11,13 @@ class Node : public Point<3> , public Flags
     public:
         ///@name Define
         ///@{ 
-            LOTUS_POINTER_DEFINE(Node)
+            LOTUS_SHARED_POINTER_DEFINE(Node)
             typedef Node                    
                                                         NodeType;
             typedef Point<3> 
                                                         BaseType;
+            typedef double
+                                                       BlockType;
             typedef Point<3> 
                                                        PointType;
             typedef Node_Data 
@@ -33,88 +35,68 @@ class Node : public Point<3> , public Flags
         ///@name Life Circle
         ///@{
             // Constructor
+            /// Default constructor.
             Node()
-            :PointType(),
-             Flags(),
-             mNodeData(),
-             mDofsContainer(),
-             mInitialPosition(),
-             mData()
+            :BaseType()
+            ,Flags()
+            ,mNodeData(0)
+            ,mDofsContainer()
+            ,mData()
+            ,mInitialPosition()
             {
-
+                CreateSolutionStepData();
             }
-            Node(const int& ID)
-            :PointType(),
-             Flags(),
-             mNodeData(ID),
-             mDofsContainer(),
-             mInitialPosition(),
-             mData()
+            explicit Node(IndexType NewId )
+            : BaseType()
+            , Flags()
+            , mNodeData(NewId)
+            , mDofsContainer()
+            , mData()
+            , mInitialPosition()
             {
-
-            }  
-            Node(const double& x, const double& y, const double& z)
-                :PointType(x,y,z),
-                Flags(),
-                mNodeData(),
-                mDofsContainer(),
-                mInitialPosition(x,y,z),
-                mData()
-            {
-
+                std::cerr <<  "Calling the default constructor for the node ... illegal operation!!" << std::endl;
+                exit(0);
+                CreateSolutionStepData();
             }
-            Node(const double& x, const double& y, const double& z,
-                const NodeDataType& ThisNodeData, const DofPointersContainerType& ThisDofs)
-                :PointType(x,y,z),
-                Flags(),
-                mNodeData(ThisNodeData),
-                mDofsContainer(ThisDofs),
-                mInitialPosition(x,y,z),
-                mData()
+            /// 3d constructor.
+            Node(IndexType NewId,
+                 double const& NewX, 
+                 double const& NewY, 
+                 double const& NewZ)
+            : BaseType(NewX, NewY, NewZ)
+            , Flags()
+            , mNodeData(NewId)
+            , mDofsContainer()
+            , mData()
+            , mInitialPosition(NewX, NewY, NewZ)
             {
-                
-            }  
-            Node(const Node& another)
-                :PointType(another.x(),another.y(),another.z()),
-                Flags(),
-                mNodeData(another.mNodeData),
-                mDofsContainer(another.mDofsContainer),
-                mInitialPosition(another.x(),another.y(),another.z()),
-                mData(another.mData)
-            {
-
+                CreateSolutionStepData();
             }
-            Node(Node&& another)
-                :PointType(another.x(),another.y(),another.z()),
-                Flags(),
-                mNodeData(another.mNodeData),
-                mDofsContainer(another.mDofsContainer),
-                mInitialPosition(another.x(),another.y(),another.z()),
-                mData(another.mData)
+            /// Point constructor.
+            Node(IndexType NewId, PointType const& rThisPoint)
+            : BaseType(rThisPoint)
+            , Flags()
+            , mNodeData(NewId)
+            , mDofsContainer()
+            , mData()
+            , mInitialPosition(rThisPoint)
             {
-
+                CreateSolutionStepData();
             }
-            Node(const Point<3>& anotherP)
-                 :PointType(anotherP),
-                 Flags(),
-                 mNodeData(),
-                 mDofsContainer(),
-                 mInitialPosition(anotherP),
-                 mData()
+            /** Copy constructor. Initialize this node with given node.*/
+            Node(Node const& rOtherNode) = delete;
+            /// 3d with variables list and data constructor.
+            Node(IndexType NewId, double const& NewX, double const& NewY, double const& NewZ,
+                 Variables_List::Pointer  pVariablesList,
+                 BlockType const * ThisData, 
+                 SizeType NewQueueSize = 1)
+            : BaseType(NewX, NewY, NewZ)
+            , Flags()
+            , mNodeData(NewId, pVariablesList,ThisData,NewQueueSize)
+            , mDofsContainer()
+            , mData()
+            , mInitialPosition(NewX, NewY, NewZ)
             {
-
-            }
-            Node(const Point<3>& anotherP,
-                 const NodeDataType& ThisNodeData, 
-                 const DofPointersContainerType& ThisDofs)
-                 :PointType(anotherP),
-                 Flags(),
-                 mNodeData(ThisNodeData),
-                 mDofsContainer(ThisDofs),
-                 mInitialPosition(anotherP),
-                 mData()
-            {
-
             }
             // Destructor
             ~Node()
@@ -131,7 +113,7 @@ class Node : public Point<3> , public Flags
                 this->y() = another.y();
                 this->z() = another.z();
                 mNodeData = another.mNodeData;
-                mNodeData.GetID()++;
+                mNodeData.Id()++;
                 mDofsContainer = another.mDofsContainer;
                 mInitialPosition = another.mInitialPosition;
                 return *this;
@@ -148,14 +130,55 @@ class Node : public Point<3> , public Flags
         /// @}
         
         ///@name Operations {
-            
+            void CreateSolutionStepData()
+            {
+                SolutionStepData().PushFront();
+            }
+
+            void CloneSolutionStepData()
+            {
+                SolutionStepData().CloneFront();
+            }
+
+            void OverwriteSolutionStepData(IndexType SourceSolutionStepIndex, IndexType DestinationSourceSolutionStepIndex)
+            {
+                SolutionStepData().AssignData(SolutionStepData().Data(SourceSolutionStepIndex), DestinationSourceSolutionStepIndex);
+            }
+
+            void ClearSolutionStepsData()
+            {
+                SolutionStepData().Clear();
+            }
+
+            void SetSolutionStepVariablesList(Variables_List::Pointer pVariablesList)
+            {
+                SolutionStepData().SetVariablesList(pVariablesList);
+            }
+
+            IndexType GetBufferSize() const
+            {
+                return SolutionStepData().QueueSize();
+            }
+
+            void SetBufferSize(IndexType NewBufferSize)
+            {
+                SolutionStepData().Resize(NewBufferSize);
+            }
         ///@}
 
         /// @name Access
         /// @{
-            int GetNodeID()const
+            IndexType GetNodeID()const
             {
-                return mNodeData.GetID();
+                return mNodeData.Id();
+            }
+            IndexType& Id()
+            {
+                return mNodeData.Id();
+            }
+            IndexType Id() const
+            {
+                return mNodeData.Id();
             }
             NodeDataType& GetNodeData()
             {

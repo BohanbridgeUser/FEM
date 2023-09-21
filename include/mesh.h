@@ -6,6 +6,7 @@
 #include "Container/flags.h"
 #include "Container/data_value_container.h"
 #include "Geometry/geometry.h"
+#include "indexed_object.h"
 
 #include <string>
 #include <iostream>
@@ -24,7 +25,7 @@ class Mesh : public Data_Value_Container, public Flags
         ///@{
             typedef Mesh<TNodeType,TPropertiesType,TElementType,TConditionType> 
                                                                         MeshType;
-            LOTUS_POINTER_DEFINE(MeshType)
+            LOTUS_SHARED_POINTER_DEFINE(MeshType)
 
             typedef std::size_t 
                                                                        IndexType;
@@ -131,7 +132,6 @@ class Mesh : public Data_Value_Container, public Flags
                 , mpProperties(new PropertiesContainerType())
                 , mpElements(new ElementsContainerType())
                 , mpConditions(new ConditionsContainerType())
-                , mpMasterSlaveConstraints(new MasterSlaveConstraintContainerType())
             {}
 
             /// Copy constructor.
@@ -140,16 +140,18 @@ class Mesh : public Data_Value_Container, public Flags
                 , mpProperties(rOther.mpProperties)
                 , mpElements(rOther.mpElements)
                 , mpConditions(rOther.mpConditions)
-                , mpMasterSlaveConstraints(rOther.mpMasterSlaveConstraints) 
             {}
 
             /// Components constructor.
             Mesh(typename NodesContainerType::Pointer NewNodes,
                 typename PropertiesContainerType::Pointer NewProperties,
                 typename ElementsContainerType::Pointer NewElements,
-                typename ConditionsContainerType::Pointer NewConditions,
-                typename MasterSlaveConstraintContainerType::Pointer NewMasterSlaveConditions)
-                : Flags(), mpNodes(NewNodes), mpProperties(NewProperties) , mpElements(NewElements), mpConditions(NewConditions), mpMasterSlaveConstraints(NewMasterSlaveConditions)
+                typename ConditionsContainerType::Pointer NewConditions)
+                : Flags(),
+                 mpNodes(NewNodes), 
+                 mpProperties(NewProperties) , 
+                 mpElements(NewElements), 
+                 mpConditions(NewConditions)
             {}
 
 
@@ -171,20 +173,18 @@ class Mesh : public Data_Value_Container, public Flags
                 typename PropertiesContainerType::Pointer p_properties(new PropertiesContainerType(*mpProperties));
                 typename ElementsContainerType::Pointer p_elements(new ElementsContainerType(*mpElements));
                 typename ConditionsContainerType::Pointer p_conditions(new ConditionsContainerType(*mpConditions));
-                typename MasterSlaveConstraintContainerType::Pointer p_master_slave_constraints(new MasterSlaveConstraintContainerType(*mpMasterSlaveConstraints));
 
-                return Mesh(p_nodes, p_properties, p_elements, p_conditions, p_master_slave_constraints);
+                return Mesh(p_nodes, p_properties, p_elements, p_conditions);
             }
 
             void Clear()
             {
                 Flags::Clear();
-                DataValueContainer::Clear();
+                Data_Value_Container::Clear();
                 mpNodes->clear();
                 mpProperties->clear();
                 mpElements->clear();
                 mpConditions->clear();
-                mpMasterSlaveConstraints->clear();
             }
         /// @}
 
@@ -720,7 +720,6 @@ class Mesh : public Data_Value_Container, public Flags
                 rOStream << "    Number of Properties  : " << mpProperties->size() << std::endl;
                 rOStream << "    Number of Elements    : " << mpElements->size() << std::endl;
                 rOStream << "    Number of Conditions  : " << mpConditions->size() << std::endl;
-                rOStream << "    Number of Constraints : " << mpMasterSlaveConstraints->size() << std::endl;
             }
             /// Print information about this object.
             virtual void PrintInfo(std::ostream& rOStream, std::string const& PrefixString) const
@@ -734,7 +733,6 @@ class Mesh : public Data_Value_Container, public Flags
                 rOStream << PrefixString << "    Number of Properties  : " << mpProperties->size() << std::endl;
                 rOStream << PrefixString << "    Number of Elements    : " << mpElements->size() << std::endl;
                 rOStream << PrefixString << "    Number of Conditions  : " << mpConditions->size() << std::endl;
-                rOStream << PrefixString << "    Number of Constraints : " << mpMasterSlaveConstraints->size() << std::endl;
             }
 
         /// @}
@@ -755,7 +753,6 @@ class Mesh : public Data_Value_Container, public Flags
             mpProperties = rOther.mpProperties;
             mpElements = rOther.mpElements;
             mpConditions = rOther.mpConditions;
-            mpMasterSlaveConstraints = rOther.mpMasterSlaveConstraints;
         }
 };
 
