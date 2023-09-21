@@ -27,7 +27,7 @@ class Hexahedron:public Geometry<TPointType>
     public:
         /// @name Type Define
         /// @{
-            LOTUS_POINTER_DEFINE(Hexahedron<TPointType>)
+            LOTUS_SHARED_POINTER_DEFINE(Hexahedron<TPointType>)
             typedef Geometry<TPointType>
                                                                          GeometryType;
             typedef TPointType 
@@ -90,14 +90,30 @@ class Hexahedron:public Geometry<TPointType>
                        TPointType& point8)
             :GeometryType(NewId,PointsContainerType(),mGeometryData)
             {
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point1));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point2));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point3));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point4));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point5));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point6));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point7));
-                this->pPointsVector().push_back(typename TPointType::Pointer(&point8));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point1));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point2));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point3));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point4));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point5));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point6));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point7));
+                this->pPointsVector().push_back(std::make_shared<TPointType>(point8));
+            }
+            Hexahedron(const int& NewId,           typename TPointType::Pointer ppoint1,
+                       typename TPointType::Pointer ppoint2,typename TPointType::Pointer ppoint3,
+                       typename TPointType::Pointer ppoint4,typename TPointType::Pointer ppoint5,
+                       typename TPointType::Pointer ppoint6,typename TPointType::Pointer ppoint7,
+                       typename TPointType::Pointer ppoint8)
+            :GeometryType(NewId,PointsContainerType(),mGeometryData)
+            {
+                this->pPointsVector().push_back(ppoint1);
+                this->pPointsVector().push_back(ppoint2);
+                this->pPointsVector().push_back(ppoint3);
+                this->pPointsVector().push_back(ppoint4);
+                this->pPointsVector().push_back(ppoint5);
+                this->pPointsVector().push_back(ppoint6);
+                this->pPointsVector().push_back(ppoint7);
+                this->pPointsVector().push_back(ppoint8);
             }
             Hexahedron(const Hexahedron<TPointType>& another)
             :GeometryType(another)
@@ -108,7 +124,7 @@ class Hexahedron:public Geometry<TPointType>
             {
             }
 
-            ~Hexahedron()
+            ~Hexahedron() override
             {
             }    
         //}

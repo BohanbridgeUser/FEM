@@ -124,14 +124,6 @@ class Geometry_Object : public Indexed_Object, public Flags
 
         /// @name Inquiry
         /// @{
-            IndexType Id() const
-            {
-                return this->Id();
-            }
-            IndexType& Id() 
-            {
-                return this->Id();
-            }
             template<typename TDataType>
             bool Has(Variable<TDataType> const& rVariable) const
             {

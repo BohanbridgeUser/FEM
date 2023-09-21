@@ -562,20 +562,21 @@ extern template class Components<Variable<std::string>>;
 extern template class Components<Variable<Flags>>;
 extern template class Components<Flags>;
 
-void AddKratosComponent(const std::string& rName, const Variable<bool>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<int>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<unsigned int>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<double>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<std::array<double, 3>>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<std::array<double, 4>>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<std::array<double, 6>>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<std::array<double, 9>>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<Eigen::Matrix<double,Eigen::Dynamic,1>>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>>& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<std::string>& rComponent);
-void AddKratosComponent(const std::string& rName, const Flags& rComponent);
-void AddKratosComponent(const std::string& rName, const Variable<Flags>& rComponent);
+void AddComponent(const std::string& rName, const Variable<bool>& rComponent);
+void AddComponent(const std::string& rName, const Variable<int>& rComponent);
+void AddComponent(const std::string& rName, const Variable<unsigned int>& rComponent);
+void AddComponent(const std::string& rName, const Variable<double>& rComponent);
+void AddComponent(const std::string& rName, const Variable<std::array<double, 3>>& rComponent);
+void AddComponent(const std::string& rName, const Variable<std::array<double, 4>>& rComponent);
+void AddComponent(const std::string& rName, const Variable<std::array<double, 6>>& rComponent);
+void AddComponent(const std::string& rName, const Variable<std::array<double, 9>>& rComponent);
+void AddComponent(const std::string& rName, const Variable<Eigen::Matrix<double,Eigen::Dynamic,1>>& rComponent);
+void AddComponent(const std::string& rName, const Variable<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>>& rComponent);
+void AddComponent(const std::string& rName, const Variable<std::string>& rComponent);
+void AddComponent(const std::string& rName, const Flags& rComponent);
+void AddComponent(const std::string& rName, const Variable<Flags>& rComponent);
 
-template<class TComponentType> void AddKratosComponent(const std::string& rName, const TComponentType& rComponent)
+template<class TComponentType> 
+void AddComponent(const std::string& rName, const TComponentType& rComponent)
 {
 }

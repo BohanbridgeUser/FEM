@@ -13,19 +13,16 @@ class Model
     public:
         /// @name Type Define
         /// @{
-            LOTUS_POINTER_DEFINE(Model)
-            typedef Node 
-                                                                    NodeType;
-            typedef Geometry<Node> 
-                                                                GeometryType;
-            typedef ModelPart::IndexType 
-                                                                   IndexType;
+            typedef ModelPart::IndexType
+                                                                                IndexType;
+            LOTUS_SHARED_POINTER_DEFINE(Model)
 
         /// @}
 
 
         /// @name Life Circle
         /// @{
+            /// Default constructor.
             Model(){};
 
             /// Destructor.
@@ -35,6 +32,7 @@ class Model
             }
 
             Model(const Model&) = delete;
+
 
         /// @}
 
@@ -48,7 +46,7 @@ class Model
 
         /// @name Operations
         /// @{
-            /**
+              /**
              * @brief This method clears the database of modelparts
              * @details Executes a clear on the model part map
              */
@@ -76,6 +74,7 @@ class Model
              */
             void RenameModelPart( const std::string& OldName, const std::string& NewName );
 
+
         /// @}
 
 
@@ -97,7 +96,7 @@ class Model
              */
             const ModelPart& GetModelPart(const std::string& rFullModelPartName) const;
 
-            /**
+             /**
              * @brief This returns a vector containing a list of model parts names contained on the model
              * @details Iterates over the list of submodelparts of the root model part
              * @return A vector of strings containing the model parts names
@@ -116,7 +115,6 @@ class Model
              */
             bool HasModelPart(const std::string& rFullModelPartName) const;
 
-
         /// @}
 
         /// @name Input And Output
@@ -129,8 +127,6 @@ class Model
 
             /// Print object's data.
             void PrintData(std::ostream& rOStream) const;
-
-
         /// @}
     protected:
         /// @name Protected Static Member Variables
@@ -142,7 +138,7 @@ class Model
 
         /// @name Protected Member Variables
         /// @{
-
+            
 
         /// @}
 
@@ -192,13 +188,6 @@ class Model
 
         /// @name Private Operatiors
         /// @{
-
-
-        /// @}
-
-
-        /// @name Private Operations
-        /// @{
             /**
              * @brief This method searchs recursively a sub model part in a model part
              * @param rModelPartName The name to be search
@@ -221,6 +210,14 @@ class Model
              */
             void CreateRootModelPart(const std::string& ModelPartName, ModelPart::IndexType NewBufferSize);
 
+
+        /// @}
+
+
+        /// @name Private Operations
+        /// @{
+
+
         /// @}
 
 
@@ -238,14 +235,4 @@ class Model
         /// @}
 };
 
-/// output stream function
-inline std::ostream& operator << (std::ostream& rOStream,
-                const Model& rThis)
-{
-    rThis.PrintInfo(rOStream);
-    rOStream << std::endl;
-    rThis.PrintData(rOStream);
-
-    return rOStream;
-}
 #endif

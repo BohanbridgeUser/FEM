@@ -10,7 +10,7 @@ class Point:public Lotus_Vector<TDimension>
     public:
     /// @name Define
     /// @{ 
-        LOTUS_POINTER_DEFINE(Point<TDimension>)
+        LOTUS_SHARED_POINTER_DEFINE(Point<TDimension>)
         typedef size_t
                                                     IndexType;
         typedef size_t                              
@@ -24,15 +24,18 @@ class Point:public Lotus_Vector<TDimension>
         {
             
         }
-        Point(const double& xi, const double& yi):Lotus_Vector<TDimension>(xi,yi)
+        Point(const double& xi, const double& yi)
+        :Lotus_Vector<TDimension>(xi,yi)
         {
             number++;
         }
-        Point(const double& xi, const double& yi, const double& zi):Lotus_Vector<TDimension>(xi,yi,zi)
+        Point(const double& xi, const double& yi, const double& zi)
+        :Lotus_Vector<TDimension>(xi,yi,zi)
         {
             number++;
         }
-        Point(const Point& another):Lotus_Vector<TDimension>(another.x(),another.y())
+        Point(const Point& another)
+        :Lotus_Vector<TDimension>(another.x(),another.y())
         {
             if(TDimension == 3) Lotus_Vector<TDimension>::z() = another.z();
             number++;

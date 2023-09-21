@@ -9,19 +9,17 @@ void Model::CreateRootModelPart(const std::string& ModelPartName, ModelPart::Ind
 {
     auto p_var_list = std::make_shared<Variables_List>();
 
-    ModelPart* p_model_part = new ModelPart(ModelPartName, NewBufferSize, p_var_list, *this );
+    ModelPart* p_model_part = new ModelPart(ModelPartName, NewBufferSize, p_var_list, *this);
     mRootModelPartMap[ModelPartName] = std::unique_ptr<ModelPart>(p_model_part); // note that i create it separately since Model is friend of ModelPart but unique_ptr is not
 }
 
 ModelPart& Model::CreateModelPart( const std::string& ModelPartName, ModelPart::IndexType NewBufferSize )
 {
-
     if( ModelPartName.empty() )
     {
         std::cerr<< "Please don't use empty names (\"\") when creating a ModelPart" << std::endl;
         exit(0);
     } 
-
     const auto delim_pos = ModelPartName.find('.');
     const std::string& root_model_part_name = ModelPartName.substr(0, delim_pos);
 
