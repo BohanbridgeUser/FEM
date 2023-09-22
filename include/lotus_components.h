@@ -9,14 +9,18 @@
 #include "define.h"
 #include "Container/flags.h"
 #include "Variable/variable.h"
+#include "Geometry/geometry.h"
+#include "Element/element.h"
+#include "Condition/condition.h"
+#include "Constitutive_Law/Constitutive_law.h"
 
 template<class TComponentType>
-class Components
+class Lotus_Components
 {
     public:
         /// @name Type Define
         /// @{
-            LOTUS_SHARED_POINTER_DEFINE(Components)
+            LOTUS_SHARED_POINTER_DEFINE(Lotus_Components)
             using ComponentsContainerType = std::map<std::string, const TComponentType*>;
             /// Component type
             using ValueType = typename ComponentsContainerType::value_type;
@@ -25,9 +29,9 @@ class Components
         /// @name Life Circle
         /// @{
             /// Default constructor.
-            Components() = default;
+            Lotus_Components() = default;
             /// Destructor.
-            virtual ~Components() = default;
+            virtual ~Lotus_Components() = default;
         /// @}
 
 
@@ -140,12 +144,12 @@ class Components
             /// Turn back information as a string.
             virtual std::string Info() const
             {
-                return "Kratos components";
+                return "Lotus components";
             }
             /// Print information about this object.
             virtual void PrintInfo(std::ostream& rOStream) const
             {
-                rOStream << "Kratos components";
+                rOStream << "Lotus components";
             }
             /// Print object's data.
             virtual void PrintData(std::ostream& rOStream) const 
@@ -216,14 +220,14 @@ class Components
 
         /// @name Private Operatiors
         /// @{
-            Components& operator=(const Components& rOther);
+            Lotus_Components& operator=(const Lotus_Components& rOther);
         /// @}
 
 
         /// @name Private Operations
         /// @{
             /// Copy constructor.
-            Components(const Components& rOther);
+            Lotus_Components(const Lotus_Components& rOther);
 
         /// @}
 
@@ -239,7 +243,7 @@ class Components
             {
                 std::stringstream msg;
                 msg << "The component \"" << rName << "\" is not registered!\nMaybe you need to import the application where it is defined?\nThe following components of this type are registered:" << std::endl;
-                Components instance; // creating an instance for using "PrintData"
+                Lotus_Components instance; // creating an instance for using "PrintData"
                 instance.PrintData(msg);
                 return msg.str();
             }
@@ -255,12 +259,12 @@ class Components
 };
 
 template<>
-class Components<Variable_Data>
+class Lotus_Components<Variable_Data>
 {
     public:
         /// @name Type Define
         /// @{
-            LOTUS_SHARED_POINTER_DEFINE(Components)
+            LOTUS_SHARED_POINTER_DEFINE(Lotus_Components)
             /// The map type used to store the components // TODO: Replace std::map with faster alternative
             using ComponentsContainerType = std::map<std::string, Variable_Data*>;
             /// Component type
@@ -272,10 +276,10 @@ class Components<Variable_Data>
         /// @name Life Circle
         /// @{
             /// Default constructor.
-            Components() = default;
+            Lotus_Components() = default;
 
             /// Destructor.
-            virtual ~Components() = default;
+            virtual ~Lotus_Components() = default;
 
 
         /// @}
@@ -410,13 +414,13 @@ class Components<Variable_Data>
             /// Turn back information as a string.
             virtual std::string Info() const
             {
-                return "Kratos components <VariableData>";
+                return "Lotus components <VariableData>";
             }
 
             /// Print information about this object.
             virtual void PrintInfo(std::ostream& rOStream) const
             {
-                rOStream << "Kratos components <VariableData>";
+                rOStream << "Lotus components <VariableData>";
             }
 
             /// Print object's data.
@@ -489,10 +493,10 @@ class Components<Variable_Data>
         /// @name Private Operatiors
         /// @{
             /// Assignment operator.
-            Components& operator=(const Components& rOther);
+            Lotus_Components& operator=(const Lotus_Components& rOther);
 
             /// Copy constructor.
-            Components(const Components& rOther);
+            Lotus_Components(const Lotus_Components& rOther);
 
 
              
@@ -512,7 +516,7 @@ class Components<Variable_Data>
             {
                 std::stringstream msg;
                 msg << "The variable \"" << rName << "\" is not registered!\nMaybe you need to import the application where it is defined?\nThe following variables are registered:" << std::endl;
-                Components instance; // creating an instance for using "PrintData"
+                Lotus_Components instance; // creating an instance for using "PrintData"
                 instance.PrintData(msg);
                 return msg.str();
             }
@@ -535,11 +539,11 @@ class Components<Variable_Data>
 };
 
 template<class TComponentType>
-typename Components<TComponentType>::ComponentsContainerType Components<TComponentType>::msComponents;
+typename Lotus_Components<TComponentType>::ComponentsContainerType Lotus_Components<TComponentType>::msComponents;
 /// output stream function
 template<class TComponentType>
 inline std::ostream& operator << (std::ostream& rOStream,
-                                  const Components<TComponentType>& rThis)
+                                  const Lotus_Components<TComponentType>& rThis)
 {
     rThis.PrintInfo(rOStream);
     rOStream << std::endl;
@@ -548,19 +552,19 @@ inline std::ostream& operator << (std::ostream& rOStream,
     return rOStream;
 }
 
-extern template class Components<Variable<bool>>;
-extern template class Components<Variable<int>>;
-extern template class Components<Variable<unsigned int>>;
-extern template class Components<Variable<double>>;
-extern template class Components<Variable<std::array<double, 3>>>;
-extern template class Components<Variable<std::array<double, 4>>>;
-extern template class Components<Variable<std::array<double, 6>>>;
-extern template class Components<Variable<std::array<double, 9>>>;
-extern template class Components<Variable<Eigen::Matrix<double,Eigen::Dynamic,1>>>;
-extern template class Components<Variable<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>>>;
-extern template class Components<Variable<std::string>>;
-extern template class Components<Variable<Flags>>;
-extern template class Components<Flags>;
+extern template class Lotus_Components<Variable<bool>>;
+extern template class Lotus_Components<Variable<int>>;
+extern template class Lotus_Components<Variable<unsigned int>>;
+extern template class Lotus_Components<Variable<double>>;
+extern template class Lotus_Components<Variable<std::array<double, 3>>>;
+extern template class Lotus_Components<Variable<std::array<double, 4>>>;
+extern template class Lotus_Components<Variable<std::array<double, 6>>>;
+extern template class Lotus_Components<Variable<std::array<double, 9>>>;
+extern template class Lotus_Components<Variable<Eigen::Matrix<double,Eigen::Dynamic,1>>>;
+extern template class Lotus_Components<Variable<Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>>>;
+extern template class Lotus_Components<Variable<std::string>>;
+extern template class Lotus_Components<Variable<Flags>>;
+extern template class Lotus_Components<Flags>;
 
 void AddComponent(const std::string& rName, const Variable<bool>& rComponent);
 void AddComponent(const std::string& rName, const Variable<int>& rComponent);

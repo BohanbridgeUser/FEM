@@ -12,7 +12,7 @@
 
 // Project includes
 #include "../define.h"
-#include "../components.h"
+#include "../lotus_components.h"
 #include "../process_info.h"
 #include "../Container/data_value_container.h"
 #include "../mesh.h"

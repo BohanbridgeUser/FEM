@@ -37,14 +37,14 @@ int main()
             for(int k=0;k<8;++k)
             {
                 H_3d_8s.push_back(std::make_shared<Hexahedron<Point<3> >>(cnt,
-                                                                      *V_PP[i*81+j*9+k],
-                                                                      *V_PP[(i+1)*81+j*9+k],
-                                                                      *V_PP[(i+1)*81+(j+1)*9+k],
-                                                                      *V_PP[i*81+(j+1)*9+k],
-                                                                      *V_PP[i*81+j*9+(k+1)],
-                                                                      *V_PP[(i+1)*81+j*9+(k+1)],
-                                                                      *V_PP[(i+1)*81+(j+1)*9+(k+1)],
-                                                                      *V_PP[i*81+(j+1)*9+(k+1)]));
+                                                                          *V_PP[i*81+j*9+k],
+                                                                          *V_PP[(i+1)*81+j*9+k],
+                                                                          *V_PP[(i+1)*81+(j+1)*9+k],
+                                                                          *V_PP[i*81+(j+1)*9+k],
+                                                                          *V_PP[i*81+j*9+(k+1)],
+                                                                          *V_PP[(i+1)*81+j*9+(k+1)],
+                                                                          *V_PP[(i+1)*81+(j+1)*9+(k+1)],
+                                                                          *V_PP[i*81+(j+1)*9+(k+1)]));
                 cnt++;
             }
         }
@@ -122,5 +122,6 @@ int main()
         std::string("Cube")
     );
     ModelPart& Cube = Model1.GetModelPart("Cube");
+
     return 0;
 }

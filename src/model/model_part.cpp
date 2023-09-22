@@ -932,7 +932,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                 }
                     
                 //create the new element
-                ElementType const& r_clone_element = Components<ElementType>::Get(ElementName);
+                ElementType const& r_clone_element = Lotus_Components<ElementType>::Get(ElementName);
                 Element::Pointer p_element = r_clone_element.Create(Id, pElementNodes, pProperties);
 
                 //add the new element
@@ -959,7 +959,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     exit(0); 
                 }   
                 //create the new element
-                ElementType const& r_clone_element = Components<ElementType>::Get(ElementName);
+                ElementType const& r_clone_element = Lotus_Components<ElementType>::Get(ElementName);
                 Element::Pointer p_element = r_clone_element.Create(Id, pGeometry, pProperties);
                 //add the new element
                 GetMesh(ThisIndex).AddElement(p_element);
@@ -1164,7 +1164,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     exit(0);
                 }
                 //get the condition
-                ConditionType const& r_clone_condition = Components<ConditionType>::Get(ConditionName);
+                ConditionType const& r_clone_condition = Lotus_Components<ConditionType>::Get(ConditionName);
                 ConditionType::Pointer p_condition = r_clone_condition.Create(Id, pConditionNodes, pProperties);
                 //add the new element
                 GetMesh(ThisIndex).AddCondition(p_condition);
@@ -1190,7 +1190,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     exit(0);
                 }
                 //get the condition
-                ConditionType const& r_clone_condition = Components<ConditionType>::Get(ConditionName);
+                ConditionType const& r_clone_condition = Lotus_Components<ConditionType>::Get(ConditionName);
                 ConditionType::Pointer p_condition = r_clone_condition.Create(Id, pGeometry, pProperties);
 
                 //add the new element
@@ -1332,7 +1332,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     return p_new_geometry;
                 }
                 // Create the new geometry
-                GeometryType const& r_clone_geometry = Components<GeometryType>::Get(rGeometryTypeName);
+                GeometryType const& r_clone_geometry = Lotus_Components<GeometryType>::Get(rGeometryTypeName);
                 GeometryType::Pointer p_geometry = r_clone_geometry.Create(pGeometryNodes);
                 //add the new geometry
                 this->AddGeometry(p_geometry);
@@ -1349,7 +1349,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     return p_new_geometry;
                 }
                 // Create the new geometry
-                GeometryType const& r_clone_geometry = Components<GeometryType>::Get(rGeometryTypeName);
+                GeometryType const& r_clone_geometry = Lotus_Components<GeometryType>::Get(rGeometryTypeName);
                 GeometryType::SharedPointer p_geometry = r_clone_geometry.Create(*pGeometry);
 
                 //add the new geometry
@@ -1392,7 +1392,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     exit(0);
                 } 
                 // Create the new geometry
-                GeometryType const& r_clone_geometry = Components<GeometryType>::Get(rGeometryTypeName);
+                GeometryType const& r_clone_geometry = Lotus_Components<GeometryType>::Get(rGeometryTypeName);
                 GeometryType::Pointer p_geometry = r_clone_geometry.Create(GeometryId, pGeometryNodes);
                 //add the new geometry
                 this->AddGeometry(p_geometry);
@@ -1416,7 +1416,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                 } 
 
                 // Create the new geometry
-                GeometryType const& r_clone_geometry = Components<GeometryType>::Get(rGeometryTypeName);
+                GeometryType const& r_clone_geometry = Lotus_Components<GeometryType>::Get(rGeometryTypeName);
                 GeometryType::Pointer p_geometry = r_clone_geometry.Create(GeometryId, *pGeometry);
                 //add the new geometry
                 this->AddGeometry(p_geometry);
@@ -1457,7 +1457,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                     exit(0);
                 }
                 // Create the new geometry
-                GeometryType const& r_clone_geometry = Components<GeometryType>::Get(rGeometryTypeName);
+                GeometryType const& r_clone_geometry = Lotus_Components<GeometryType>::Get(rGeometryTypeName);
                 GeometryType::Pointer p_geometry = r_clone_geometry.Create(rGeometryIdentifierName, pGeometryNodes);
                 //add the new geometry
                 this->AddGeometry(p_geometry);
@@ -1482,7 +1482,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                 } 
 
                 // Create the new geometry
-                GeometryType const& r_clone_geometry = Components<GeometryType>::Get(rGeometryTypeName);
+                GeometryType const& r_clone_geometry = Lotus_Components<GeometryType>::Get(rGeometryTypeName);
                 GeometryType::Pointer p_geometry = r_clone_geometry.Create(rGeometryIdentifierName, *pGeometry);
 
                 //add the new geometry
