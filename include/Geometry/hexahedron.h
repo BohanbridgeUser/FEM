@@ -99,6 +99,16 @@ class Hexahedron:public Geometry<TPointType>
                 this->pPointsVector().push_back(std::make_shared<TPointType>(point7));
                 this->pPointsVector().push_back(std::make_shared<TPointType>(point8));
             }
+            explicit Hexahedron( const PointsContainerType& ThisPoints )
+            :GeometryType( ThisPoints, mGeometryData )
+            {
+                if ( this->PointsNumber() != 8 )
+                {
+                    std::cerr << "Invalid points number. Expected 8, given " << this->PointsNumber() << std::endl;
+                    exit(0);
+                }
+                    
+            }
             Hexahedron(const int& NewId,           typename TPointType::Pointer ppoint1,
                        typename TPointType::Pointer ppoint2,typename TPointType::Pointer ppoint3,
                        typename TPointType::Pointer ppoint4,typename TPointType::Pointer ppoint5,

@@ -10,6 +10,7 @@
 
 #include "define.h"
 #include "lotus_application.h"
+#include "lotus_version.h"
 
 class Lotus_Kernel
 {
@@ -23,10 +24,10 @@ class Lotus_Kernel
 
         /// @name Life Circle
         /// @{
-            Kernel();
-            Kernel(bool IsDistributedRun);
-            Kernel(Kernel const& rOther) {}
-            virtual ~Kernel() {}
+            Lotus_Kernel();
+            Lotus_Kernel(bool IsDistributedRun);
+            Lotus_Kernel(Lotus_Kernel const& rOther) {}
+            virtual ~Lotus_Kernel() {}
         /// @}
 
 
@@ -46,10 +47,9 @@ class Lotus_Kernel
             - Variables
             - Elements
             - Conditions
-
             @param NewApplication The application to be added and synchronized
             */
-            void ImportApplication(KratosApplication::Pointer pNewApplication);
+            void ImportApplication(Lotus_Application::Pointer pNewApplication);
             /// To be deprecated because variables have their own hash key.
             /** The keys of Variables are not sequential anymore, so this method will be deprecated
             */
@@ -60,7 +60,7 @@ class Lotus_Kernel
                 @see ImportApplication
                 @see Initialize
             */
-            void InitializeApplication(KratosApplication& NewApplication) {}
+            void InitializeApplication(Lotus_Application& NewApplication) {}
 
             static void SetPythonVersion(std::string);
 

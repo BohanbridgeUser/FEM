@@ -1,5 +1,6 @@
 #include <memory>
 #include <mutex>
+#include <omp.h>
 #include "Utility/string_utilities.h"
 #include "Utility/smart_pointer.h"
 #define LOTUS_POINTER_DEFINE(a) typedef a* Pointer;\
@@ -37,4 +38,15 @@
 
 #define LOTUS_ERROR(content) std::cerr<< content <<std::endl; exit(0);
 
+#define LOTUS_REGISTER_CONDITION(name,reference) Lotus_Components<Condition>::Add(name,reference);
+
+#define LOTUS_REGISTER_ELEMENT(name,reference) Lotus_Components<Element>::Add(name,reference);
+
+#define LOTUS_REGISTER_GEOMETRY(name,reference) Lotus_Components<Geometry<Node>>::Add(name,reference);
+
+#define LOTUS_REGISTER_FLAG(name) Lotus_Components<Flags>::Add(#name,name);
+
+#define LOTUS_ADD_FLAG_TO_LOTUS_COMPONENTS(name) Lotus_Components<Flags>::Add(#name,name);
+
+#define LOTUS_REGISTER_CONSTITUTIVE_LAW(name,reference) Lotus_Components<Constitutive_Law>::Add(name,reference);
 

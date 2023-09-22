@@ -47,9 +47,21 @@ class Condition : public Geometry_Object
         /// @name Life Circle
         /// @{
             // Constructor
-            Condition():Geometry_Object()
+            /**
+             * Constructor.
+             */
+            explicit Condition(IndexType NewId = 0)
+            : BaseType(NewId)
+            , mpProperties(nullptr)
             {
-                
+            }
+            /**
+             * Constructor using an array of nodes
+             */
+            Condition(IndexType NewId, const NodesContainerType& ThisNodes)
+                : BaseType(NewId,GeometryType::Pointer(new GeometryType(ThisNodes)))
+                , mpProperties(nullptr)
+            {
             }
             Condition(GeometryType::Pointer mpThisGeometry)
             :Geometry_Object(mpThisGeometry),
@@ -109,6 +121,19 @@ class Condition : public Geometry_Object
             
             }
         /// @}
+
+        /// @name Operators
+        /// @{
+            Condition & operator=(Condition const& rOther)
+            {
+                BaseType::operator=(rOther);
+                mpProperties = rOther.mpProperties;
+
+                return *this;
+            }
+
+        /// @}
+
 
         /// @name Operations
         /// @{

@@ -35,12 +35,11 @@ class Geometry_Object : public Indexed_Object, public Flags
         ///@name Lift Circle 
         ///@{ 
             // Constructor
-            Geometry_Object()
-            :Indexed_Object(),
-            FlagType()
-            {
-                mpGeometry = nullptr;
-            }
+            explicit Geometry_Object(IndexType NewId = 0)
+            :Indexed_Object(NewId),
+            Flags(),
+            mpGeometry()
+            {}
             Geometry_Object(GeometryType::Pointer ThismpGeometry)
             :Indexed_Object(),
             FlagType(),
@@ -71,6 +70,17 @@ class Geometry_Object : public Indexed_Object, public Flags
             {
             }
         ///@}
+
+
+        /// @name Operators
+        /// @{
+            Geometry_Object& operator=(Geometry_Object const& rOther)
+            {
+                Indexed_Object::operator=(rOther);
+                Flags::operator =(rOther);
+                return *this;
+            }
+        /// @}
 
         ///@name Operations 
         ///@{

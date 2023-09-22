@@ -21,9 +21,11 @@ class Lotus_Components
         /// @name Type Define
         /// @{
             LOTUS_SHARED_POINTER_DEFINE(Lotus_Components)
-            using ComponentsContainerType = std::map<std::string, const TComponentType*>;
+            typedef std::map<std::string, const TComponentType*>
+                                                                        ComponentsContainerType;
             /// Component type
-            using ValueType = typename ComponentsContainerType::value_type;
+            typedef typename ComponentsContainerType::value_type
+                                                                                      ValueType;
         /// @}
 
         /// @name Life Circle
@@ -266,10 +268,11 @@ class Lotus_Components<Variable_Data>
         /// @{
             LOTUS_SHARED_POINTER_DEFINE(Lotus_Components)
             /// The map type used to store the components // TODO: Replace std::map with faster alternative
-            using ComponentsContainerType = std::map<std::string, Variable_Data*>;
+            typedef std::map<std::string, Variable_Data*>
+                                                                                    ComponentsContainerType;
             /// Component type
-            using ValueType = ComponentsContainerType::value_type;
-
+            typedef ComponentsContainerType::value_type
+                                                                                                  ValueType;
         /// @}
 
 

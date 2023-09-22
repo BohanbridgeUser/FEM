@@ -42,9 +42,18 @@ class Element:public Geometry_Object
         ///@name Lift Circle 
         ///@{
             // Constructor 
-            Element():Geometry_Object()
+            explicit Element(IndexType NewId = 0)
+            : BaseType(NewId)
+            , mpProperties(nullptr)
             {
-
+            }
+            /**
+             * Constructor using an array of nodes
+             */
+            Element(IndexType NewId, const NodesContainerType& ThisNodes)
+            : BaseType(NewId,GeometryType::Pointer(new GeometryType(ThisNodes)))
+            , mpProperties(nullptr)
+            {
             }
             Element(const IndexType& NewID,typename GeometryType::Pointer ThismpGeometry)
             :Geometry_Object(NewID,ThismpGeometry),
@@ -84,6 +93,12 @@ class Element:public Geometry_Object
             friend std::ostream& operator<<(std::ostream& os, const Element& another)
             {
                 return os << *another.mpGeometry;
+            }
+            Element & operator=(Element const& rOther)
+            {
+                BaseType::operator=(rOther);
+                mpProperties = rOther.mpProperties;
+                return *this;
             }
         /// @}
 
