@@ -24,8 +24,7 @@
  * @brief This is pure geometric condition. The only purpose for this definition is to create dummy conditions
  * @details Inherits all method from base condition, and overrides the Clone() and Create() methods
  */
-class MeshCondition
-    : public Condition
+class MeshCondition : public Condition
 {
 public:
 

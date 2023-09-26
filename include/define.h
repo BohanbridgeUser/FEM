@@ -50,3 +50,17 @@
 
 #define LOTUS_REGISTER_CONSTITUTIVE_LAW(name,reference) Lotus_Components<Constitutive_Law>::Add(name,reference);
 
+#define LOTUS_DEFINE_3D_VARIABLE_WITH_COMPONENTS_IMPLEMENTATION(name) \
+                                        extern Variable<std::array<double, 3> > name; \
+                                        extern Variable<double> name##_X;\
+                                        extern Variable<double> name##_Y;\
+                                        extern Variable<double> name##_Z;
+
+#define LOTUS_REGISTER_3D_VARIABLE_WITH_COMPONENTS(name) \
+                                        LOTUS_DEFINE_3D_VARIABLE_WITH_COMPONENTS_IMPLEMENTATION(name)
+#define LOTUS_REGISTER_VARIABLE(name) \
+                                AddComponent(name.Name(), name);\
+                                Lotus_Components<Variable_Data>::Add(name.Name(), name);
+
+
+                                

@@ -61,7 +61,7 @@ class Lotus_Application
 
             /// Copy constructor.
             Lotus_Application(Lotus_Application const& rOther)
-                : mpVariableData(rOther.mpVariableData),
+                :mpVariableData(rOther.mpVariableData),
                 mpIntVariables(rOther.mpIntVariables),
                 mpUnsignedIntVariables(rOther.mpUnsignedIntVariables),
                 mpDoubleVariables(rOther.mpDoubleVariables),
@@ -101,14 +101,6 @@ class Lotus_Application
 
             ///////////////////////////////////////////////////////////////////
             void RegisterVariables();  // This contains the whole list of common variables in the Kratos Core
-            void RegisterDeprecatedVariables();           //TODO: remove, this variables should not be there
-            void RegisterCFDVariables();                  //TODO: move to application
-            void RegisterALEVariables();                  //TODO: move to application
-            void RegisterMappingVariables();              //TODO: move to application
-            void RegisterDEMVariables();                  //TODO: move to application
-            void RegisterFSIVariables();                  //TODO: move to application
-            void RegisterMATVariables();                  //TODO: move to application
-            void RegisterGlobalPointerVariables();
 
             void SetComponents(Lotus_Components<Variable_Data>::ComponentsContainerType const& VariableDataComponents)
             {

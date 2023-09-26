@@ -1,3 +1,6 @@
+#include "../../include/lotus_kernel.h"
+
+#include "../../include/process_info.h"
 #include "../../include/Model/model.h"
 #include "../../include/Element/small_displacement_element.h"
 #include "../../include/Condition/point_load_condition.h"
@@ -7,7 +10,8 @@
 #include "../../include/Solve_Strategy/convergencecriterias/convergencecriterias.h"
 #include "../../include/Solve_Strategy/schemes/scheme.h"
 #include "../../include/Container/lotus_flags.h"
-#include "../../include/process_info.h"
+
+
 #include <memory>
 int main()
 {

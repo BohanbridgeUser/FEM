@@ -111,13 +111,11 @@ class Registry_Item
         /// @{
             /// Default constructor deleted.
             Registry_Item() = delete;
-
             /// Constructor with the name
             Registry_Item(const std::string& rName)
                 : mName(rName),
                 mpValue(std::make_shared<SubRegistryItemType>()),
                 mGetValueStringMethod(&Registry_Item::GetRegistryItemType) {}
-
             /// Constructor with the name and lambda
             template <typename TItemType, typename... TArgs>
             Registry_Item(
@@ -126,7 +124,6 @@ class Registry_Item
                 : mName(rName),
                 mpValue(rValue()),
                 mGetValueStringMethod(&Registry_Item::GetItemString<TItemType>) {}
-
             /// Constructor with the name and value
             template<class TItemType>
             Registry_Item(
@@ -135,7 +132,6 @@ class Registry_Item
                 : mName(rName),
                 mpValue(std::make_shared<TItemType>(rValue)),
                 mGetValueStringMethod(&Registry_Item::GetItemString<TItemType>) {}
-
             /// Constructor with the name and shared ptr
             template<class TItemType>
             Registry_Item(
@@ -144,10 +140,8 @@ class Registry_Item
                 : mName(rName),
                 mpValue(pValue),
                 mGetValueStringMethod(&Registry_Item::GetItemString<TItemType>) {}
-
             // Copy constructor deleted
             Registry_Item(Registry_Item const& rOther) = delete;
-
             /// Destructor.
             ~Registry_Item() = default;
 
@@ -264,8 +258,8 @@ class Registry_Item
 
         /// @name Protected Member Variables
         /// @{
-            std::string mName;
-            std::any mpValue;
+            std::string                 mName;
+            std::any                    mpValue;
             std::string (Registry_Item::*mGetValueStringMethod)() const;
 
             class SubRegistryItemFunctor

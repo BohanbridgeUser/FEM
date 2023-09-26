@@ -165,7 +165,6 @@ class Registry
     private:
         /// @name Private Static Member Variables
         /// @{
-
             static Registry_Item* mspRootRegistryItem;
             static std::once_flag flag_once;
         /// @}
