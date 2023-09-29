@@ -101,7 +101,8 @@ class Dof
         /// @{
             double& GetReference(const Variable_Data& rThisVariableData, Variables_List_Data_Value_Container& rData,const IndexType& rThisSolutionStep, const int& rReactionType)
             {
-                if(!rReactionType) return rData.GetValue(static_cast< Variable<double> const&>(rThisVariableData),rThisSolutionStep);
+                if(!rReactionType) 
+                    return rData.GetValue(static_cast< Variable<double> const&>(rThisVariableData),rThisSolutionStep);
                 else
                 {
                     std::cerr << "Not supported type for Dof" << std::endl;

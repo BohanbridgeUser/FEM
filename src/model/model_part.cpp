@@ -598,7 +598,8 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
                 )
             {
                 auto pprop_it = GetMesh(MeshIndex).Properties().find(PropertiesId);
-                if(pprop_it != GetMesh(MeshIndex).Properties().end()) { // Property does exist
+                if(pprop_it != GetMesh(MeshIndex).Properties().end()) 
+                { // Property does exist
                     std::cerr << "Property #" << PropertiesId << " already existing. Please use pGetProperties() instead" << std::endl;
                     exit(0);
                 } else {
@@ -898,7 +899,7 @@ LOTUS_CREATE_LOCAL_FLAGS(ModelPart, OVERWRITE_ENTITIES, 1);
             ModelPart::ElementType::Pointer ModelPart::CreateNewElement(std::string ElementName,
                     ModelPart::IndexType Id, std::vector<ModelPart::IndexType> ElementNodeIds,
                     ModelPart::PropertiesType::Pointer pProperties, ModelPart::IndexType ThisIndex)
-            {
+            {   
                 if (IsSubModelPart())
                 {
                     ElementType::Pointer p_new_element = mpParentModelPart->CreateNewElement(ElementName, Id, ElementNodeIds, pProperties, ThisIndex);

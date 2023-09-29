@@ -295,9 +295,11 @@ class Variable : public Variable_Data
 
         /// @name Protected Operations
         /// @{
-            void RegisterThisVariable(){
+            void RegisterThisVariable()
+            {
                 std::string variable_path = "variables.all." + Name();
-                if(!Registry::HasItem(variable_path)){
+                if(!Registry::HasItem(variable_path))
+                {
                     Registry::AddItem<VariableType>(variable_path, *this);
                 }
             }

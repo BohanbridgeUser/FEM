@@ -218,15 +218,6 @@ class Properties : public Indexed_Object
 
         /// @name Access
         /// @{
-            IndexType& Id()
-            {
-                return ID;
-            }
-            IndexType Id() const
-            {
-                return ID;
-            }
-        
              /**
              * @brief This method returns the whole data container
              * @return Data container

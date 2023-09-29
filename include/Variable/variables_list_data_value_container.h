@@ -735,7 +735,7 @@ class Variables_List_Data_Value_Container
                     std::cerr<< "This container don't have a variables list assigned. A possible reason is creating a node without a model part." << std::endl;
                     exit(0);
                 }
-                if(mpVariablesList->Has(rThisVariable)) 
+                if(!mpVariablesList->Has(rThisVariable)) 
                 {
                     std::cerr<< "This container only can store the variables specified in its variables list. The variables list doesn't have this variable:" << rThisVariable << std::endl;
                     exit(0);
@@ -750,7 +750,7 @@ class Variables_List_Data_Value_Container
                     std::cerr<< "This container don't have a variables list assigned. A possible reason is creating a node without a model part." << std::endl;
                     exit(0);
                 }
-                if(mpVariablesList->Has(rThisVariable)) 
+                if(!mpVariablesList->Has(rThisVariable)) 
                 {
                     std::cerr<< "This container only can store the variables specified in its variables list. The variables list doesn't have this variable:" << rThisVariable << std::endl;
                     exit(0);

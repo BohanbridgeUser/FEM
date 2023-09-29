@@ -164,7 +164,8 @@ class Registry_Item
                 std::string const& ItemName,
                 TArgumentsList&&... Arguments)
             {
-                if(this->HasItem(ItemName)){
+                if(this->HasItem(ItemName))
+                {
                     std::cout << "The RegistryItem '" << this->Name() 
                     << "' already has an item with name "
                     << ItemName << "." << std::endl;
