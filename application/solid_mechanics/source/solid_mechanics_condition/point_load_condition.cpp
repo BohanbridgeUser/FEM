@@ -1,4 +1,5 @@
-#include "../../include/Condition/point_load_condition.h"
+#include "../../include/solid_mechanics_condition/point_load_condition.h"
+#include "../../include/lotus_solid_mechanics_variables.h"
 
 /********************************Life Circle************************************/
 Point_Load_Condition::Point_Load_Condition()

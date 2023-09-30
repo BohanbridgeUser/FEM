@@ -1,9 +1,9 @@
 #include "../../include/lotus_kernel.h"
+#include "../../application/solid_mechanics/include/lotus_solid_mechanics_application.h"
+
 
 #include "../../include/process_info.h"
 #include "../../include/Model/model.h"
-#include "../../include/Element/small_displacement_element.h"
-#include "../../include/Condition/point_load_condition.h"
 #include "../../include/Variable/variable.h"
 #include "../../include/Solve_Strategy/builder_and_solver/block_builder_and_solver.h"
 #include "../../include/Solve_Strategy/strategies/linear_solving_strategy.h"
@@ -76,6 +76,11 @@ int main()
     // }
     
     Lotus_Kernel Kernel;
+    Lotus_Solid_Mechanics_Application::Pointer pNewApplication = std::make_shared<Lotus_Solid_Mechanics_Application>();
+    Kernel.ImportApplication(pNewApplication);
+    Kernel.Initialize();
+
+    
     Variables_List V_L;
     V_L.AddDof(&DISPLACEMENT);
     V_L.AddDof(&ROTATION);
@@ -148,8 +153,14 @@ int main()
     unsigned int ElementsCount = 0;
     for(int i=0;i<GeometryCount;++i)
     {
-        Cube.CreateNewElement("Small_Displacement_Element",ElementsCount,Cube.pGetGeometry(i),Cube.pGetProperties(1));
+        Cube.CreateNewElement("Small_Displacement_Element3D8N",ElementsCount,Cube.pGetGeometry(i)->pPointsVector(),Cube.pGetProperties(1));
         ElementsCount++;
     }
+    // for(int i=0;i<ElementsCount;++i)
+    // {
+    //     std::cout << "Element " << i << "\n"<< Cube.GetElement(i);
+    // }
+
+    
     return 0;
 }

@@ -57,7 +57,10 @@
                                         extern Variable<double> name##_Z;
 
 #define LOTUS_REGISTER_3D_VARIABLE_WITH_COMPONENTS(name) \
-                                        LOTUS_DEFINE_3D_VARIABLE_WITH_COMPONENTS_IMPLEMENTATION(name)
+                        LOTUS_REGISTER_VARIABLE(name) \
+                        LOTUS_REGISTER_VARIABLE(name ## _X) \
+                        LOTUS_REGISTER_VARIABLE(name ## _Y) \
+                        LOTUS_REGISTER_VARIABLE(name ## _Z)
 #define LOTUS_REGISTER_VARIABLE(name) \
                                 AddComponent(name.Name(), name);\
                                 Lotus_Components<Variable_Data>::Add(name.Name(), name);

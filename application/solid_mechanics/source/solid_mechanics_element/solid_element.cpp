@@ -1,4 +1,4 @@
-#include "../../include/Element/solid_element.h"
+#include "../../include/solid_mechanics_element/solid_element.h"
 
 /**********************************************Create Flags**************************************************/
 LOTUS_CREATE_LOCAL_FLAGS(Solid_Element,COMPUTE_RHS_VECTOR ,0)

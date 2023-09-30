@@ -1,4 +1,4 @@
-#include "../../include/Condition/load_condition.h"
+#include "../../include/solid_mechanics_condition/load_condition.h"
 
 /*******************************************Life Circle**************************************/
 Load_Condition::Load_Condition()

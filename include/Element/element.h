@@ -250,6 +250,33 @@ class Element:public Geometry_Object
         /// @{
 
         /// @}
+
+        /// @name Input And Output
+        /// @{
+            /// Turn back information as a string.
+
+            std::string Info() const override
+            {
+                std::stringstream buffer;
+                buffer << "Element #" << Id();
+                return buffer.str();
+            }
+
+            /// Print information about this object.
+
+            void PrintInfo(std::ostream& rOStream) const override
+            {
+                rOStream << "Element #" << Id();
+            }
+
+            /// Print object's data.
+
+            void PrintData(std::ostream& rOStream) const override
+            {
+                GetGeometry().PrintData(rOStream);
+            }
+
+        /// @}
     protected:
 
     private:

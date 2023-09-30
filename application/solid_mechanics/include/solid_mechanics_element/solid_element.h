@@ -1,8 +1,8 @@
 #ifndef _SOLID_ELEMENT_H_
 #define _SOLID_ELEMENT_H_
-#include "element.h"
-#include "../Variable/variables.h"
-#include "../Utility/element_utility.h"
+#include "../../../../include/Element/element.h"
+#include "../../../../include/Variable/variables.h"
+#include "../../../../include/Utility/element_utility.h"
 
 #include <Eigen/Eigen>
 class Solid_Element : public Element

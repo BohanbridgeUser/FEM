@@ -9,10 +9,6 @@
 #include "define.h"
 #include "Container/flags.h"
 #include "Variable/variable.h"
-#include "Geometry/geometry.h"
-#include "Element/element.h"
-#include "Condition/condition.h"
-#include "Constitutive_Law/Constitutive_law.h"
 
 template<class TComponentType>
 class Lotus_Components

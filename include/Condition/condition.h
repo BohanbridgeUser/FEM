@@ -579,6 +579,25 @@ class Condition : public Geometry_Object
                 return mpProperties;
             }
         /// @}
+
+        /// @name Input And Output
+        /// @{
+            std::string Info() const override
+            {
+                std::stringstream buffer;
+                buffer << "Condition #" << Id();
+                return buffer.str();
+            }
+            void PrintInfo(std::ostream& rOStream) const override
+            {
+                rOStream << "Condition #" << Id();
+            }
+            void PrintData(std::ostream& rOStream) const override
+            {
+                GetGeometry().PrintData(rOStream);
+            }
+
+        /// @}
     private:
         Properties::Pointer mpProperties;
 };

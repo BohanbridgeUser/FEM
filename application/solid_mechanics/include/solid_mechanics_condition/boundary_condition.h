@@ -1,7 +1,7 @@
 #ifndef _BOUNDARY_CONDITION_H_
 #define _BOUNDARY_CONDITION_H_
-#include "../define.h"
-#include "condition.h"
+#include "../../../../include/define.h"
+#include "../../../../include/Condition/condition.h"
 
 class Boundary_Condition : public Condition
 {

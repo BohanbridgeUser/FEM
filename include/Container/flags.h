@@ -220,6 +220,32 @@ class Flags
                 return !(mIsDefined & rOther.mIsDefined);
             }
         /// @}
+
+        /// @name Input And Output
+        /// @{
+            /// Turn back information as a string.
+            virtual std::string Info() const
+            {
+                std::stringstream buffer;
+                buffer << "Flags" ;
+                return buffer.str();
+            }
+
+            /// Print information about this object.
+            virtual void PrintInfo(std::ostream& rOStream) const
+            {
+                rOStream << "Flags";
+            }
+
+            /// Print object's data.
+            virtual void PrintData(std::ostream& rOStream) const
+            {
+
+                for(std::size_t i = sizeof(BlockType) * 8 ; i > 0 ; i--)
+                    rOStream << bool(mFlags & (BlockType(1) << i));
+            }
+
+        /// @}
     protected:
         /// @name Protected Static Member Variables
         /// @{
