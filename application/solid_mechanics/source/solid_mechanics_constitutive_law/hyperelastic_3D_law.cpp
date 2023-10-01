@@ -49,7 +49,7 @@
       return (this->GetValue(rThisVariable,rValue ));
     }
     void Hyper_Elastic_3D_Law::SetValue( const Variable<double>& rThisVariable, const double& rValue,
-                                      const ProcessInfo& rCurrentProcessInfo )
+                                      const Process_Info& rCurrentProcessInfo )
     {
       if (rThisVariable == DETERMINANT_F)
         {
@@ -57,12 +57,12 @@
         }
     }
     void Hyper_Elastic_3D_Law::SetValue( const Variable<Vector>& rThisVariable, const Vector& rValue,
-                                      const ProcessInfo& rCurrentProcessInfo )
+                                      const Process_Info& rCurrentProcessInfo )
     {
 
     }
     void Hyper_Elastic_3D_Law::SetValue( const Variable<Matrix>& rThisVariable, const Matrix& rValue,
-                                      const ProcessInfo& rCurrentProcessInfo )
+                                      const Process_Info& rCurrentProcessInfo )
     {
 
     }
@@ -72,7 +72,7 @@
             const Vector& rShapeFunctionsValues )
     {
         mDeterminantF0                = 1;
-        mInverseDeformationGradientF0 = identity_matrix<double> (3);
+        mInverseDeformationGradientF0 = Eigen::Matrix<double,3,3>::Identity();
         mStrainEnergy                 = 0;
     }
     void Hyper_Elastic_3D_Law::CalculateMaterialResponsePK2 (Parameters& rValues)
@@ -97,7 +97,7 @@
 
       //0.- Initialize parameters
       MaterialResponseVariables ElasticVariables;
-      ElasticVariables.Identity = identity_matrix<double> ( 3 );
+      ElasticVariables.Identity = Eigen::Matrix<double,3,3>::Identity();;
 
       //1.- Lame constants
       const double& YoungModulus        = MaterialProperties[YOUNG_MODULUS];
@@ -126,12 +126,12 @@
       ElasticVariables.DeterminantF = DeterminantF;
 
       //5.-Right Cauchy Green tensor C
-      Matrix RightCauchyGreen = prod(trans( ElasticVariables.DeformationGradientF),  ElasticVariables.DeformationGradientF);
+      Matrix RightCauchyGreen = ElasticVariables.DeformationGradientF.transpose() * ElasticVariables.DeformationGradientF;
 
       //6.-Inverse of the Right Cauchy-Green tensor C: (stored in the CauchyGreenMatrix)
       ElasticVariables.traceCG = 0;
-      ElasticVariables.CauchyGreenMatrix.resize(3,3,false);
-      MathUtils<double>::InvertMatrix( RightCauchyGreen, ElasticVariables.CauchyGreenMatrix, ElasticVariables.traceCG);
+      ElasticVariables.CauchyGreenMatrix.resize(3,3);
+      ElasticVariables.CauchyGreenMatrix = RightCauchyGreen.inverse();
 
       //7.-Green-Lagrange Strain:
       if(Options.Is( Constitutive_Law::USE_ELEMENT_PROVIDED_STRAIN ))
@@ -158,7 +158,7 @@
           double ln_J = std::log(ElasticVariables.DeterminantF);
           double trace_C = 0.0;
 
-          for (unsigned int i = 0; i<RightCauchyGreen.size1();i++)
+          for (unsigned int i = 0; i<RightCauchyGreen.rows();i++)
       {
         trace_C += RightCauchyGreen(i,i);
       }
@@ -201,7 +201,7 @@
 
         //0.- Initialize parameters
         MaterialResponseVariables ElasticVariables;
-        ElasticVariables.Identity = identity_matrix<double> ( 3 );
+        ElasticVariables.Identity = Eigen::Matrix<double,3,3>::Identity();;
 
         //1.- Lame constants
         const double& YoungModulus       = MaterialProperties[YOUNG_MODULUS];
@@ -229,8 +229,8 @@
         ElasticVariables.DeterminantF         = DeterminantF;
 
         //5.-Left Cauchy Green tensor b: (stored in the CauchyGreenMatrix)
-        ElasticVariables.CauchyGreenMatrix.resize(3,3,false);
-        noalias(ElasticVariables.CauchyGreenMatrix) = prod(ElasticVariables.DeformationGradientF,trans(ElasticVariables.DeformationGradientF));
+        ElasticVariables.CauchyGreenMatrix.resize(3,3);
+        ElasticVariables.CauchyGreenMatrix = ElasticVariables.DeformationGradientF * ElasticVariables.DeformationGradientF.transpose();
 
         for( unsigned int i=0; i<3; i++)
         {
@@ -326,11 +326,11 @@
 
         return( rValue );
     }
-    Vector& Hyper_Elastic_3D_Law::GetValue( const Variable<Vector>& rThisVariable, Vector& rValue )
+    typename Hyper_Elastic_3D_Law::Vector& Hyper_Elastic_3D_Law::GetValue( const Variable<Vector>& rThisVariable, Vector& rValue )
     {
         return( rValue );
     }
-    Matrix& Hyper_Elastic_3D_Law::GetValue( const Variable<Matrix>& rThisVariable, Matrix& rValue )
+    typename Hyper_Elastic_3D_Law::Matrix& Hyper_Elastic_3D_Law::GetValue( const Variable<Matrix>& rThisVariable, Matrix& rValue )
     {
         return( rValue );
     }
@@ -354,7 +354,7 @@
     }
     int Hyper_Elastic_3D_Law::Check(const Properties& rMaterialProperties,
                                 const GeometryType& rElementGeometry,
-                                const ProcessInfo& rCurrentProcessInfo) const
+                                const Process_Info& rCurrentProcessInfo) const
     {
 
         if(YOUNG_MODULUS.Key() == 0 || rMaterialProperties[YOUNG_MODULUS]<= 0.00)
@@ -431,7 +431,7 @@
 
         Matrix DeformationGradientF0          = DeformationGradientF;
         DeformationGradientF0 = Transform2DTo3D(DeformationGradientF0);
-        MathUtils<double>::InvertMatrix( DeformationGradientF0, this->mInverseDeformationGradientF0, mDeterminantF0);
+        this->mInverseDeformationGradientF0 = DeformationGradientF0.inverse();
         mDeterminantF0 = DeterminantF; //special treatment of the determinant
     }
     void Hyper_Elastic_3D_Law::CalculateGreenLagrangeStrain( const Matrix & rRightCauchyGreen,
@@ -449,7 +449,7 @@
         // Matrix StrainMatrix(3,3);
         // noalias(StrainMatrix) = ZeroMatrix(3,3);
         // CalculateAlmansiStrain( rRightCauchyGreen, rStrainMatrix );
-        // rStrainVector = MathUtils<double>::StrainTensorToVector( StrainMatrix, rStrainVector.size() );
+        // rStrainVector = StrainTensorToVector( StrainMatrix, rStrainVector.size() );
 
     }
     void Hyper_Elastic_3D_Law::CalculateAlmansiStrain( const Matrix & rLeftCauchyGreen,
@@ -461,7 +461,7 @@
         //Calculating the inverse of the jacobian
         Matrix InverseLeftCauchyGreen ( 3, 3 );
         double det_b=0;
-        MathUtils<double>::InvertMatrix( rLeftCauchyGreen, InverseLeftCauchyGreen, det_b);
+        InverseLeftCauchyGreen = rLeftCauchyGreen.inverse();
 
         rStrainVector[0] = 0.5 * (  1.00 - InverseLeftCauchyGreen( 0, 0 ) );
         rStrainVector[1] = 0.5 * (  1.00 - InverseLeftCauchyGreen( 1, 1 ) );
@@ -591,7 +591,7 @@
 
       }
 
-        rStressVector = MathUtils<double>::StressTensorToVector( StressMatrix, rStressVector.size() );
+        rStressVector = StressTensorToVector( StressMatrix, rStressVector.size());
 
     }
     void Hyper_Elastic_3D_Law::CalculateIsochoricStress( const MaterialResponseVariables & rElasticVariables,
@@ -629,7 +629,7 @@
 
         }
 
-        rIsoStressVector = MathUtils<double>::StressTensorToVector(IsoStressMatrix,rIsoStressVector.size());
+        rIsoStressVector = StressTensorToVector(IsoStressMatrix,rIsoStressVector.size());
 
     }
     void Hyper_Elastic_3D_Law::CalculateVolumetricStress(const MaterialResponseVariables & rElasticVariables,
@@ -647,14 +647,14 @@
         VolStressMatrix = rElasticVariables.DeterminantF * Pressure * rElasticVariables.CauchyGreenMatrix;
 
 
-        rVolStressVector = MathUtils<double>::StressTensorToVector(VolStressMatrix,rVolStressVector.size());
+        rVolStressVector = StressTensorToVector(VolStressMatrix,rVolStressVector.size());
 
     }
     void Hyper_Elastic_3D_Law::CalculateConstitutiveMatrix ( const MaterialResponseVariables& rElasticVariables,
                       Matrix& rConstitutiveMatrix)
     {
 
-        rConstitutiveMatrix.clear();
+        rConstitutiveMatrix.setZero();
 
         for(unsigned int i=0; i<6; i++)
         {
@@ -673,7 +673,7 @@
                         Matrix& rConstitutiveMatrix)
     {
 
-        rConstitutiveMatrix.clear();
+        rConstitutiveMatrix.setZero();
 
         for(unsigned int i=0; i<6; i++)
         {
@@ -691,10 +691,10 @@
                     Matrix& rConstitutiveMatrix)
     {
 
-        rConstitutiveMatrix.clear();
+        rConstitutiveMatrix.setZero();
 
         Vector Factors(3);
-        noalias(Factors) = ZeroVector(3);
+        Factors.setZero(3);
         Factors = this->CalculateVolumetricPressureFactors( rElasticVariables, Factors );
 
 
@@ -718,7 +718,7 @@
 
         //1.- Temporary and selected law
         Vector Factors(3);
-        noalias(Factors) = ZeroVector(3);
+        Factors.setZero(3);
         Factors = this->CalculateVolumetricPressureFactors( rElasticVariables, Factors );
 
         double auxiliar1 = Factors[0];
@@ -786,11 +786,11 @@
      * if the matrix passed is bigger or smaller throws an error
      * @param rMatrix : usually the DeformationGradientF
      */
-    Matrix& Hyper_Elastic_3D_Law::Transform2DTo3D (Matrix& rMatrix)
+    typename Hyper_Elastic_3D_Law::Matrix& Hyper_Elastic_3D_Law::Transform2DTo3D (Matrix& rMatrix)
     {
-        if (rMatrix.size1() == 2 && rMatrix.size2() == 2)
+        if (rMatrix.rows() == 2 && rMatrix.cols() == 2)
         {
-            rMatrix.resize( 3, 3, true);
+            rMatrix.resize( 3, 3);
 
             rMatrix( 0 , 2 ) = 0.0;
             rMatrix( 1 , 2 ) = 0.0;
@@ -800,7 +800,7 @@
 
             rMatrix( 2 , 2 ) = 1.0;
         }
-        else if(rMatrix.size1() != 3 && rMatrix.size2() != 3)
+        else if(rMatrix.rows() != 3 && rMatrix.cols() != 3)
         {
             std::cerr << "Matrix Dimensions are not correct ";
             exit(0);

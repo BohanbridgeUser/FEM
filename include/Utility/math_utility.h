@@ -137,9 +137,9 @@ static inline Vector StrainTensorToVector(
 {
 
     if(rSize == 0) {
-        if(rStrainTensor.size1() == 2) {
+        if(rStrainTensor.rows() == 2) {
             rSize = 3;
-        } else if(rStrainTensor.size1() == 3) {
+        } else if(rStrainTensor.rows() == 3) {
             rSize = 6;
         }
     }
@@ -165,5 +165,98 @@ static inline Vector StrainTensorToVector(
     }
     return strain_vector;
 }
+/**
+ * @brief Transforms a stess vector into a matrix. Stresses are assumed to be stored in the following way:
+ * \f$ [ s11, s22, s33, s12, s23, s13 ] \f$ for 3D case and
+ * \f$ [ s11, s22, s33, s12 ] \f$ for 2D case.
+ * \f$ [ s11, s22, s12 ] \f$ for 2D case.
+ * @param rStressVector the given stress vector
+ * @return the corresponding stress tensor in matrix form
+ * @tparam TVector The vector type considered
+ * @tparam TMatrixType The matrix returning type
+ */
+template<class TVector, class TMatrixType = MatrixType>
+static inline TMatrixType StressVectorToTensor(const TVector& rStressVector)
+{
+    const SizeType matrix_size = rStressVector.size() == 3 ? 2 : 3;
+    TMatrixType stress_tensor(matrix_size, matrix_size);
 
+    if (rStressVector.size()==3) {
+        stress_tensor(0,0) = rStressVector[0];
+        stress_tensor(0,1) = rStressVector[2];
+        stress_tensor(1,0) = rStressVector[2];
+        stress_tensor(1,1) = rStressVector[1];
+    } else if (rStressVector.size()==4) {
+        stress_tensor(0,0) = rStressVector[0];
+        stress_tensor(0,1) = rStressVector[3];
+        stress_tensor(0,2) = 0.0;
+        stress_tensor(1,0) = rStressVector[3];
+        stress_tensor(1,1) = rStressVector[1];
+        stress_tensor(1,2) = 0.0;
+        stress_tensor(2,0) = 0.0;
+        stress_tensor(2,1) = 0.0;
+        stress_tensor(2,2) = rStressVector[2];
+    } else if (rStressVector.size()==6) {
+        stress_tensor(0,0) = rStressVector[0];
+        stress_tensor(0,1) = rStressVector[3];
+        stress_tensor(0,2) = rStressVector[5];
+        stress_tensor(1,0) = rStressVector[3];
+        stress_tensor(1,1) = rStressVector[1];
+        stress_tensor(1,2) = rStressVector[4];
+        stress_tensor(2,0) = rStressVector[5];
+        stress_tensor(2,1) = rStressVector[4];
+        stress_tensor(2,2) = rStressVector[2];
+    }
+    return stress_tensor;
+}
+/**
+ * @brief Transforms a given symmetric Stress Tensor to Voigt Notation:
+ * @details Components are assumed to be stored in the following way:
+ * \f$ [ s11, s22, s33, s12, s23, s13 ] \f$ for 3D case and
+ * \f$ [ s11, s22, s33, s12 ] \f$ for 2D case.
+ * \f$ [ s11, s22, s12 ] \f$ for 2D case.
+ * In the 3D case: from a second order tensor (3*3) Matrix  to a corresponing (6*1) Vector
+ * In the 3D case: from a second order tensor (3*3) Matrix  to a corresponing (4*1) Vector
+ * In the 2D case: from a second order tensor (2*2) Matrix  to a corresponing (3*1) Vector
+ * @param rStressTensor the given symmetric second order stress tensor
+ * @return the corresponding stress tensor in vector form
+ * @tparam TMatrixType The matrix type considered
+ * @tparam TVector The vector returning type
+ */
+template<class TMatrixType, class TVector = Vector>
+static inline TVector StressTensorToVector(
+    const TMatrixType& rStressTensor,
+    SizeType rSize = 0
+    )
+{
+    if(rSize == 0) {
+        if(rStressTensor.rows() == 2) {
+            rSize = 3;
+        } else if(rStressTensor.rows() == 3) {
+            rSize = 6;
+        }
+    }
+
+    TVector stress_vector(rSize);
+
+    if (rSize == 3) {
+        stress_vector[0] = rStressTensor(0,0);
+        stress_vector[1] = rStressTensor(1,1);
+        stress_vector[2] = rStressTensor(0,1);
+    } else if (rSize == 4) {
+        stress_vector[0] = rStressTensor(0,0);
+        stress_vector[1] = rStressTensor(1,1);
+        stress_vector[2] = rStressTensor(2,2);
+        stress_vector[3] = rStressTensor(0,1);
+    } else if (rSize == 6) {
+        stress_vector[0] = rStressTensor(0,0);
+        stress_vector[1] = rStressTensor(1,1);
+        stress_vector[2] = rStressTensor(2,2);
+        stress_vector[3] = rStressTensor(0,1);
+        stress_vector[4] = rStressTensor(1,2);
+        stress_vector[5] = rStressTensor(0,2);
+    }
+
+    return stress_vector;
+}
 #endif

@@ -14,6 +14,7 @@
 
 /**Constitutive Law**/
 #include "solid_mechanics_constitutive_law/hyperelastic_3D_law.h"
+#include "solid_mechanics_constitutive_law/linear_elastic_3D_law.h"
 
 class Lotus_Solid_Mechanics_Application : public Lotus_Application
 {
@@ -163,6 +164,8 @@ class Lotus_Solid_Mechanics_Application : public Lotus_Application
 
             //constitutive law
             const Hyper_Elastic_3D_Law       mHyperElastic3DLaw;
+
+            const Linear_Elastic_3D_Law      mLinearElastic3DLaw;
         /// @}
 
 

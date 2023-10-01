@@ -37,4 +37,5 @@ void Lotus_Solid_Mechanics_Application::Register()
     LOTUS_REGISTER_CONDITION("Point_Load_Condition3D1N",mPointLoadCondition3D1N)
 
     LOTUS_REGISTER_CONSTITUTIVE_LAW("Hyper_Elastic_3D_Law",mHyperElastic3DLaw)
+    LOTUS_REGISTER_CONSTITUTIVE_LAW("Linear_Elastic_3D_Law",mLinearElastic3DLaw)
 }

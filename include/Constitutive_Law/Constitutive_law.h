@@ -38,7 +38,7 @@ class Constitutive_Law : public Flags
                                                         VoigtSizeMatrixType;           // Constitutive Matrix
             typedef typename DenseSpace::Matrix 
                                                DeformationGradientMatrixType; // Def. gradient tensor
-            LOTUS_POINTER_DEFINE(Constitutive_Law)
+            LOTUS_SHARED_POINTER_DEFINE(Constitutive_Law)
 
             enum StrainMeasure
             {

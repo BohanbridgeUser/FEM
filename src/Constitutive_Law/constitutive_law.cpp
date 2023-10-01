@@ -530,6 +530,18 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
         } 
     }
     /**
+     * @brief Initialize the material response in terms of Cauchy stresses
+     * @see Parameters
+     */
+    void Constitutive_Law::InitializeMaterialResponseCauchy (Parameters& rValues)
+    {
+        if(this->RequiresInitializeMaterialResponse())
+        {
+            std::cerr <<  "Calling virtual function for InitializeMaterialResponseCauchy. Please implement InitializeMaterialResponseCauchy or RequiresInitializeMaterialResponse in case this CL does not require it" << std::endl;
+            exit(0);
+        } 
+    }
+    /**
      * This can be used in order to reset all internal variables of the
      * constitutive law (e.g. if a model should be reset to its reference state)
      * @param rMaterialProperties the Properties instance of the current element
@@ -727,8 +739,8 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
                                                                                const double &rdetF,
                                                                                StressMeasure rStressFinal)
     {
-        unsigned int size = rF.size1(); //WorkingSpaceDimension();
-
+        unsigned int size = rF.rows(); //WorkingSpaceDimension();
+        
         switch(rStressFinal)
         {
         case StressMeasure_PK1:
@@ -739,9 +751,8 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             Matrix StressMatrix = StressVectorToTensor( rStressVector );
             Matrix InvF ( size, size );
             double J;
-            InvertMatrix( rF, InvF, J );
-
-            StressMatrix = prod( InvF, StressMatrix ); //PK2
+            InvF = rF.inverse();
+            StressMatrix = InvF * StressMatrix;
 
             rStressVector = StressTensorToVector( StressMatrix, rStressVector.size() );
         }
@@ -752,9 +763,9 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             Matrix StressMatrix = StressVectorToTensor( rStressVector );
             Matrix InvF ( size, size );
             double J;
-            InvertMatrix( rF, InvF, J );
+            InvF = rF.inverse();
 
-            StressMatrix = prod( InvF, StressMatrix ); //PK2
+            StressMatrix = InvF * StressMatrix; //PK2
 
             ContraVariantPushForward (StressMatrix,rF); //Kirchhoff
 
@@ -767,9 +778,9 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             Matrix StressMatrix = StressVectorToTensor( rStressVector );
             Matrix InvF ( size, size );
             double J;
-            InvertMatrix( rF, InvF, J );
+            InvF = rF.inverse();
 
-            StressMatrix = prod( InvF, StressMatrix ); //PK2
+            StressMatrix = InvF * StressMatrix; //PK2
 
             ContraVariantPushForward (StressMatrix,rF); //Kirchhoff
 
@@ -783,10 +794,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             std::cerr << "FINAL STRESS NOT DEFINED in StressTransformation"<< std::endl;;
             break;
         }
-
-
         return rStressVector;
-
     }
     /**
      * Methods to transform stress Vectors specialized with the initial stress Measure PK2:
@@ -807,7 +815,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
         {
             Matrix StressMatrix = StressVectorToTensor( rStressVector );
 
-            StressMatrix = prod( rF, StressMatrix ); //PK1
+            StressMatrix = rF * StressMatrix; //PK1
 
             rStressVector = StressTensorToVector( StressMatrix, rStressVector.size() );
         }
@@ -870,7 +878,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
 
             ContraVariantPullBack (StressMatrix,rF);  //PK2
 
-            StressMatrix = prod( rF, StressMatrix ); //PK1
+            StressMatrix = rF * StressMatrix; //PK1
 
             rStressVector = StressTensorToVector( StressMatrix, rStressVector.size() );
         }
@@ -927,7 +935,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
 
             ContraVariantPullBack (StressMatrix,rF);  //PK2
 
-            StressMatrix = prod( rF, StressMatrix ); //PK1
+            StressMatrix = rF * StressMatrix; //PK1
 
             rStressVector = StressTensorToVector( StressMatrix, rStressVector.size() );
         }
@@ -975,11 +983,11 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
     {
         Matrix OriginalConstitutiveMatrix = rConstitutiveMatrix;
 
-        rConstitutiveMatrix.clear();
+        rConstitutiveMatrix.setZero();
 
         Matrix InverseF ( 3, 3 );
         double detF = 0;
-        InvertMatrix( rF, InverseF, detF);
+        InverseF = rF.inverse();
 
         ConstitutiveMatrixTransformation( rConstitutiveMatrix, OriginalConstitutiveMatrix, InverseF );
     }
@@ -991,29 +999,10 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
     {
         Matrix OriginalConstitutiveMatrix = rConstitutiveMatrix;
 
-        rConstitutiveMatrix.clear();
+        rConstitutiveMatrix.setZero();
 
         ConstitutiveMatrixTransformation( rConstitutiveMatrix, OriginalConstitutiveMatrix, rF );
     }
-    /**
-     * This function is designed to be called once to perform all the checks needed
-     * on the input provided. Checks can be "expensive" as the function is designed
-     * to catch user's errors.
-     * @param rMaterialProperties
-     * @param rElementGeometry
-     * @param rCurrentProcessInfo
-     * @return
-     */
-    int Constitutive_Law::Check(const Properties& rMaterialProperties,
-                                const GeometryType& rElementGeometry,
-                                const Process_Info& rCurrentProcessInfo) const
-    {
-         
-
-        return 0;
-        
-    }
-
     // VM
     void Constitutive_Law::CalculateCauchyStresses(Vector& Cauchy_StressVector,
                                                    const Matrix& F,
@@ -1022,7 +1011,64 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
     {
     }
 
+    /**
+     * to be called at the beginning of each solution step
+     * (e.g. from Element::InitializeSolutionStep)
+     * @param rMaterialProperties the Properties instance of the current element
+     * @param rElementGeometry the geometry of the current element
+     * @param rShapeFunctionsValues the shape functions values in the current integration point
+     * @param the current ProcessInfo instance
+     */
+    void Constitutive_Law::InitializeSolutionStep(const Properties& rMaterialProperties,
+            const GeometryType& rElementGeometry, //this is just to give the array of nodes
+            const Vector& rShapeFunctionsValues,
+            const Process_Info& rCurrentProcessInfo)
+    {
+    }
 
+    /**
+     * to be called at the end of each solution step
+     * (e.g. from Element::FinalizeSolutionStep)
+     * @param rMaterialProperties the Properties instance of the current element
+     * @param rElementGeometry the geometry of the current element
+     * @param rShapeFunctionsValues the shape functions values in the current integration point
+     * @param the current ProcessInfo instance
+     */
+    void Constitutive_Law::FinalizeSolutionStep(const Properties& rMaterialProperties,
+            const GeometryType& rElementGeometry,
+            const Vector& rShapeFunctionsValues,
+            const Process_Info& rCurrentProcessInfo)
+    {
+    }
+    /**
+     * to be called at the beginning of each step iteration
+     * (e.g. from Element::InitializeNonLinearIteration)
+     * @param rMaterialProperties the Properties instance of the current element
+     * @param rElementGeometry the geometry of the current element
+     * @param rShapeFunctionsValues the shape functions values in the current integration point
+     * @param the current ProcessInfo instance
+     */
+    void Constitutive_Law::InitializeNonLinearIteration(const Properties& rMaterialProperties,
+            const GeometryType& rElementGeometry,
+            const Vector& rShapeFunctionsValues,
+            const Process_Info& rCurrentProcessInfo)
+    {
+    }
+    /**
+     * to be called at the end of each step iteration
+     * (e.g. from Element::FinalizeNonLinearIteration)
+     * @param rMaterialProperties the Properties instance of the current element
+     * @param rElementGeometry the geometry of the current element
+     * @param rShapeFunctionsValues the shape functions values in the current integration point
+     * @param the current ProcessInfo instance
+     */
+    void Constitutive_Law::FinalizeNonLinearIteration(const Properties& rMaterialProperties,
+            const GeometryType& rElementGeometry,
+            const Vector& rShapeFunctionsValues,
+            const Process_Info& rCurrentProcessInfo)
+    {
+
+    }
 
 
 /// @}
@@ -1121,15 +1167,6 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             std::array<double, 6 > & rValue)
     {
         return rValue;
-    }
-    /**
-     * This function is designed to be called once to check compatibility with element
-     * @param rFeatures
-     */
-    void Constitutive_Law::GetLawFeatures(Features& rFeatures)
-    {
-
-        std::cerr <<  "Calling virtual function for GetConstitutive_LawFeatures"<< std::endl;;
     }
     
 /// @}
@@ -1286,11 +1323,11 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
         void Constitutive_Law::ContraVariantPushForward( Matrix& rMatrix,
                                                          const Matrix& rF)  //i.e. 2nd PK stress to Kirchhoff stress
         {
-            unsigned int size = rF.size1(); //WorkingSpaceDimension();
+            unsigned int size = rF.rows(); //WorkingSpaceDimension();
             Matrix temp ( size, size );
 
-            noalias( temp )     = prod( rF, rMatrix );
-            noalias( rMatrix )  = prod( temp, trans( rF ) );
+            temp       = rF * rMatrix;
+            rMatrix    = temp * rF.transpose();
         }
 
         /**
@@ -1300,15 +1337,15 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
         void Constitutive_Law::ContraVariantPullBack( Matrix& rMatrix,
                                                       const Matrix& rF)     //i.e. Kirchhoff stress to 2nd PK stress
         {
-            unsigned int size = rF.size1(); //WorkingSpaceDimension();
+            unsigned int size = rF.rows(); //WorkingSpaceDimension();
             Matrix InvF ( size, size );
             double J;
-            InvertMatrix( rF, InvF, J );
+            InvF = rF.inverse();
 
             Matrix temp ( size, size );
 
-            noalias( temp )    = prod( InvF, rMatrix );
-            noalias( rMatrix ) = prod( temp, trans( InvF ) );
+            temp      = InvF * rMatrix ;
+            rMatrix   = temp * InvF.transpose();
         }
         /**
          * This method performs a co-variant push-forward between to tensors
@@ -1317,15 +1354,15 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
         void Constitutive_Law::CoVariantPushForward( Matrix& rMatrix,
                                                      const Matrix& rF)      //i.e. Green-Lagrange strain to Almansi strain
         {
-            unsigned int size = rF.size1(); //WorkingSpaceDimension();
+            unsigned int size = rF.rows(); //WorkingSpaceDimension();
             Matrix InvF ( size, size );
             double J;
-            InvertMatrix( rF, InvF, J );
+            InvF = rF.inverse();
 
             Matrix temp ( size, size );
 
-            noalias( temp )     = prod( trans( InvF ), rMatrix );
-            noalias( rMatrix )  = prod( temp, InvF );
+            temp       = InvF.transpose() * rMatrix;
+            rMatrix    = temp * InvF ;
         }
         /**
          * This method performs a co-variant pull-back between to tensors
@@ -1335,11 +1372,11 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
                                                   const Matrix& rF)         //i.e. Almansi strain to Green-Lagrange strain
         {
 
-            unsigned int size = rF.size1(); //WorkingSpaceDimension();
+            unsigned int size = rF.rows(); //WorkingSpaceDimension();
             Matrix temp ( size, size );
 
-            noalias( temp )     = prod( trans( rF ), rMatrix );
-            noalias( rMatrix )  = prod( temp, rF );
+            temp       = rF.transpose()  * rMatrix ;
+            rMatrix    = temp * rF;
 
         }
         /**
@@ -1349,7 +1386,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
                                                                   const Matrix& rOriginalConstitutiveMatrix,
                                                                   const Matrix & rF )
         {
-            unsigned int size = rOriginalConstitutiveMatrix.size1();
+            unsigned int size = rOriginalConstitutiveMatrix.rows();
             if(  size == 6 )
             {
 
@@ -1408,7 +1445,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             rCabcd = 0;
             double Cijkl=0;
 
-            unsigned int dimension = rF.size1();
+            unsigned int dimension = rF.rows();
 
             //Cabcd
             for(unsigned int j=0; j<dimension; j++)
@@ -1441,7 +1478,7 @@ const unsigned int Constitutive_Law::msIndexVoigt2D3C [3][2] = { {0, 0}, {1, 1},
             // matrix indices
             unsigned int k=0, l= 0;
 
-            unsigned int size = rConstitutiveMatrix.size1();
+            unsigned int size = rConstitutiveMatrix.rows();
 
             if( size == 3 )
             {
