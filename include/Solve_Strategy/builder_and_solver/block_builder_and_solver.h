@@ -1,6 +1,7 @@
 #ifndef _block_builder_and_solver_h_
 #define _block_builder_and_solver_h_
 #include "builder_and_solver.h"
+#include "solution_builder_and_solver.hpp"
 #include "../../key_hash.h"
 
 #include <unordered_set>
@@ -8,29 +9,30 @@ template<class TSparseSpace,
          class TDenseSpace, //= DenseSpace<double>,
          class TLinearSolver //= LinearSolver<TSparseSpace,TDenseSpace>
          >
-class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
+class Block_Builder_And_Solver 
+: public Solution_Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
 {
     public:
         /// @name Type Define
         /// @{
             typedef Block_Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
                                                                         ClassType;
-            LOTUS_POINTER_DEFINE(ClassType)                                                                                 
-            typedef Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
+            LOTUS_SHARED_POINTER_DEFINE(ClassType)                                                                                 
+            typedef Solution_Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver>
                                                                          BaseType;
             typedef typename BaseType::Pointer                                       
                                                                   BasePointerType;
             typedef typename BaseType::LocalFlagType                                   
                                                                     LocalFlagType;
-            typedef typename BaseType::DofsArrayType                                   
+            typedef typename BaseType::DofsContainerType                                   
                                                                     DofsArrayType;
             typedef typename BaseType::GlobalMatrixType                             
                                                                  GlobalMatrixType;
             typedef typename BaseType::GlobalVectorType                             
                                                                  GlobalVectorType;
-            typedef typename BaseType::GlobalMatrixPointerType               
+            typedef typename BaseType::GlobalMatrixTypePointer               
                                                           GlobalMatrixPointerType;
-            typedef typename BaseType::GlobalVectorPointerType  
+            typedef typename BaseType::GlobalVectorTypePointer  
                                                           GlobalVectorPointerType;
             typedef typename BaseType::LocalVectorType          
                                                                   LocalVectorType;
@@ -556,7 +558,7 @@ class Block_Builder_And_Solver : public Builder_And_Solver<TSparseSpace,TDenseSp
              * @brief Resizes and Initializes the system vectors and matrices after SetUpDofSet and SetUpSytem has been called
              */
             void SetUpSystemMatrices(SchemePointerType pScheme,
-                                    Model_Part& rModelPart,
+                                    ModelPart& rModelPart,
                                     GlobalMatrixPointerType& pA,
                                     GlobalVectorPointerType& pDx,
                                     GlobalVectorPointerType& pb) override

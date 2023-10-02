@@ -4,6 +4,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include "../define.h"
+#include "dense_space.h"
+#include "sparse_space.h"
 template<typename TSparseSpace, typename TDenseSpace>
 class Linear_Solver
 {
@@ -16,7 +18,7 @@ class Linear_Solver
                                                                  SpMatrixType;
             typedef typename TSparseSpace::SparseVector
                                                                  SpVectorType;
-            LOTUS_POINTER_DEFINE(ClassType)
+            LOTUS_SHARED_POINTER_DEFINE(ClassType)
 
         /// @}
 

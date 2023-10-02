@@ -11,6 +11,8 @@ class Builder_And_Solver
     public:
         /// @name Type Define
         /// @{
+            typedef Solver_Local_Flags
+                                                                                      LocalFlagType;
             typedef Builder_And_Solver<TSparseSpace,TDenseSpace,TLinearSolver> 
                                                                                BuilderAndSolverType;
             LOTUS_POINTER_DEFINE(BuilderAndSolverType)
@@ -41,24 +43,24 @@ class Builder_And_Solver
                                                                             ConditionsContainerType;
             typedef typename TSparseSpace::SparseMatrix
                                                                                        SpMatrixType;
-            typedef typename TSparseSpace::SparseVecto  
+            typedef typename TSparseSpace::SparseVector  
                                                                                        SpVectorType;
             typedef SpMatrixType  
                                                                                    GlobalMatrixType;
             typedef SpVectorType                                                     
                                                                                    GlobalVectorType;
-            typedef typename SpMatrixType::Pointe  
+            typedef typename std::shared_ptr<SpMatrixType>
                                                                             GlobalMatrixTypePointer;
-            typedef typename SpVectorType::Pointe  
+            typedef typename std::shared_ptr<SpVectorType>
                                                                             GlobalVectorTypePointer;
-            typedef typename TDenseSpace::DenseMatrix
-                                                                                    LoaclMatrixType;
-            typedef typename TDenseSpace::DenseVector
-                                                                                    LoaclVectorType; 
-            typedef typename TDenseSpace::DenseMatrix::Pointer
-                                                                             LoaclMatrixPointerType;
-            typedef typename TDenseSpace::DenseVector::Pointer
-                                                                             LoaclVectorPointerType;                                                                        
+            typedef typename TDenseSpace::Matrix
+                                                                                    LocalMatrixType;
+            typedef typename TDenseSpace::Vector
+                                                                                    LocalVectorType; 
+            typedef typename std::shared_ptr<LocalMatrixType>
+                                                                             LocalMatrixPointerType;
+            typedef typename std::shared_ptr<LocalVectorType>
+                                                                             LocalVectorPointerType;                                                                        
         /// @}
 
 
@@ -224,7 +226,7 @@ class Builder_And_Solver
 
         /// @name Protected Member Variables
         /// @{
-            typename LinearSolverType::SharedPoint mpLinearSolver;
+            typename LinearSolverType::Pointer mpLinearSolver;
 
             /**
              * @brief The set contains the Dof of the system

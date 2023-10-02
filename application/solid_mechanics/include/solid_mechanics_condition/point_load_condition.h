@@ -71,6 +71,7 @@ class Point_Load_Condition : public Load_Condition
             void PrintData(std::ostream& os)const
             {
                 GetGeometry().PrintData(os);
+                GetGeometry().PrintInfo(os);
             }
         /// @}
     protected:

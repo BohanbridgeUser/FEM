@@ -1,6 +1,10 @@
 #include "../../include/lotus_kernel.h"
 #include "../../application/solid_mechanics/include/lotus_solid_mechanics_application.h"
 
+#include "../../include/Linear_Solver/linear_solver.h"
+#include "../../include/Solve_Strategy/strategies/linear_solving_strategy.h"
+#include "../../include/Solve_Strategy/builder_and_solver/block_builder_and_solver.h"
+#include "../../include/Solve_Strategy/schemes/static_scheme.h"
 
 #include "../../include/process_info.h"
 #include "../../include/Model/model.h"
@@ -11,58 +15,9 @@
 #include "../../include/Solve_Strategy/schemes/scheme.h"
 #include "../../include/Container/lotus_flags.h"
 
-
 #include <memory>
 int main()
 {
-    // /* Mesh Model */
-    // std::cout << "********************Mesh Model********************\n";
-    // Mesh<Node,Properties,Element,Condition> mesh;
-    // std::vector<Node*> V_P_N;
-    // std::cout << "Nodes Count: " << cnt << std::endl;
-    // for(int i=0;i<9*9*9;++i)
-    // {
-    //     Node* N_P = new Node(i,*V_PP[i]);
-    //     mesh.AddNode(Node::Pointer(N_P));
-    // }
-
-    // for(auto i=mesh.NodesBegin();i!=mesh.NodesEnd();++i)
-    // {
-    //     std::cout << *i << std::endl;
-    // }
-    
-    // mesh.AddProperties(Properties::Pointer(&Prop));
-
-    // Hexahedron<Node>::Pointer H_3d_8Ns[cnt];
-    // cnt =0 ;
-    // for (int i=0;i<8;++i) 
-    // {
-    //     for (int j=0;j<8;++j) 
-    //     {
-    //         for(int k=0;k<8;++k)
-    //         {
-    //             H_3d_8Ns[cnt] = std::make_shared<Hexahedron<Node>>(cnt,
-    //                                            mesh.pGetNode(i*81+j*9+k)             ,
-    //                                            mesh.pGetNode((i+1)*81+j*9+k)         ,
-    //                                            mesh.pGetNode((i+1)*81+(j+1)*9+k)     ,
-    //                                            mesh.pGetNode(i*81+(j+1)*9+k)         ,
-    //                                            mesh.pGetNode(i*81+j*9+(k+1))         ,
-    //                                            mesh.pGetNode((i+1)*81+j*9+(k+1))     ,
-    //                                            mesh.pGetNode((i+1)*81+(j+1)*9+(k+1)) ,
-    //                                            mesh.pGetNode(i*81+(j+1)*9+(k+1))    );
-    //             cnt++;
-    //         }
-    //     }
-    // }
-    // for(int i=0;i<cnt;++i)
-    // {
-    //     mesh.AddElement(std::make_shared<Small_Displacement_Element>(i,H_3d_8Ns[i],Properties::Pointer(&Prop)));
-    // }
-    // for(auto i=mesh.ElementsBegin();i!=mesh.ElementsEnd();++i)
-    // {
-    //     std::cout << *i << std::endl;
-    // }
-
     // for(int i=8;i<729;i+=9)
     // {
     //     mesh.AddCondition(std::make_shared<Point_Load_Condition>(i,
@@ -81,13 +36,13 @@ int main()
     Kernel.Initialize();
 
     
-    Variables_List V_L;
-    V_L.AddDof(&DISPLACEMENT);
-    V_L.AddDof(&ROTATION);
-    V_L.Add(DISPLACEMENT);
-    V_L.Add(ROTATION);
-    V_L.Add(REACTION);
-    V_L.Add(REACTION_MOMENT);
+    Variables_List::Pointer V_L = std::make_shared<Variables_List>();
+    V_L->AddDof(&DISPLACEMENT);
+    V_L->AddDof(&ROTATION);
+    V_L->Add(DISPLACEMENT);
+    V_L->Add(ROTATION);
+    V_L->Add(REACTION);
+    V_L->Add(REACTION_MOMENT);
     Model Model1;
     Model1.CreateModelPart
     (
@@ -102,7 +57,7 @@ int main()
         {
             for(int k=0;k<9;++k)
             {
-                Cube.CreateNewNode(NodeCount,1.00*i,1.00*j,1.00*k,std::make_shared<Variables_List>(V_L));
+                Cube.CreateNewNode(NodeCount,1.00*i,1.00*j,1.00*k,V_L);
                 NodeCount++;
             }
         }
@@ -161,6 +116,39 @@ int main()
     //     std::cout << "Element " << i << "\n"<< Cube.GetElement(i);
     // }
 
+    /** Create Conditions **/
+    unsigned int ConditionCount = 0;
+    for(int i=8;i<729;i+=9)
+    {
+        Geometry< Node >::PointsContainerType N_C;
+        N_C.push_back(Cube.pGetNode(i));
+        Cube.CreateNewCondition("Point_Load_Condition3D1N",ConditionCount,N_C,Cube.pGetProperties(1));
+        ConditionCount++;
+    }
+    // for(int i=0;i<ConditionCount;++i)
+    // {
+    //     std::cout << "Condition " << i << "\n" << Cube.GetCondition(i); 
+    // }
+
+    Process_Info P_I;
+    Cube.SetProcessInfo(P_I);
+    Cube.SetNodalSolutionStepVariablesList(V_L);
+
+    Static_Scheme<SparseSpace,DenseSpace>::Pointer S_P = std::make_shared<Scheme<SparseSpace,DenseSpace> >();
+    typedef Linear_Solver<SparseSpace,DenseSpace>                    SolverType;
+    SolverType::Pointer pSolver = std::make_shared<SolverType>();
+
+    typedef Block_Builder_And_Solver<SparseSpace,
+                             DenseSpace,
+                             Linear_Solver<SparseSpace,DenseSpace> > BuilderAndSolverType;
+    BuilderAndSolverType::Pointer B_S = std::make_shared<BuilderAndSolverType>(pSolver);
+
+    Flags SolverFlag;
+    SolverFlag.Set(Solver_Local_Flags::COMPUTE_REACTIONS);
+    Linear_Solving_Strategy<SparseSpace,
+                            DenseSpace,
+                            Linear_Solver<SparseSpace,DenseSpace> > solver(Cube,S_P,B_S,SolverFlag);
     
+
     return 0;
 }

@@ -1,6 +1,7 @@
 #ifndef _SPARSE_SPACE_H_
 #define _SPARSE_SPACE_H_
 #include <Eigen/Eigen>
+#include "../define.h"
 
 class SparseSpace
 {
@@ -9,6 +10,8 @@ class SparseSpace
         /// @{
             typedef Eigen::SparseMatrix<double> SparseMatrix;
             typedef Eigen::SparseVector<double> SparseVector;
+            typedef std::shared_ptr<SparseMatrix> SpMatrixPointer;
+            typedef std::shared_ptr<SparseVector> SpVectorPointer;
         /// @}
 
 

@@ -163,10 +163,15 @@ class Element:public Geometry_Object
             {
                 
             }
-
             virtual void InitializeSolutionStep(const Process_Info& rCurrentProcessInfo)
             {
 
+            }
+            /**
+             * this is called for non-linear analysis at the beginning of the iteration process
+             */
+            virtual void InitializeNonLinearIteration(const Process_Info& rCurrentProcessInfo)
+            {
             }
 
             virtual void FinalizeSolutionStep(const Process_Info& rCurrentProcessInfo)
@@ -174,10 +179,25 @@ class Element:public Geometry_Object
 
             }
             /**
+             * this is called for non-linear analysis at the end of the iteration process
+             */
+            virtual void FinalizeNonLinearIteration(const Process_Info& rCurrentProcessInfo)
+            {
+            }
+            /**
              * @brief This class is derived from Geometry_Object. It have methods follow:
              * GeometryType& GetGeometry() 
              * GeometryType GetGeometry() const
             */
+
+            /**
+             * is called to reset the constitutive law parameters and the material properties
+             * the elemental variables will be changed and reset using this method
+             */
+            virtual void ResetConstitutiveLaw()
+            {
+            }
+
 
             virtual void GetDofList(DofsVectorType& rElementalDofList, const Process_Info& rCurrentProcessInfo) const
             {
@@ -211,6 +231,175 @@ class Element:public Geometry_Object
                     rRightHandSideVector.resize(0);
                 }
             }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental left hand side matrix only
+             * @param rLeftHandSideMatrix the elemental left hand side matrix
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateLeftHandSide(MatrixType& rLeftHandSideMatrix,
+                                            const Process_Info& rCurrentProcessInfo)
+            {
+                if (rLeftHandSideMatrix.rows() != 0) {
+                    rLeftHandSideMatrix.resize(0, 0);
+                }
+            }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental right hand side vector only
+             * @param rRightHandSideVector the elemental right hand side vector
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateRightHandSide(VectorType& rRightHandSideVector,
+                                                const Process_Info& rCurrentProcessInfo)
+            {
+                if (rRightHandSideVector.size() != 0) {
+                    rRightHandSideVector.resize(0);
+                }
+            }
+
+            /**
+             * ELEMENTS inherited from this class must implement this methods
+             * if they need to add dynamic element contributions
+             * note: first derivatives means the velocities if the displacements are the dof of the analysis
+             * note: time integration parameters must be set in the rCurrentProcessInfo before calling these methods
+             * CalculateFirstDerivativesContributions,
+             * CalculateFirstDerivativesLHS, CalculateFirstDerivativesRHS methods are : OPTIONAL
+             */
+
+            /**
+             * this is called during the assembling process in order
+             * to calculate the first derivatives contributions for the LHS and RHS
+             * @param rLeftHandSideMatrix the elemental left hand side matrix
+             * @param rRightHandSideVector the elemental right hand side
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateFirstDerivativesContributions(MatrixType& rLeftHandSideMatrix,
+                                                                VectorType& rRightHandSideVector,
+                                                                const Process_Info& rCurrentProcessInfo)
+            {
+                if (rLeftHandSideMatrix.rows() != 0) {
+                    rLeftHandSideMatrix.resize(0, 0);
+                }
+                if (rRightHandSideVector.size() != 0) {
+                    rRightHandSideVector.resize(0);
+                }
+            }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental left hand side matrix for the first derivatives contributions
+             * @param rLeftHandSideMatrix the elemental left hand side matrix
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateFirstDerivativesLHS(MatrixType& rLeftHandSideMatrix,
+                                                    const Process_Info& rCurrentProcessInfo)
+            {
+                if (rLeftHandSideMatrix.rows() != 0) {
+                    rLeftHandSideMatrix.resize(0, 0);
+                }
+            }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental right hand side vector for the first derivatives contributions
+             * @param rRightHandSideVector the elemental right hand side vector
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateFirstDerivativesRHS(VectorType& rRightHandSideVector,
+                                                    const Process_Info& rCurrentProcessInfo)
+            {
+                if (rRightHandSideVector.size() != 0) {
+                    rRightHandSideVector.resize(0);
+                }
+            }
+
+            /**
+             * this is called during the assembling process in order
+             * to calculate the second derivative contributions for the LHS and RHS
+             * @param rLeftHandSideMatrix the elemental left hand side matrix
+             * @param rRightHandSideVector the elemental right hand side
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateSecondDerivativesContributions(MatrixType& rLeftHandSideMatrix,
+                                                                VectorType& rRightHandSideVector,
+                                                                const Process_Info& rCurrentProcessInfo)
+            {
+                if (rLeftHandSideMatrix.rows() != 0) {
+                    rLeftHandSideMatrix.resize(0,0);
+                }
+                if (rRightHandSideVector.size() != 0) {
+                    rRightHandSideVector.resize(0);
+                }
+            }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental left hand side matrix for the second derivatives contributions
+             * @param rLeftHandSideMatrix the elemental left hand side matrix
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateSecondDerivativesLHS(MatrixType& rLeftHandSideMatrix,
+                                                    const Process_Info& rCurrentProcessInfo)
+            {
+                if (rLeftHandSideMatrix.rows() != 0) {
+                    rLeftHandSideMatrix.resize(0,0);
+                }
+            }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental right hand side vector for the second derivatives contributions
+             * @param rRightHandSideVector the elemental right hand side vector
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateSecondDerivativesRHS(VectorType& rRightHandSideVector,
+                                                    const Process_Info& rCurrentProcessInfo)
+            {
+                if (rRightHandSideVector.size() != 0) {
+                    rRightHandSideVector.resize(0);
+                }
+            }
+            /**
+             * ELEMENTS inherited from this class must implement this methods
+             * if they need to add dynamic element contributions
+             * CalculateMassMatrix, CalculateDampingMatrix and CalculateLumpedMassVector methods are: OPTIONAL
+             */
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental mass matrix
+             * @param rMassMatrix the elemental mass matrix
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateMassMatrix(MatrixType& rMassMatrix, const Process_Info& rCurrentProcessInfo)
+            {
+                if (rMassMatrix.rows() != 0) {
+                    rMassMatrix.resize(0,0);
+                }
+            }
+            /**
+             * this is called during the assembling process in order
+             * to calculate the elemental damping matrix
+             * @param rDampingMatrix the elemental damping matrix
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateDampingMatrix(MatrixType& rDampingMatrix, const Process_Info& rCurrentProcessInfo)
+            {
+                if (rDampingMatrix.rows() != 0) {
+                    rDampingMatrix.resize(0,0);
+                }
+            }
+            /**
+             * this is called during the initialize of the builder
+             * to calculate the lumped mass vector
+             * @param rLumpedMassVector the elemental lumped mass vector
+             * @param rCurrentProcessInfo the current process info instance
+             */
+            virtual void CalculateLumpedMassVector(
+                VectorType& rLumpedMassVector,
+                const Process_Info& rCurrentProcessInfo) const
+                {
+                    std::cerr << "Calling the CalculateLumpedMassVector() method of the base element. The method must be implemented in the derived element.";
+                    exit(0);
+                }
+
+
         ///@}
 
         /// @name Access
