@@ -100,9 +100,17 @@ class Geometry_Object : public Indexed_Object, public Flags
             {
                 return *mpGeometry;
             }
-            GeometryType GetGeometry() const
+            GeometryType const& GetGeometry() const
             {
                 return *mpGeometry;
+            }
+            GeometryType::Pointer pGeometry() 
+            {
+                return mpGeometry;
+            }
+            const GeometryType::Pointer  pGeometry() const
+            {
+                return mpGeometry;
             }
             DataValueContainerType& GetData()
             {

@@ -149,6 +149,54 @@ class Linear_Solving_Strategy
                 mpScheme->FinalizeNonLinearIteration(this->GetModelPart());
                 return true;
             }
+        
+            void FinalizeSolutionStep() override
+            {
+                //calculate reactions if required
+                if(this->mOptions.Is(LocalFlagType::COMPUTE_REACTIONS))
+                    mpBuilderAndSolver->CalculateReactions(mpScheme, this->GetModelPart(), (*mpA), (*mpDx), (*mpb));
+
+                //finalize scheme anb builder and solver
+                mpScheme->FinalizeSolutionStep(this->GetModelPart());
+                mpBuilderAndSolver->FinalizeSolutionStep(mpScheme, this->GetModelPart(), mpA, mpDx, mpb);
+            }
+
+            /**
+             * @brief Clears the internal storage
+             */
+            void Clear() override
+            {
+                // if the preconditioner is saved between solves, it should be cleared here.
+                mpBuilderAndSolver->GetLinearSystemSolver()->Clear();
+
+                //deallocate the systemvectors
+                if(mpA != nullptr)
+                    mpA = nullptr;
+                if(mpDx != nullptr)
+                    mpDx = nullptr;
+                if(mpb != nullptr)
+                    mpb = nullptr;
+
+                mpBuilderAndSolver->Clear();
+                mpScheme->Clear();
+            }
+
+            /**
+             * @brief Function to perform expensive checks.
+             * @details It is designed to be called ONCE to verify that the input is correct.
+             */
+            int Check() override
+            {
+                //check the model part
+                BaseType::Check();
+                //check the scheme
+                mpScheme->Check(this->GetModelPart());
+                //check the builder and solver
+                mpBuilderAndSolver->Check(this->GetModelPart());
+                return 0;
+
+            }
+
         /// @}
 
         /// @name Access
@@ -237,22 +285,6 @@ class Linear_Solving_Strategy
             void Predict() override
             {
                 mpScheme->Predict(this->GetModelPart(), mpBuilderAndSolver->GetDofSet(), (*mpDx));
-            }
-
-            void Clear() override
-            {
-                /* Clear preconditioner */
-                mpBuilderAndSolver->GetLinearSystemSolver()->Clear();
-
-                if (mpA != nullptr)
-                    mpA = nullptr;
-                if (mpb != nullptr)
-                    mpb = nullptr;
-                if (mpDx != nullptr)
-                    mpDx = nullptr;
-
-                mpBuilderAndSolver->Clear();
-                mpScheme->Clear();
             }
 
             void Update()override

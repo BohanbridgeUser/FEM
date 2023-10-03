@@ -26,7 +26,7 @@ class Boundary_Condition : public Condition
                                                                         VectorType;
             typedef ConditionType::PropertiesType
                                                                     PropertiesType;
-            typedef Node::DofPointersContainerType
+            typedef typename ConditionType::DofsVectorType
                                                                     DofsVectorType;
             typedef std::vector<size_t>
                                                               EquationIdVectorType;
@@ -167,7 +167,7 @@ class Boundary_Condition : public Condition
              * Sets on rConditionDofList the degrees of freedom of the considered element geometry
              */
             void GetDofList(DofsVectorType& rConditionDofList,
-                    const Process_Info& rCurrentProcessInfo ) const override;
+                            const Process_Info& rCurrentProcessInfo ) const override;
             /**
              * Sets on rResult the ID's of the element degrees of freedom
              */

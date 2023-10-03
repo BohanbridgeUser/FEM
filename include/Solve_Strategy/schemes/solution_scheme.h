@@ -351,7 +351,7 @@ class Solution_Scheme : public Flags
 
         if (itDof->IsFree() )
         {
-          itDof->GetSolutionStepValue() = rDx(itDof->EquationId());
+          itDof->GetSolutionStepValue() = rDx.coeffRef(itDof->EquationId());
         }
     }
   }
@@ -387,7 +387,7 @@ class Solution_Scheme : public Flags
 
       if (itDof->IsFree() )
       {
-        itDof->GetSolutionStepValue() += rDx(itDof->EquationId());
+        itDof->GetSolutionStepValue() += rDx.coeffRef(itDof->EquationId());
       }
     }
   }

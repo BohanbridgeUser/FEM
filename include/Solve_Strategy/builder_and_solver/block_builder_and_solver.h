@@ -234,11 +234,10 @@ class Block_Builder_And_Solver
                         scaling_factors[k] = 0.0f;
                     else
                         scaling_factors[k] = 1.0f;
-
                 }
 
                 //detect if there is a line of all zeros and set the diagonal to a 1 if this happens
-                for(int k = 0; k < rA.outersize(); ++k)
+                for(int k = 0; k < rA.outerSize(); ++k)
                 {
                     bool empty = true;
                     for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
@@ -249,11 +248,10 @@ class Block_Builder_And_Solver
                             break;
                         }
                     }
-
                     if(empty == true)
                     {
-                        rA(k,k) = 1.0;
-                        rb[k] = 0.0;
+                        rA.coeffRef(k,k) = 1.0;
+                        rb.coeffRef(k) = 0.0;
                     }
                 }
 
@@ -265,16 +263,16 @@ class Block_Builder_And_Solver
                         // zero out the whole row, except the diagonal
                         for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
                             if (it.col() != k )
-                                it.value() = 0.0;
+                                it.valueRef() = 0.0;
                         // zero out the RHS
-                        rb[k] = 0.0;
+                        rb.coeffRef(k) = 0.0;
                     }
                     else
                     {
                         // zero out the column which is associated with the zero'ed row
                         for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
                             if(scaling_factors[ it.row() ] == 0 )
-                                it.value() = 0.0;
+                                it.valueRef() = 0.0;
                     }
                 }
             }
@@ -318,7 +316,7 @@ class Block_Builder_And_Solver
                                     GlobalVectorType& rDx,
                                     GlobalVectorType& rb) override
             {
-                TSparseSpace::SetToZero(rb);
+                rb.setZero();
                 //refresh RHS to have the correct reactions
                 BuildRHSNoDirichlet(pScheme, rModelPart, rb);
                 const int ndofs = static_cast<int>(this->mDofSet.size());
@@ -390,7 +388,7 @@ class Block_Builder_And_Solver
              * @details The list of dofs is stores insde the BuilderAndSolver as it is closely connected to the way the matrix and RHS are built
              */
             void SetUpDofSet(SchemePointerType pScheme,
-                            Model_Part& rModelPart) override
+                             Model_Part& rModelPart) override
             {
 
                 //Gets the array of elements from the modeler
@@ -685,7 +683,7 @@ class Block_Builder_And_Solver
                                         Model_Part& rModelPart)
             {
                 double norm_b;
-                if (TSparseSpace::Size(rb) != 0)
+                if (rb.size() != 0)
                     norm_b = TSparseSpace::TwoNorm(rb);
                 else
                     norm_b = 0.00;
@@ -701,7 +699,7 @@ class Block_Builder_And_Solver
                 }
                 else
                 {
-                    TSparseSpace::SetToZero(rDx);
+                    rDx.setZero();
                     std::cout << "RHS" << "ATTENTION! setting the RHS to zero!" << std::endl;
                 }
 
@@ -718,7 +716,7 @@ class Block_Builder_And_Solver
                                         ConditionsContainerType& rConditions,
                                         Process_Info& rCurrentProcessInfo)
             {
-                //filling with zero the matrix (creating the structure)
+                // filling with zero the matrix (creating the structure)
                 // double begin_time = OpenMPUtils::GetCurrentTime();
 
                 const std::size_t equation_size = this->mEquationSystemSize;
@@ -759,19 +757,19 @@ class Block_Builder_And_Solver
                 //count the row sizes
                 unsigned int nnz = 0;
                 for (unsigned int i = 0; i < indices.size(); i++)
-                nnz += indices[i].size();
+                    nnz += indices[i].size();
 
                 rA = GlobalMatrixType(indices.size(), indices.size());
 
-                double* Avalues = rA.value_data().begin();
-                std::size_t* Arow_indices = rA.index1_data().begin();
-                std::size_t* Acol_indices = rA.index2_data().begin();
+
+                auto Avalues = rA.valuePtr();
+                auto Arow_indices = rA.outerIndexPtr();
+                auto Acol_indices = rA.innerIndexPtr();
 
                 //filling the index1 vector - DO NOT MAKE PARALLEL THE FOLLOWING LOOP!
                 Arow_indices[0] = 0;
                 for (int i = 0; i < static_cast<int>(rA.rows()); i++)
-                Arow_indices[i+1] = Arow_indices[i] + indices[i].size();
-
+                    Arow_indices[i+1] = Arow_indices[i] + indices[i].size();
 
                 for (int i = 0; i < static_cast<int>(rA.rows()); i++)
                 {
@@ -787,9 +785,9 @@ class Block_Builder_And_Solver
                     indices[i].clear(); //deallocating the memory
                     std::sort(&Acol_indices[row_begin], &Acol_indices[row_end]);
                 }
-
-                rA.set_filled(indices.size()+1, nnz);
+                rA.makeCompressed();
             }
+
             void AssembleLHS(GlobalMatrixType& rA,
                     LocalMatrixType& rLHS_Contribution,
                     Element::EquationIdVectorType& rEquationId)
@@ -816,7 +814,7 @@ class Block_Builder_And_Solver
                 {
                     unsigned int i_global = rEquationId[i_local];
                     // ASSEMBLING THE SYSTEM VECTOR
-                    double& b_value = rb[i_global];
+                    double& b_value = rb.coeffRef(i_global);
                     const double& rhs_value = rRHS_Contribution[i_local];
                     b_value += rhs_value;
                 }
@@ -835,7 +833,7 @@ class Block_Builder_And_Solver
                      * @brief Assemble RHS
                     */
                     unsigned int i_global = rEquationId[i_local];
-                    double& r_a = rb[i_global];
+                    double& r_a = rb.coeffRef(i_global);
                     const double& v_a = rRHS_Contribution(i_local);
                     r_a += v_a;
 
@@ -943,8 +941,8 @@ class Block_Builder_And_Solver
                     }
                 }
 
-                LHS_Contribution.resize(0, 0, false);
-                RHS_Contribution.resize(0, false);
+                LHS_Contribution.resize(0, 0);
+                RHS_Contribution.resize(0);
 
                 // assemble all conditions
                 //for (typename ConditionsContainerType::ptr_iterator it = ConditionsArray.ptr_begin(); it != ConditionsArray.ptr_end(); ++it)
@@ -988,43 +986,9 @@ class Block_Builder_And_Solver
                                                 const unsigned int i_local,
                                                 Element::EquationIdVectorType& rEquationId)
             {
-                // double* values_vector = rA.value_data().begin();
-                // std::size_t* index1_vector = rA.index1_data().begin();
-                // std::size_t* index2_vector = rA.index2_data().begin();
-                
-                // Eigen::SparseMatrix<double> ra;
-                // double* values = ra.valuePtr().begin()
-
-                // size_t left_limit = index1_vector[i];
-
-                // //find the first entry
-                // size_t last_pos = ForwardFind(rEquationId[0],left_limit,index2_vector);
-                // size_t last_found = rEquationId[0];
-
-                // double& r_a = values_vector[last_pos];
-                // const double& v_a = rAlocal(i_local,0);
-                // r_a +=  v_a;
-
-                // //now find all of the other entries
-                // size_t pos = 0;
-                // for(unsigned int j=0; j<rEquationId.size(); j++)
-                // {
-                //     unsigned int id_to_find = rEquationId[j];
-                //     if(id_to_find > last_found)
-                //         pos = ForwardFind(id_to_find,last_pos+1,index2_vector);
-                //     else
-                //         pos = BackwardFind(id_to_find,last_pos-1,index2_vector);
-
-                //     double& r = values_vector[pos];
-                //     const double& v = rAlocal(i_local,j);
-                //     r +=  v;
-
-                //     last_found = id_to_find;
-                //     last_pos = pos;
-                // }
                 for( unsigned int j=0;j<rEquationId.size();++j)
                 {
-                    rA.coeffRef(i,rEquationId[j],rAlocal(i,j));
+                    rA.coeffRef(i,rEquationId[j]) += rAlocal(i_local,j);
                 }
             }
 

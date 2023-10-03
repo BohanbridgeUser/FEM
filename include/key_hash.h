@@ -343,7 +343,7 @@ using HashType = std::size_t;
          * @brief The () operator
          * @param pDoF The DoF pointer
          */
-        HashType operator()(const Dof::Pointer& pDoF) const
+        HashType operator()(const Dof<double>::Pointer& pDoF) const
         {
             HashType seed = 0;
             HashCombine(seed, pDoF->Id());
@@ -363,7 +363,7 @@ using HashType = std::size_t;
          * @param pDoF1 The first DoF pointer
          * @param pDoF2 The second DoF pointer
          */
-        bool operator()(const Dof::Pointer& pDoF1, const Dof::Pointer& pDoF2) const
+        bool operator()(const Dof<double>::Pointer& pDoF1, const Dof<double>::Pointer& pDoF2) const
         {
             return (((pDoF1->Id() == pDoF2->Id() && (pDoF1->GetVariable()).Key()) == (pDoF2->GetVariable()).Key()));
         }

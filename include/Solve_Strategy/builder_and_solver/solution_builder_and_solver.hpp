@@ -253,7 +253,7 @@ public:
     this->mDofSet.clear();
 
     if(this->mpReactionsVector != nullptr)
-      TSparseSpace::Clear(this->mpReactionsVector);
+      this->mpReactionsVector->setZero();
 
     if(this->mpLinearSystemSolver != nullptr)
       this->mpLinearSystemSolver->Clear();
@@ -335,7 +335,6 @@ public:
                         GlobalVectorType& rb)
   {
     
-
     if (this->mEchoLevel == 2) //if it is needed to print the debug info
     {
       std::cout << ("Dx")  << "Solution = " << rDx << std::endl;
@@ -356,11 +355,11 @@ public:
 
       std::stringstream matrix_market_name;
       matrix_market_name << "A_" << rModelPart.GetProcessInfo()[TIME] << "_" << iteration_number << ".mm";
-      TSparseSpace::WriteMatrixMarketMatrix((char *)(matrix_market_name.str()).c_str(), rA, false);
+      std::cout << "MATRIX rA:\n" << rA;
 
       std::stringstream matrix_market_vectname;
       matrix_market_vectname << "b_" << rModelPart.GetProcessInfo()[TIME] << "_" << iteration_number << ".mm.rhs";
-      TSparseSpace::WriteMatrixMarketVector((char *)(matrix_market_vectname.str()).c_str(), rb);
+      std::cout << "MATRIX rA:\n" << rb;
     }
     
   }

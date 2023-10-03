@@ -19,7 +19,7 @@ class Scheme : public Flags
                                                                                            BaseType;
             typedef Solver_Local_Flags
                                                                                      LocalFlagType;
-            typedef Dof                                                                     
+            typedef Dof<double>                                                                     
                                                                                             DofType;
             typedef std::vector<DofType>                                          
                                                                                   DofsContainerType;

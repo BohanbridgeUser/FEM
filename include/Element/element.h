@@ -27,9 +27,9 @@ class Element:public Geometry_Object
                                                    GeometryDataType;
         typedef Properties
                                                      PropertiesType;
-        typedef Dof 
+        typedef Dof<double> 
                                                             DofType;
-        typedef std::vector<Dof::Pointer> 
+        typedef std::vector<DofType::Pointer> 
                                                      DofsVectorType;
         typedef std::vector<std::size_t> 
                                                EquationIdVectorType;

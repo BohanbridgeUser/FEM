@@ -36,8 +36,12 @@ class Condition : public Geometry_Object
                                                                         VectorType;
             typedef Properties
                                                                     PropertiesType;
-            typedef Node::DofPointersContainerType
+            typedef Dof<double>
+                                                                           DofType;
+            typedef std::vector<DofType::Pointer> 
                                                                     DofsVectorType;
+            typedef PointerVectorSet<DofType> 
+                                                                     DofsArrayType;
             typedef std::vector<size_t>
                                                               EquationIdVectorType;
             typedef GeometryType::PointsContainerType

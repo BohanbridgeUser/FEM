@@ -22,10 +22,10 @@ class Node : public Point<3> , public Flags
                                                        PointType;
             typedef Node_Data 
                                                     NodeDataType;
-            typedef std::vector<Dof*> 
-                                        DofPointersContainerType;
-            typedef Dof
+            typedef Dof<double>
                                                          DofType;
+            typedef std::vector<std::unique_ptr<Dof<double>>> 
+                                        DofPointersContainerType;
             typedef size_t
                                                        IndexType;
             typedef Variables_List_Data_Value_Container
@@ -107,24 +107,40 @@ class Node : public Point<3> , public Flags
 
         /// @name Operators
         /// @{
-            Node& operator=(const Node& another)
+            Node& operator=(const Node& rOther)
             {
-                this->x() = another.x();
-                this->y() = another.y();
-                this->z() = another.z();
-                mNodeData = another.mNodeData;
-                mNodeData.Id()++;
-                mDofsContainer = another.mDofsContainer;
-                mInitialPosition = another.mInitialPosition;
+                BaseType::operator=(rOther);
+                Flags::operator =(rOther);
+
+                mNodeData = rOther.mNodeData;
+
+                // Deep copying the dofs
+                for(typename DofPointersContainerType::const_iterator it_dof = rOther.mDofsContainer.begin() ; it_dof != rOther.mDofsContainer.end() ; it_dof++)
+                {
+                    pAddDof(**it_dof);
+                }
+
+                mData = rOther.mData;
+                mInitialPosition = rOther.mInitialPosition;
+
                 return *this;
             }
-            Node& operator=(Node&& another)
+            Node& operator=(Node&& rOther)
             {
-                this->x() = another.x();
-                this->y() = another.y();
-                this->z() = another.z();
-                mDofsContainer = another.mDofsContainer;
-                mInitialPosition = another.mInitialPosition;
+                BaseType::operator=(rOther);
+                Flags::operator =(rOther);
+
+                mNodeData = rOther.mNodeData;
+
+                // Deep copying the dofs
+                for(typename DofPointersContainerType::const_iterator it_dof = rOther.mDofsContainer.begin() ; it_dof != rOther.mDofsContainer.end() ; it_dof++)
+                {
+                    pAddDof(**it_dof);
+                }
+
+                mData = rOther.mData;
+                mInitialPosition = rOther.mInitialPosition;
+
                 return *this;
             }
         /// @}
@@ -164,6 +180,86 @@ class Node : public Point<3> , public Flags
             {
                 SolutionStepData().Resize(NewBufferSize);
             }
+        
+            /** adds a Dof to the node and return new added dof or existed one. */
+            template<class TVariableType>
+            inline typename DofType::Pointer pAddDof(TVariableType const& rDofVariable)
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return (*it_dof).get();
+                    }
+                }
+                mDofsContainer.push_back(std::make_unique<DofType>(&mNodeData, rDofVariable));
+                DofType* p_new_dof = mDofsContainer.back().get();
+                SortDofs();
+
+                return p_new_dof;
+            }
+            /** adds a Dof to the node and return new added dof or existed one. */
+            inline typename DofType::Pointer pAddDof(DofType const& SourceDof)
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == SourceDof.GetVariable()){
+                        if(!((*it_dof)->GetReaction() == SourceDof.GetReaction()))
+                        {
+                            **it_dof = SourceDof;
+                            (*it_dof)->SetNodalData(&mNodeData);
+                        }
+                        return (*it_dof).get();
+                    }
+                }
+                mDofsContainer.push_back(std::make_unique<DofType>(SourceDof));
+                mDofsContainer.back()->SetNodalData(&mNodeData);
+                DofType* p_new_dof = mDofsContainer.back().get();
+                SortDofs();
+                return p_new_dof;
+            }
+            /** adds a Dof to the node and return new added dof or existed one. */
+            template<class TVariableType, class TReactionType>
+            inline typename DofType::Pointer pAddDof(TVariableType const& rDofVariable, TReactionType const& rDofReaction)
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        (*it_dof)->SetReaction(rDofReaction);
+                        return (*it_dof).get();
+                    }
+                }
+                mDofsContainer.push_back(std::make_unique<DofType>(&mNodeData, rDofVariable, rDofReaction));
+                DofType* p_new_dof = mDofsContainer.back().get();
+                SortDofs();
+                return p_new_dof;
+            }
+            /** adds a Dof to the node and return new added dof or existed one. */
+            template<class TVariableType>
+            inline DofType& AddDof(TVariableType const& rDofVariable)
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return **it_dof;
+                    }
+                }
+                mDofsContainer.push_back(std::make_unique<DofType>(&mNodeData, rDofVariable));
+                DofType* p_new_dof = mDofsContainer.back().get();
+                SortDofs();
+                return *p_new_dof;
+            }
+            /** adds a Dof to the node and return new added dof or existed one. */
+            template<class TVariableType, class TReactionType>
+            inline DofType& AddDof(TVariableType const& rDofVariable, TReactionType const& rDofReaction)
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        (*it_dof)->SetReaction(rDofReaction);
+                        return **it_dof;
+                    }
+                }
+                mDofsContainer.push_back(std::make_unique<DofType>(&mNodeData, rDofVariable, rDofReaction));
+                DofType* p_new_dof = mDofsContainer.back().get();
+                SortDofs();
+                return *p_new_dof;
+            }
+
         ///@}
 
         /// @name Access
@@ -192,7 +288,7 @@ class Node : public Point<3> , public Flags
             {
                 return mDofsContainer;
             }
-            DofPointersContainerType GetDofs()const
+            const DofPointersContainerType& GetDofs() const
             {
                 return mDofsContainer;
             }
@@ -205,35 +301,109 @@ class Node : public Point<3> , public Flags
                 return mNodeData.GetSolutionStepData();
             }
 
-            /**
-             * @name Dof Access
-             * @brief These methods can get Dof in two ways
-            */
-            template<typename TVariableType>
-            typename Dof::Pointer pGetDof(const TVariableType& rDofVariable) const
+             /**
+             * @brief Get dof with a given position. If not found it is search
+             * @param rDofVariable Name of the variable
+             * @param pos Position of the DoF
+             * @tparam TVariableType The variable type template argument
+             * @return The DoF associated to the given variable
+             */
+            template<class TVariableType>
+            inline const DofType& GetDof(TVariableType const& rDofVariable, int pos) const
             {
-                for(auto it_dof = mDofsContainer.begin();it_dof != mDofsContainer.end();it_dof++)
+                typename DofPointersContainerType::const_iterator it_begin = mDofsContainer.begin();
+                typename DofPointersContainerType::const_iterator it_end = mDofsContainer.end();
+                typename DofPointersContainerType::const_iterator it;
+                //if the guess is exact return the guess
+                if(pos < it_end-it_begin)
                 {
-                    if((*it_dof)->GetVariable() == rDofVariable){
-                        return (*it_dof);
+                    it = it_begin + pos;
+                    if( (*it)->GetVariable() == rDofVariable)
+                    {
+                        return **it;
                     }
                 }
-                std::cerr << "Dof Not Find!\n";
-                return nullptr;
+
+                // Otherwise do a find
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return **it_dof;
+                    }
+                }
+
+                std::cerr <<  "Non-existent DOF in node #" << Id() << " for variable : " << rDofVariable.Name() << std::endl;
+                exit(0);
             }
-            template<typename TVariableType>
-            Dof& GetDof(const TVariableType& rDofVariable) const
+            /**
+             * @brief Get DoF for a given variable
+             * @param rDofVariable Name of the variable
+             * @tparam TVariableType The variable type template argument
+             * @return The DoF associated to the given variable
+             */
+            template<class TVariableType>
+            inline const DofType& GetDof(TVariableType const& rDofVariable) const
             {
-                for(auto it_dof = mDofsContainer.begin();it_dof != mDofsContainer.end();it_dof++)
-                {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
                     if((*it_dof)->GetVariable() == rDofVariable){
-                        return *(*it_dof);
+                        return **it_dof;
                     }
                 }
-                std::cerr << "Dof Not Find!\n";
+
+                std::cerr <<  "Non-existent DOF in node #" << Id() << " for variable : " << rDofVariable.Name() << std::endl;
+                exit(0);
+            }
+           /**
+             * @brief Get DoF counted pointer for a given variable
+             * @param rDofVariable Name of the variable
+             * @tparam TVariableType The variable type template argument
+             * @return The DoF associated to the given variable
+             */
+            template<class TVariableType>
+            inline typename DofType::Pointer pGetDof(TVariableType const& rDofVariable) const
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return (*it_dof).get();
+                    }
+                }
+                std::cerr <<  "Non-existent DOF in node #" << Id() << " for variable : " << rDofVariable.Name() << std::endl;
+                exit(0);
+            }
+            /**
+             * @brief Get DoF counted pointer with a given position. If not found it is search
+             * @param rDofVariable Name of the variable
+             * @param Position Position of the DoF
+             * @tparam TVariableType The variable type template argument
+             * @return The DoF associated to the given variable
+             */
+            template<class TVariableType>
+            inline typename DofType::Pointer pGetDof(
+                TVariableType const& rDofVariable,
+                int Position
+                ) const
+            {
+                const auto it_begin = mDofsContainer.begin();
+                const auto it_end = mDofsContainer.end();
+                // If the guess is exact return the guess
+                if(Position < it_end-it_begin) {
+                    auto it_dof = it_begin + Position;
+                    if( (*it_dof)->GetVariable() == rDofVariable) {
+                        return (*it_dof).get();
+                    }
+                }
+
+                // Otherwise do a find
+                for(auto it_dof = it_begin; it_dof != it_end; ++it_dof){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return (*it_dof).get();
+                    }
+                }
+
+                std::cerr <<  "Non-existent DOF in node #" << Id() << " for variable : " << rDofVariable.Name() << std::endl;
                 exit(0);
             }
 
+            
             /**
              * @name GetSolutionStepValue
              * @brief These methods can get values of variable
@@ -344,11 +514,22 @@ class Node : public Point<3> , public Flags
                 }
                 return false;
             }
+
+            inline  bool IsFixed(const Variable_Data& rDofVariable) const
+            {
+                for(auto it_dof = mDofsContainer.begin() ; it_dof != mDofsContainer.end() ; it_dof++){
+                    if((*it_dof)->GetVariable() == rDofVariable){
+                        return (*it_dof)->IsFixed();
+                    }
+                }
+                return false;
+            }
             template<typename TDataType>
             inline bool SolutionStepsDataHas(const Variable<TDataType>& rVariable) const
             {
                 return mNodeData.SolutionStepsDataHas(rVariable);
             }
+
         /// @}
 
         /// @name Input and Output
@@ -371,6 +552,15 @@ class Node : public Point<3> , public Flags
         Lotus_Vector<3> mInitialPosition;
 
         Data_Value_Container mData;
+
+
+        void SortDofs()
+        {
+            std::sort(mDofsContainer.begin(), mDofsContainer.end(), [](std::unique_ptr<DofType> const& First, std::unique_ptr<DofType> const& Second)->bool
+            {
+                return First->GetVariable().Key() < Second->GetVariable().Key();
+            });
+        }
 };
 
 #endif

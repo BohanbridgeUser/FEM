@@ -131,6 +131,7 @@ class Lotus_Vector
                         coordinate[1]*coordinate[1]+
                         coordinate[2]*coordinate[2];
         }
+
         // }
 
         // @ Utility {

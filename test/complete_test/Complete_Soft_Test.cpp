@@ -108,8 +108,7 @@ int main()
     unsigned int ElementsCount = 0;
     for(int i=0;i<GeometryCount;++i)
     {
-        Cube.CreateNewElement("Small_Displacement_Element3D8N",ElementsCount,Cube.pGetGeometry(i)->pPointsVector(),Cube.pGetProperties(1));
-        ElementsCount++;
+        Cube.CreateNewElement("Small_Displacement_Element3D8N",++ElementsCount,Cube.pGetGeometry(i)->pPointsVector(),Cube.pGetProperties(1));
     }
     // for(int i=0;i<ElementsCount;++i)
     // {
@@ -122,8 +121,7 @@ int main()
     {
         Geometry< Node >::PointsContainerType N_C;
         N_C.push_back(Cube.pGetNode(i));
-        Cube.CreateNewCondition("Point_Load_Condition3D1N",ConditionCount,N_C,Cube.pGetProperties(1));
-        ConditionCount++;
+        Cube.CreateNewCondition("Point_Load_Condition3D1N",++ConditionCount,N_C,Cube.pGetProperties(1));
     }
     // for(int i=0;i<ConditionCount;++i)
     // {
@@ -158,6 +156,7 @@ int main()
                             DenseSpace,
                             Linear_Solver<SparseSpace,DenseSpace> > solver(Cube,S_P,B_S,SolverFlag);
     
-
+    std::cout << "Check Solve Input : " << solver.Check() << std::endl;
+    
     return 0;
 }
