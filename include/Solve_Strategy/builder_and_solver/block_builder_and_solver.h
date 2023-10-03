@@ -287,7 +287,7 @@ class Block_Builder_And_Solver
                             GlobalVectorType& rb) override
             {
                 double norm_b;
-                if (TSparseSpace::Size(rb) != 0)
+                if (rb.size() != 0)
                     norm_b = TSparseSpace::TwoNorm(rb);
                 else
                     norm_b = 0.00;
@@ -298,7 +298,7 @@ class Block_Builder_And_Solver
                     this->mpLinearSystemSolver->Solve(rA, rDx, rb);
                 }
                 else
-                    TSparseSpace::SetToZero(rDx);
+                    rDx.setZero();
 
                 //prints informations about the current time
                 if (this->mEchoLevel > 1)
@@ -328,7 +328,7 @@ class Block_Builder_And_Solver
                     typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
                     const int i = (dof_iterator)->EquationId();
                     if ( (dof_iterator)->IsFixed() ) {
-                        (dof_iterator)->GetSolutionStepReactionValue() = -rb[i];
+                        (dof_iterator)->GetSolutionStepReactionValue() = -rb.coeffRef(i);
                     } else {
                         (dof_iterator)->GetSolutionStepReactionValue() = 0.0;
                     }
@@ -346,7 +346,7 @@ class Block_Builder_And_Solver
                           Model_Part& rModelPart,
                           GlobalMatrixType& rA) override
             {
-                GlobalVectorType tmp(rA.size1(), 0.0);
+                GlobalVectorType tmp(rA.rows(), 0.0);
                 this->Build(pScheme, rModelPart, rA, tmp);
             }
             /**
@@ -365,7 +365,7 @@ class Block_Builder_And_Solver
                     typename DofsArrayType::iterator dof_iterator = this->mDofSet.begin() + k;
                     const std::size_t i = dof_iterator->EquationId();
                     if (dof_iterator->IsFixed())
-                        rb[i] = 0.0f;
+                        rb.coeffRef(i) = 0.0f;
                 }
             }
 
@@ -769,11 +769,11 @@ class Block_Builder_And_Solver
 
                 //filling the index1 vector - DO NOT MAKE PARALLEL THE FOLLOWING LOOP!
                 Arow_indices[0] = 0;
-                for (int i = 0; i < static_cast<int>(rA.size1()); i++)
+                for (int i = 0; i < static_cast<int>(rA.rows()); i++)
                 Arow_indices[i+1] = Arow_indices[i] + indices[i].size();
 
 
-                for (int i = 0; i < static_cast<int>(rA.size1()); i++)
+                for (int i = 0; i < static_cast<int>(rA.rows()); i++)
                 {
                     const unsigned int row_begin = Arow_indices[i];
                     const unsigned int row_end = Arow_indices[i+1];
@@ -794,7 +794,7 @@ class Block_Builder_And_Solver
                     LocalMatrixType& rLHS_Contribution,
                     Element::EquationIdVectorType& rEquationId)
             {
-                unsigned int local_size = rLHS_Contribution.size1();
+                unsigned int local_size = rLHS_Contribution.rows();
                 for (unsigned int i_local = 0; i_local < local_size; i_local++)
                 {
                     unsigned int i_global = rEquationId[i_local];

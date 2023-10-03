@@ -60,31 +60,53 @@ class Solution_Scheme : public Flags
   Solution_Scheme(Flags& rOptions) : Flags(), mOptions(rOptions) {SetDefaultFlags();}
 
   /// Constructor.
-  Solution_Scheme(IntegrationMethodsVectorType& rTimeVectorIntegrationMethods, Flags& rOptions) : Flags(), mOptions(rOptions), mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods) {SetDefaultFlags();}
+  Solution_Scheme(IntegrationMethodsVectorType& rTimeVectorIntegrationMethods, Flags& rOptions)
+  : Flags(), 
+  mOptions(rOptions), 
+  mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods) 
+  {SetDefaultFlags();}
 
   /// Constructor.
-  Solution_Scheme(IntegrationMethodsVectorType& rTimeVectorIntegrationMethods) : Flags(), mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods) {SetDefaultFlags();}
+  Solution_Scheme(IntegrationMethodsVectorType& rTimeVectorIntegrationMethods)
+  : Flags(), 
+  mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods) 
+  {SetDefaultFlags();}
 
   /// Constructor.
-  Solution_Scheme(IntegrationMethodsScalarType& rTimeScalarIntegrationMethods, Flags& rOptions) : Flags(), mOptions(rOptions), mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) {SetDefaultFlags();}
+  Solution_Scheme(IntegrationMethodsScalarType& rTimeScalarIntegrationMethods, Flags& rOptions) 
+  : Flags(), 
+  mOptions(rOptions), 
+  mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) 
+  {SetDefaultFlags();}
 
   /// Constructor.
-  Solution_Scheme(IntegrationMethodsScalarType& rTimeScalarIntegrationMethods) : Flags(), mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) {SetDefaultFlags();}
+  Solution_Scheme(IntegrationMethodsScalarType& rTimeScalarIntegrationMethods) 
+  : Flags(), 
+  mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) 
+  {SetDefaultFlags();}
 
   /// Constructor.
   Solution_Scheme(IntegrationMethodsVectorType& rTimeVectorIntegrationMethods,
                  IntegrationMethodsScalarType& rTimeScalarIntegrationMethods,
                  Flags& rOptions)
-      : Flags(), mOptions(rOptions), mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods), mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) {SetDefaultFlags();}
+  : Flags(), 
+  mOptions(rOptions), 
+  mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods), 
+  mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) 
+  {SetDefaultFlags();}
 
   /// Constructor.
   Solution_Scheme(IntegrationMethodsVectorType& rTimeVectorIntegrationMethods,
                  IntegrationMethodsScalarType& rTimeScalarIntegrationMethods)
-      : Flags(), mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods), mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) {SetDefaultFlags();}
+  : Flags(), 
+  mTimeVectorIntegrationMethods(rTimeVectorIntegrationMethods), 
+  mTimeScalarIntegrationMethods(rTimeScalarIntegrationMethods) 
+  {SetDefaultFlags();}
 
   /// Copy contructor.
-  Solution_Scheme(Solution_Scheme& rOther) : mOptions(rOther.mOptions)
-                                         , mProcesses(rOther.mProcesses)
+  Solution_Scheme(Solution_Scheme& rOther) 
+  : mOptions(rOther.mOptions), 
+  mProcesses(rOther.mProcesses)
   {
     std::copy(std::begin(rOther.mTimeVectorIntegrationMethods), std::end(rOther.mTimeVectorIntegrationMethods), std::back_inserter(mTimeVectorIntegrationMethods));
   }
@@ -112,8 +134,6 @@ class Solution_Scheme : public Flags
    */
   void SetDefaultFlags()
   {
-    
-
     if( this->mOptions.IsNotDefined(LocalFlagType::MOVE_MESH) )
       mOptions.Set(LocalFlagType::MOVE_MESH,true); //default : lagrangian mesh update
 
@@ -122,8 +142,6 @@ class Solution_Scheme : public Flags
 
     if( this->mOptions.IsNotDefined(LocalFlagType::INCREMENTAL_SOLUTION) )
       mOptions.Set(LocalFlagType::INCREMENTAL_SOLUTION,true); //default : dof is the variable increment
-
-    
   }
 
   /**
@@ -164,14 +182,14 @@ class Solution_Scheme : public Flags
     for(typename ProcessPointerVectorType::iterator it=mProcesses.begin(); it!=mProcesses.end(); ++it)
       (*it)->ExecuteInitializeSolutionStep();
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Elements().size()); i++)
     {
       auto itElem = rModelPart.ElementsBegin() + i;
       itElem->InitializeSolutionStep(rCurrentProcessInfo);
     }
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Conditions().size()); i++)
     {
       auto itCond = rModelPart.ConditionsBegin() + i;
@@ -197,7 +215,7 @@ class Solution_Scheme : public Flags
       (*it)->ExecuteFinalizeSolutionStep();
 
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Elements().size()); i++)
     {
       auto itElem = rModelPart.ElementsBegin() + i;
@@ -205,7 +223,7 @@ class Solution_Scheme : public Flags
     }
 
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Conditions().size()); i++)
     {
       auto itCond = rModelPart.ConditionsBegin() + i;
@@ -228,7 +246,7 @@ class Solution_Scheme : public Flags
     for(typename ProcessPointerVectorType::iterator it=mProcesses.begin(); it!=mProcesses.end(); ++it)
       (*it)->ExecuteInitialize(); //corresponds to ExecuteInitializeNonLinearIteration()
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Elements().size()); i++)
     {
       auto itElem = rModelPart.ElementsBegin() + i;
@@ -236,7 +254,7 @@ class Solution_Scheme : public Flags
     }
 
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Conditions().size()); i++)
     {
       auto itCond = rModelPart.ConditionsBegin() + i;
@@ -261,7 +279,7 @@ class Solution_Scheme : public Flags
 
     Process_Info& rCurrentProcessInfo = rModelPart.GetProcessInfo();
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Elements().size()); i++)
     {
       auto itElem = rModelPart.ElementsBegin() + i;
@@ -269,7 +287,7 @@ class Solution_Scheme : public Flags
     }
 
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for(int i=0; i<static_cast<int>(rModelPart.Conditions().size()); i++)
     {
       auto itCond = rModelPart.ConditionsBegin() + i;
@@ -301,10 +319,7 @@ class Solution_Scheme : public Flags
                       DofsArrayType& rDofSet,
                       SystemVectorType& rDx)
   {
-    
 
-
-    
   }
 
 
@@ -322,25 +337,23 @@ class Solution_Scheme : public Flags
       const unsigned int NumThreads = omp_get_num_threads();
     #endif
 
-    // Update of displacement (by DOF)
-    OpenMPUtils::PartitionVector DofPartition;
-    OpenMPUtils::DivideInPartitions(rDofSet.size(), NumThreads, DofPartition);
+    std::vector<int> DofPartition;
+    DofPartition[0] = 0;
+    DofPartition[1] = DofPartition[0] + rDofSet.size();
 
     const int ndof = static_cast<int>(rDofSet.size());
     typename DofsArrayType::iterator DofBegin = rDofSet.begin();
 
-    #pragma omp parallel for firstprivate(DofBegin)
+    //#pragma omp parallel for firstprivate(DofBegin)
     for(int i = 0;  i < ndof; i++)
     {
         typename DofsArrayType::iterator itDof = DofBegin + i;
 
         if (itDof->IsFree() )
         {
-          itDof->GetSolutionStepValue() = TSparseSpace::GetValue(rDx,itDof->EquationId());
+          itDof->GetSolutionStepValue() = rDx(itDof->EquationId());
         }
     }
-
-    
   }
 
 
@@ -360,24 +373,23 @@ class Solution_Scheme : public Flags
     #endif
 
     // Update of displacement (by DOF)
-    OpenMPUtils::PartitionVector DofPartition;
-    OpenMPUtils::DivideInPartitions(rDofSet.size(), NumThreads, DofPartition);
+    std::vector<int> DofPartition;
+    DofPartition[0] = 0;
+    DofPartition[NumThreads] = DofPartition[0] + rDofSet.size();
 
     const int ndof = static_cast<int>(rDofSet.size());
     typename DofsArrayType::iterator DofBegin = rDofSet.begin();
 
-    #pragma omp parallel for firstprivate(DofBegin)
+    //#pragma omp parallel for firstprivate(DofBegin)
     for(int i = 0;  i < ndof; i++)
     {
       typename DofsArrayType::iterator itDof = DofBegin + i;
 
       if (itDof->IsFree() )
       {
-        itDof->GetSolutionStepValue() += TSparseSpace::GetValue(rDx,itDof->EquationId());
+        itDof->GetSolutionStepValue() += rDx(itDof->EquationId());
       }
     }
-
-    
   }
 
   /**
@@ -388,14 +400,10 @@ class Solution_Scheme : public Flags
                           DofsArrayType& rDofSet,
                           SystemVectorType& rDx)
   {
-    
-
     if( mOptions.Is(LocalFlagType::INCREMENTAL_SOLUTION) )
       AddSolution(rModelPart,rDofSet,rDx);  //dof = incremental variable
     else
       SetSolution(rModelPart,rDofSet,rDx);  //dof = total variable
-
-    
   }
 
 
@@ -406,8 +414,6 @@ class Solution_Scheme : public Flags
    */
   virtual void UpdateVariables(ModelPart& rModelPart)
   {
-    
-
     if( this->mOptions.Is(LocalFlagType::UPDATE_VARIABLES) ){
 
       #ifndef _OPENMP
@@ -416,22 +422,20 @@ class Solution_Scheme : public Flags
         const unsigned int NumThreads = omp_get_num_threads();
       #endif
 
-      OpenMPUtils::PartitionVector NodePartition;
-      OpenMPUtils::DivideInPartitions(rModelPart.Nodes().size(), NumThreads, NodePartition);
+      std::vector<int> NodePartition;
+      NodePartition[0] = 0;
+      NodePartition[NumThreads] = NodePartition[0] + rModelPart.Nodes().size();
 
       const int nnodes = static_cast<int>(rModelPart.Nodes().size());
       NodesContainerType::iterator NodeBegin = rModelPart.Nodes().begin();
 
-      #pragma omp parallel for firstprivate(NodeBegin)
+      //#pragma omp parallel for firstprivate(NodeBegin)
       for(int i = 0;  i < nnodes; i++)
       {
         NodesContainerType::iterator itNode = NodeBegin + i;
-
         this->IntegrationMethodUpdate(*itNode);
       }
     }
-
-    
   }
 
   /**
@@ -440,25 +444,26 @@ class Solution_Scheme : public Flags
    */
   virtual void PredictVariables(ModelPart& rModelPart)
   {
-    
+    #ifndef _OPENMP
+      const unsigned int NumThreads = 1;
+    #else
+      const unsigned int NumThreads = omp_get_num_threads();
+    #endif
 
-    // Updating time derivatives (nodally for efficiency)
-    const unsigned int NumThreads = ParallelUtilities::GetNumThreads();
-    OpenMPUtils::PartitionVector NodePartition;
-    OpenMPUtils::DivideInPartitions(rModelPart.Nodes().size(), NumThreads, NodePartition);
+    std::vector<int> NodePartition;
+    NodePartition[0] = 0;
+    NodePartition[NumThreads] = NodePartition[0] + rModelPart.Nodes().size();
 
     const int nnodes = static_cast<int>(rModelPart.Nodes().size());
     NodesContainerType::iterator NodeBegin = rModelPart.Nodes().begin();
 
-    #pragma omp parallel for firstprivate(NodeBegin)
+    //#pragma omp parallel for firstprivate(NodeBegin)
     for(int i = 0;  i < nnodes; i++)
     {
       NodesContainerType::iterator itNode = NodeBegin + i;
 
       this->IntegrationMethodPredict(*itNode);
     }
-
-    
   }
 
 
@@ -474,7 +479,8 @@ class Solution_Scheme : public Flags
 
       if (rModelPart.NodesBegin()->SolutionStepsDataHas(DISPLACEMENT_X) == false)
       {
-        KRATOS_ERROR << "It is impossible to move the mesh since the DISPLACEMENT variable is not in the Model Part. Add DISPLACEMENT to the list of variables" << std::endl;
+        std::cerr << "It is impossible to move the mesh since the DISPLACEMENT variable is not in the Model Part. Add DISPLACEMENT to the list of variables" << std::endl;
+        exit(0);
       }
 
       bool DisplacementIntegration = false;
@@ -493,13 +499,17 @@ class Solution_Scheme : public Flags
         const int nnodes = rModelPart.NumberOfNodes();
         ModelPart::NodesContainerType::iterator it_begin = rModelPart.NodesBegin();
 
-#pragma omp parallel for
+        //#pragma omp parallel for
         for(int i = 0; i<nnodes; i++)
         {
           ModelPart::NodesContainerType::iterator it_node = it_begin + i;
 
-          noalias(it_node->Coordinates()) = it_node->GetInitialPosition().Coordinates();
-          noalias(it_node->Coordinates()) += it_node->FastGetSolutionStepValue(DISPLACEMENT);
+          it_node->Coordinates()[0] = it_node->GetInitialPosition().x();
+          it_node->Coordinates()[1] = it_node->GetInitialPosition().y();
+          it_node->Coordinates()[2] = it_node->GetInitialPosition().z();
+          it_node->Coordinates()[0] += it_node->FastGetSolutionStepValue(DISPLACEMENT)[0];
+          it_node->Coordinates()[1] += it_node->FastGetSolutionStepValue(DISPLACEMENT)[1];
+          it_node->Coordinates()[2] += it_node->FastGetSolutionStepValue(DISPLACEMENT)[2];
         }
 
       }
@@ -791,7 +801,7 @@ class Solution_Scheme : public Flags
 
     if( this->IsNot(LocalFlagType::ELEMENTS_INITIALIZED) ){
 
-#pragma omp parallel for
+//#pragma omp parallel for
       for(int i=0; i<static_cast<int>(rModelPart.Elements().size()); i++)
       {
         auto itElem = rModelPart.ElementsBegin() + i;
@@ -814,11 +824,13 @@ class Solution_Scheme : public Flags
     
 
     if( this->IsNot(LocalFlagType::ELEMENTS_INITIALIZED) )
-      KRATOS_ERROR << "Before initilizing Conditions, initialize Elements FIRST" << std::endl;
-
+    {
+      std::cerr<< "Before initilizing Conditions, initialize Elements FIRST" << std::endl;
+      exit(0);
+    }
     if( this->IsNot(LocalFlagType::CONDITIONS_INITIALIZED) ){
 
-#pragma omp parallel for
+      //#pragma omp parallel for
       for(int i=0; i<static_cast<int>(rModelPart.Conditions().size()); i++)
       {
         auto itCond = rModelPart.ConditionsBegin() + i;

@@ -173,5 +173,10 @@ class Linear_Solver
 
         /// @}
 };
-
+template<typename TSparseSpace, typename TDenseSpace>
+std::ostream& operator<<(std::ostream& os, Linear_Solver<TSparseSpace,TDenseSpace> const& item)
+{
+    os << "Basic Linear Solver!\n";
+    return os;
+}
 #endif

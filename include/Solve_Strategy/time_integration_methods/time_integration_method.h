@@ -21,7 +21,7 @@ public:
   /// NodeType
   typedef Node NodeType;
 
-  /// KratosVariable or KratosVariableComponent
+  /// LotusVariable or LotusVariableComponent
   typedef const TVariableType*     VariablePointer;
 
   typedef const TValueType*           ValuePointer;

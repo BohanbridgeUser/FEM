@@ -76,6 +76,18 @@ class Dof
                 return GetReference(GetVariable(),mNodeData->GetSolutionStepData(),rThisSolutionStep,mReactionType);
             }
         /// @}
+
+        /// @name Inquiry
+        /// @{
+            bool IsFree()
+            {
+                return mIsFixed != 1;
+            }
+            bool IsFixed()
+            {
+                return mIsFixed == 1;
+            }
+        /// @}
     private:
         /// @name Private Static Member
         /// @{

@@ -2,7 +2,7 @@
 #define _STRATEGIES_H_
 #include "../../define.h"
 #include "../../Model/model.h"
-#include "../schemes/scheme.h"
+#include "../schemes/solution_scheme.h"
 #include "../../Container/flags.h"
 #include "../solve_local_flags.h"
 #include "../builder_and_solver/builder_and_solver.h"

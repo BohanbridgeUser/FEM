@@ -4,7 +4,7 @@
 #include "../../define.h"
 #include "../../Model/model.h"
 #include "../../Linear_Solver/linear_solver.h"
-#include "../schemes/scheme.h"
+#include "../schemes/solution_scheme.h"
 #include "../convergencecriterias/convergencecriterias.h"
 
 
@@ -42,7 +42,7 @@ public:
                                                                           LinearSolverType;
   typedef typename LinearSolverType::Pointer
                                                                   LinearSolverPointerType;
-  typedef Scheme<TSparseSpace,TDenseSpace>
+  typedef Solution_Scheme<TSparseSpace,TDenseSpace>
                                                                                 SchemeType;
   typedef typename SchemeType::Pointer
                                                                         SchemePointerType;
@@ -52,9 +52,9 @@ public:
                                                                                 Model_Part;
   typedef Model_Part::DofType                                                 
                                                                                   DofType;
-  typedef Model_Part::DofsVectorType
+  typedef Model_Part::DofsArrayType
                                                                         DofsContainerType;
-  typedef Model_Part::DofsVectorType
+  typedef Model_Part::DofsArrayType
                                                                               DofsArrayType;
   typedef Model_Part::NodeType
                                                                                   NodeType;

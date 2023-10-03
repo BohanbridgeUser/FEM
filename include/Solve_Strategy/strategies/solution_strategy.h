@@ -1,6 +1,6 @@
 #ifndef _SOLUTION_STRATEGY_H_
 #define _SOLUTION_STRATEGY_H_
-#include "../schemes/scheme.h"
+#include "../schemes/solution_scheme.h"
 #include "../builder_and_solver/solution_builder_and_solver.hpp"
 
 
@@ -28,7 +28,7 @@ class SolutionStrategy : public Flags
   typedef typename TSparseSpace::SpMatrixPointer                             SystemMatrixPointerType;
   typedef typename TSparseSpace::SpVectorPointer                             SystemVectorPointerType;
 
-  typedef Scheme<TSparseSpace, TDenseSpace>                                             SchemeType;
+  typedef Solution_Scheme<TSparseSpace, TDenseSpace>                                       SchemeType;
   typedef Solution_Builder_And_Solver<TSparseSpace, TDenseSpace, TLinearSolver>  BuilderAndSolverType;
 
 

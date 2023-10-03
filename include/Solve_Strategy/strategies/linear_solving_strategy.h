@@ -242,7 +242,7 @@ class Linear_Solving_Strategy
             void Clear() override
             {
                 /* Clear preconditioner */
-                mpBuilderAndSolver->GetLinearSolver()->Clear();
+                mpBuilderAndSolver->GetLinearSystemSolver()->Clear();
 
                 if (mpA != nullptr)
                     mpA = nullptr;
@@ -257,7 +257,7 @@ class Linear_Solving_Strategy
 
             void Update()override
             {
-                mpScheme->Update(this->GetModelPart,mpBuilderAndSolver->GetDofSet(),(*mpDx));
+                mpScheme->Update(this->GetModelPart(),mpBuilderAndSolver->GetDofSet(),(*mpDx));
             }
         /// @}
 

@@ -133,8 +133,17 @@ int main()
     Process_Info P_I;
     Cube.SetProcessInfo(P_I);
     Cube.SetNodalSolutionStepVariablesList(V_L);
+                                                            
 
-    Static_Scheme<SparseSpace,DenseSpace>::Pointer S_P = std::make_shared<Scheme<SparseSpace,DenseSpace> >();
+    typedef Static_Scheme<SparseSpace,DenseSpace>
+                                                                StaticSchemeType;
+    StaticSchemeType::IntegrationVectorPointerType pTIM 
+    = std::make_shared<StaticSchemeType::IntegrationVectorType>(DISPLACEMENT);
+    StaticSchemeType::IntegrationMethodsVectorType v_TIM;
+    v_TIM.push_back(pTIM);                                                            
+    
+    StaticSchemeType::Pointer S_P 
+    = std::make_shared<Static_Scheme<SparseSpace,DenseSpace> >(v_TIM);
     typedef Linear_Solver<SparseSpace,DenseSpace>                    SolverType;
     SolverType::Pointer pSolver = std::make_shared<SolverType>();
 
