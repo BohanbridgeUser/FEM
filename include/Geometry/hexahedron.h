@@ -355,26 +355,32 @@ class Hexahedron:public Geometry<TPointType>
                     AllPoints[i].y() = it->y();
                     AllPoints[i].z() = it->z();
                 }
-                CenterPoint = CenterPoint * (1 / rPoints.size());
-
+                for(int i=0;i<rPoints.size();++i)
+                {
+                    std::cout << AllPoints[i].x() << ' '
+                              << AllPoints[i].y() << ' '
+                              << AllPoints[i].z() << std::endl;
+                }
+                
+                CenterPoint = CenterPoint * (1.00 / rPoints.size());
+                std::cout << "CenterPoint :\n" <<  CenterPoint << std::endl;
+                
                 double volume = 0.0f;
                 auto Va = AllPoints[1] - AllPoints[0];
                 auto Vb = AllPoints[3] - AllPoints[0];
                 auto Vc = CenterPoint  - AllPoints[0];
-                volume += Va.dot(Vb) * Vc.dot(Va.cross(Vb));
+                volume += abs((Va.cross(Vb)).norm() * Vc.dot(Va.cross(Vb)));
                 auto Vd = AllPoints[4] - AllPoints[0];
-                volume += Vd.dot(Vb) * Vc.dot(Vd.cross(Vb));
-                volume += Vd.dot(Va) * Vc.dot(Vd.cross(Va));
-
+                volume += abs((Vd.cross(Vb)).norm() * Vc.dot(Vd.cross(Vb)));
+                volume += abs((Vd.cross(Va)).norm() * Vc.dot(Vd.cross(Va)));
                 auto Va_ = AllPoints[5] - AllPoints[6];
                 auto Vb_ = AllPoints[7] - AllPoints[6];
                 auto Vc_ = CenterPoint  - AllPoints[6];
-                volume += Va_.dot(Vb_) * Vc.dot(Va_.cross(Vb_));
+                volume += abs((Va_.cross(Vb_)).norm() * Vc.dot(Va_.cross(Vb_)));
                 auto Vd_ = AllPoints[2] - AllPoints[6];
-                volume += Vb_.dot(Vb_) * Vc.dot(Vb_.cross(Vb_));
-                volume += Va_.dot(Vb_) * Vc.dot(Va_.cross(Vb_));
-
-                return abs(1/3 * volume);
+                volume += abs((Vb_.cross(Vd_)).norm() * Vc.dot(Vb_.cross(Vd_)));
+                volume += abs((Vd_.cross(Va_)).norm() * Vc.dot(Vd_.cross(Va_)));
+                return abs(1.00/3.00 * volume);
             }
 
         /// @}

@@ -469,6 +469,7 @@ int Solid_Element::Check( const Process_Info& rCurrentProcessInfo ) const
     if ( this->GetProperties().Has( CONSTITUTIVE_LAW ) == false )
     {
       std::cerr << "constitutive law not provided for property " << this->GetProperties().Id() << std::endl;
+      exit(0);
     }
     else
     {

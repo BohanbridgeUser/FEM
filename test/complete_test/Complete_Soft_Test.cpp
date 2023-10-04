@@ -99,6 +99,11 @@ int main()
     Prop.SetValue(DENSITY,7850.00);
     Prop.SetValue(ELASTICITY_MODULUS,2.1E9);
     Prop.SetValue(POISON,0.31);
+    Prop.SetValue(YOUNG_MODULUS,2.1E9);
+    Prop.SetValue(POISSON_RATIO,0.31);
+    Constitutive_Law const& r_clone_constitutive = Lotus_Components<Constitutive_Law>::Get("Linear_Elastic_3D_Law");
+
+    Prop.SetValue(CONSTITUTIVE_LAW,r_clone_constitutive.Clone());
     Cube.AddProperties(std::make_shared<Properties>(Prop));
     std::cout << "Property DENSITY           : " << Cube.GetProperties(1,0).GetValue(DENSITY) << std::endl;
     std::cout << "Property ELASTICITY_MODULUS: " << Cube.GetProperties(1,0).GetValue(ELASTICITY_MODULUS)<< std::endl;
@@ -157,6 +162,5 @@ int main()
                             Linear_Solver<SparseSpace,DenseSpace> > solver(Cube,S_P,B_S,SolverFlag);
     
     std::cout << "Check Solve Input : " << solver.Check() << std::endl;
-    
     return 0;
 }
