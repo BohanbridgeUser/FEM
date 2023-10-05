@@ -347,7 +347,7 @@ class Constitutive_Law : public Flags
 
             const double& GetDeterminantF()
             {
-                if(IsSetDeterminantF()) 
+                if(!IsSetDeterminantF()) 
                 {
                     std::cerr << "DeterminantF is not set!" << std::endl;
                     exit(0);
@@ -356,7 +356,7 @@ class Constitutive_Law : public Flags
             }
             const Vector& GetShapeFunctionsValues()
             {
-                if(IsSetShapeFunctionsValues())
+                if(!IsSetShapeFunctionsValues())
                 {
                    std::cerr << "ShapeFunctionsValues is not set!" << std::endl;
                    exit(0);
@@ -365,7 +365,7 @@ class Constitutive_Law : public Flags
             }
             const Matrix& GetShapeFunctionsDerivatives()
             {
-                if(IsSetShapeFunctionsDerivatives())
+                if(!IsSetShapeFunctionsDerivatives())
                 {
                     std::cerr << "ShapeFunctionsDerivatives is not set!" << std::endl;
                     exit(0);
@@ -374,7 +374,7 @@ class Constitutive_Law : public Flags
             }
             const DeformationGradientMatrixType& GetDeformationGradientF()
             {
-                if(IsSetDeformationGradientF())
+                if(!IsSetDeformationGradientF())
                 {
                     std::cerr << "DeformationGradientF is not set!" << std::endl;
                     exit(0);

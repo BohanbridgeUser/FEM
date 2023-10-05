@@ -196,7 +196,6 @@ class Solution_Scheme : public Flags
       itCond->InitializeSolutionStep(rCurrentProcessInfo);
     }
 
-    
   }
 
 
@@ -373,7 +372,7 @@ class Solution_Scheme : public Flags
     #endif
 
     // Update of displacement (by DOF)
-    std::vector<int> DofPartition;
+    std::vector<int> DofPartition(NumThreads);
     DofPartition[0] = 0;
     DofPartition[NumThreads] = DofPartition[0] + rDofSet.size();
 
@@ -422,7 +421,7 @@ class Solution_Scheme : public Flags
         const unsigned int NumThreads = omp_get_num_threads();
       #endif
 
-      std::vector<int> NodePartition;
+      std::vector<int> NodePartition(NumThreads);
       NodePartition[0] = 0;
       NodePartition[NumThreads] = NodePartition[0] + rModelPart.Nodes().size();
 
@@ -450,7 +449,7 @@ class Solution_Scheme : public Flags
       const unsigned int NumThreads = omp_get_num_threads();
     #endif
 
-    std::vector<int> NodePartition;
+    std::vector<int> NodePartition(NumThreads);
     NodePartition[0] = 0;
     NodePartition[NumThreads] = NodePartition[0] + rModelPart.Nodes().size();
 

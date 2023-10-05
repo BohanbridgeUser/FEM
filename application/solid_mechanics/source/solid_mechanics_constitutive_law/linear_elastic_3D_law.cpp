@@ -205,9 +205,9 @@
 
       //3.-Calculate Total Kirchhoff stress
       if( Options.Is( Constitutive_Law::COMPUTE_STRESS ) )
-        {
-          TransformStresses(StressVector, DeformationGradientF, DeterminantF, StressMeasure_PK2, StressMeasure_Kirchhoff);
-        }
+      {
+        TransformStresses(StressVector, DeformationGradientF, DeterminantF, StressMeasure_PK2, StressMeasure_Kirchhoff);
+      }
 
       // COMMENTED BECAUSE THE CONVERGENCE IS NOT IMPROVED AND IS TIME CONSUMING:
       //4.-Calculate Cauchy constitutive tensor
@@ -387,7 +387,7 @@
 
         //1.-2nd Piola Kirchhoff StressVector or Cauchy StressVector
         if( rStressVector.size() != rStrainVector.size() )
-          rStressVector.resize(rStrainVector.size(),false);
+          rStressVector.resize(rStrainVector.size());
 
         rStressVector = rConstitutiveMatrix*rStrainVector;
 

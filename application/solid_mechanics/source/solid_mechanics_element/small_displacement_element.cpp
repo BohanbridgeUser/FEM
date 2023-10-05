@@ -194,7 +194,7 @@
         else if( dimension == 3 )
         {
             //Infinitesimal Strain Calculation
-            if ( rStrainVector.size() != 6 ) rStrainVector.resize( 6, false );
+            if ( rStrainVector.size() != 6 ) rStrainVector.resize( 6);
             rStrainVector[0] = rH( 0, 0 );
             rStrainVector[1] = rH( 1, 1 );
             rStrainVector[2] = rH( 2, 2 );

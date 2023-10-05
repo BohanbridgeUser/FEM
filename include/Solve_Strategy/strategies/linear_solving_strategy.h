@@ -262,7 +262,11 @@ class Linear_Solving_Strategy
                     mpScheme->Initialize(this->GetModelPart());
 
                 this->SetSystemDofs();
-
+                
+                unsigned int sizeofsystem = mpBuilderAndSolver->GetEquationSystemSize();
+                (*mpA).resize(sizeofsystem,sizeofsystem);
+                (*mpb).resize(sizeofsystem);
+                (*mpDx).resize(sizeofsystem);
                 this->Set(LocalFlagType::INITIALIZED,true);
             }
 

@@ -5,6 +5,7 @@
 #include "../../include/Solve_Strategy/strategies/linear_solving_strategy.h"
 #include "../../include/Solve_Strategy/builder_and_solver/block_builder_and_solver.h"
 #include "../../include/Solve_Strategy/schemes/static_scheme.h"
+#include "../../include/Solve_Strategy/time_integration_methods/static_method.h"
 
 #include "../../include/process_info.h"
 #include "../../include/Model/model.h"
@@ -18,31 +19,18 @@
 #include <memory>
 int main()
 {
-    // for(int i=8;i<729;i+=9)
-    // {
-    //     mesh.AddCondition(std::make_shared<Point_Load_Condition>(i,
-    //                                                             std::make_shared<Point3D<Node>>(mesh.pGetNode(i)),
-    //                                                             Properties::Pointer(&Prop)
-    //                                                             ));
-    // }
-    // for(auto i=mesh.ConditionsBegin();i!=mesh.ConditionsEnd();++i)
-    // {
-    //     std::cout << *i << std::endl;
-    // }
-    
     Lotus_Kernel Kernel;
     Lotus_Solid_Mechanics_Application::Pointer pNewApplication = std::make_shared<Lotus_Solid_Mechanics_Application>();
     Kernel.ImportApplication(pNewApplication);
     Kernel.Initialize();
 
-    
     Variables_List::Pointer V_L = std::make_shared<Variables_List>();
-    V_L->AddDof(&DISPLACEMENT);
-    V_L->AddDof(&ROTATION);
     V_L->Add(DISPLACEMENT);
-    V_L->Add(ROTATION);
     V_L->Add(REACTION);
     V_L->Add(REACTION_MOMENT);
+    V_L->Add(EXTERNAL_FORCE);
+    V_L->Add(EXTERNAL_MOMENT);
+    V_L->Add(INTERNAL_FORCE);
     Model Model1;
     Model1.CreateModelPart
     (
@@ -58,6 +46,9 @@ int main()
             for(int k=0;k<9;++k)
             {
                 Cube.CreateNewNode(NodeCount,1.00*i,1.00*j,1.00*k,V_L);
+                Cube.GetNode(NodeCount).AddDof(DISPLACEMENT_X);
+                Cube.GetNode(NodeCount).AddDof(DISPLACEMENT_Y);
+                Cube.GetNode(NodeCount).AddDof(DISPLACEMENT_Z);
                 NodeCount++;
             }
         }
@@ -126,22 +117,37 @@ int main()
     {
         Geometry< Node >::PointsContainerType N_C;
         N_C.push_back(Cube.pGetNode(i));
-        Cube.CreateNewCondition("Point_Load_Condition3D1N",++ConditionCount,N_C,Cube.pGetProperties(1));
+        Cube.GetNode(i).SolutionStepData().GetVariablesList().Add(FORCE_RESIDUAL);
+        Cube.GetNode(i).SolutionStepData().GetVariablesList().Add(MOMENT_RESIDUAL);
+        Cube.CreateNewCondition("Point_Load_Condition3D1N",ConditionCount,N_C,Cube.pGetProperties(1));
+        std::array<double, 3 > & PointLoad = Cube.GetCondition(ConditionCount).GetData().GetValue(FORCE_LOAD);
+        PointLoad[2] = 100000.00;
+        ConditionCount++;
     }
     // for(int i=0;i<ConditionCount;++i)
     // {
     //     std::cout << "Condition " << i << "\n" << Cube.GetCondition(i); 
     // }
 
+    /** Constrain Dofs **/
+    for(int i=0;i<729;i+=9)
+    {
+        Cube.GetNode(i).pGetDof(DISPLACEMENT_X)->FixDof();
+        Cube.GetNode(i).pGetDof(DISPLACEMENT_Y)->FixDof();
+        Cube.GetNode(i).pGetDof(DISPLACEMENT_Z)->FixDof();
+    }
+
     Process_Info P_I;
     Cube.SetProcessInfo(P_I);
     Cube.SetNodalSolutionStepVariablesList(V_L);
+    Cube.SetBufferSize(2);
                                                             
 
     typedef Static_Scheme<SparseSpace,DenseSpace>
                                                                 StaticSchemeType;
-    StaticSchemeType::IntegrationVectorPointerType pTIM 
-    = std::make_shared<StaticSchemeType::IntegrationVectorType>(DISPLACEMENT);
+    typedef Static_Method<Variable<std::array<double, 3>>,std::array<double, 3>>
+                                                                StaticMethodType;
+    StaticMethodType::Pointer pTIM = std::make_shared<StaticMethodType>(DISPLACEMENT);
     StaticSchemeType::IntegrationMethodsVectorType v_TIM;
     v_TIM.push_back(pTIM);                                                            
     
@@ -162,5 +168,10 @@ int main()
                             Linear_Solver<SparseSpace,DenseSpace> > solver(Cube,S_P,B_S,SolverFlag);
     
     std::cout << "Check Solve Input : " << solver.Check() << std::endl;
+
+    solver.SetEchoLevel(3);
+    solver.InitializeSolutionStep();
+    solver.SolveSolutionStep();
+    solver.FinalizeSolutionStep();
     return 0;
 }

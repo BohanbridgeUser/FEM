@@ -330,7 +330,6 @@ class Node : public Point<3> , public Flags
                         return **it_dof;
                     }
                 }
-
                 std::cerr <<  "Non-existent DOF in node #" << Id() << " for variable : " << rDofVariable.Name() << std::endl;
                 exit(0);
             }
@@ -348,7 +347,6 @@ class Node : public Point<3> , public Flags
                         return **it_dof;
                     }
                 }
-
                 std::cerr <<  "Non-existent DOF in node #" << Id() << " for variable : " << rDofVariable.Name() << std::endl;
                 exit(0);
             }

@@ -5,6 +5,7 @@
 #include "../../key_hash.h"
 
 #include <unordered_set>
+#include <fstream>
 template<class TSparseSpace,
          class TDenseSpace, //= DenseSpace<double>,
          class TLinearSolver //= LinearSolver<TSparseSpace,TDenseSpace>
@@ -106,22 +107,24 @@ class Block_Builder_And_Solver
                 Build(pScheme, rModelPart, rA, rb);
                 // double end_time = OpenMPUtils::GetCurrentTime();
                 ApplyDirichletConditions(pScheme, rModelPart, rA, rDx, rb);
+
+                std::fstream fileoutput("Information Output",std::ios_base::out);
                 if (this->mEchoLevel == 3)
                 {
-                    std::cerr << "LHS before solve" << "Matrix = " << rA << std::endl;
-                    std::cerr << "Dx before solve"  << "Solution = " << rDx << std::endl;
-                    std::cerr << "RHS before solve" << "Vector = " << rb << std::endl;
+                    fileoutput << "LHS before solve: " << "Matrix = \n" << rA << std::endl;
+                    fileoutput << "Dx before solve: "  << "Solution = \n" << rDx.transpose() << std::endl;
+                    fileoutput << "RHS before solve: " << "Vector = \n" << rb.transpose() << std::endl;
                 }
                 // begin_time = OpenMPUtils::GetCurrentTime();
                 SystemSolveWithPhysics(rA, rDx, rb, rModelPart);
                 // end_time = OpenMPUtils::GetCurrentTime();
                 if (this->mEchoLevel == 3)
                 {
-                    std::cout << "LHS after solve" << "Matrix = " << rA << std::endl;
-                    std::cout << "Dx after solve"  << "Solution = " << rDx << std::endl;
-                    std::cout <<"RHS after solve" << "Vector = " << rb << std::endl;
+                    fileoutput << "LHS after solve: " << "Matrix = \n" << rA << std::endl;
+                    fileoutput << "Dx after solve: "  << "Solution = \n" << rDx.transpose() << std::endl;
+                    fileoutput <<"RHS after solve: " << "Vector = \n" << rb.transpose() << std::endl;
                 }
-
+                fileoutput.close();
             }
             /**
              * @brief Function to perform the building of the LHS and RHS
@@ -833,9 +836,8 @@ class Block_Builder_And_Solver
                      * @brief Assemble RHS
                     */
                     unsigned int i_global = rEquationId[i_local];
-                    double& r_a = rb.coeffRef(i_global);
                     const double& v_a = rRHS_Contribution(i_local);
-                    r_a += v_a;
+                    rb.coeffRef(i_global) += v_a;
 
                     /**
                      * @brief Assemble LHS
