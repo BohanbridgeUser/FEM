@@ -1,5 +1,4 @@
 #include "../../include/lotus_kernel.h"
-
 #include "../../include/process_info.h"
 #include "../../include/Model/model.h"
 #include "../../include/Element/small_displacement_element.h"
