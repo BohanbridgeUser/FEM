@@ -757,7 +757,7 @@ class Geometry
                 ShapeFunctionsGradientsContainerType shape_functions_local_gradients = {};
                 static Geometry_Data s_geometry_data(
                                         &mGeometry_Dimension,
-                                        Geometry_Data::IntegrationMethod::Gauss_Legendre_1,
+                                        Geometry_Data::IntegrationMethod::Gauss_Legendre_3,
                                         integration_points,
                                         shape_functions_values,
                                         shape_functions_local_gradients);

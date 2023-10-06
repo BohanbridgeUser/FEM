@@ -50,6 +50,7 @@ class GeometryShapeFuncionContainer
                                       const ShapeFunctionsValueContainerType& ThisShapeFunctionValueContainer,
                                       const ShapeFunctionsGradientsContainerType& ThisShapeFunctionsLocalGradients)
                                       :method(Method),
+                                       mDefaultMethod(Method),
                                        mIntegrationPoints(ThisIntegrationPoints),
                                        mShapeFunctionValues(ThisShapeFunctionValueContainer),
                                        mShapeFunctionsLocalGradients(ThisShapeFunctionsLocalGradients)

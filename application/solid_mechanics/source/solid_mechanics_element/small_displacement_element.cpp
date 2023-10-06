@@ -119,10 +119,13 @@
         //Calculating the inverse of the jacobian and the parameters needed [d£/dx_n]
         Matrix InvJ;
         InvJ = rVariables.J[rPointNumber].inverse();
-
+        std::cout << "Jacobian in Small Displacement Element:\n" << rVariables.J[rPointNumber] << std::endl;
+        std::cout << "Inverse Jacobian in Small Displacement Element:\n" << InvJ << std::endl;
         //Compute cartesian derivatives  [dN/dx_n]
         rVariables.DN_DX = DN_De[rPointNumber] * InvJ;
-
+        rVariables.detJ = rVariables.J[rPointNumber].determinant();
+        std::cout << "DN_Dx:\n" << rVariables.DN_DX << std::endl;
+        std::cout << "DN_De:\n" << DN_De[rPointNumber] << std::endl;
         //Displacement Gradient H  [dU/dx_n]
         this->CalculateDisplacementGradient( rVariables.H, rVariables.DN_DX );
 

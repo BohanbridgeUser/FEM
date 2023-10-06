@@ -7,6 +7,7 @@
 #include "../schemes/solution_scheme.h"
 #include "../convergencecriterias/convergencecriterias.h"
 
+#include <fstream>
 
 /** Short class definition.
 Current class provides an implementation for standard builder and solving operations.
@@ -334,17 +335,17 @@ public:
                         GlobalVectorType& rDx,
                         GlobalVectorType& rb)
   {
-    
+    std::fstream file_out("Information Output",std::ios_base::out | std::ios_base::app);
     if (this->mEchoLevel == 2) //if it is needed to print the debug info
     {
-      std::cout << ("Dx")  << "Solution = " << rDx << std::endl;
-      std::cout << ("RHS") << "Vector = " << rb << std::endl;
+      file_out << ("Dx")  << "Solution = \n" << rDx << std::endl;
+      file_out << ("RHS") << "Vector = \n" << rb << std::endl;
     }
     else if (this->mEchoLevel == 3) //if it is needed to print the debug info
     {
-      std::cout << ("LHS") << "Matrix = " << rA << std::endl;
-      std::cout << ("Dx")  << "Solution = " << rDx << std::endl;
-      std::cout << ("RHS") << "Vector = " << rb << std::endl;
+      file_out << ("LHS") << "Matrix = \n" << rA << std::endl;
+      file_out << ("Dx")  << "Solution = \n" << rDx << std::endl;
+      file_out << ("RHS") << "Vector = \n" << rb << std::endl;
 
     }
     else if (this->mEchoLevel == 4) //print to matrix market file
@@ -355,13 +356,13 @@ public:
 
       std::stringstream matrix_market_name;
       matrix_market_name << "A_" << rModelPart.GetProcessInfo()[TIME] << "_" << iteration_number << ".mm";
-      std::cout << "MATRIX rA:\n" << rA;
+      file_out << "MATRIX rA:\n" << rA;
 
       std::stringstream matrix_market_vectname;
       matrix_market_vectname << "b_" << rModelPart.GetProcessInfo()[TIME] << "_" << iteration_number << ".mm.rhs";
-      std::cout << "MATRIX rA:\n" << rb;
+      file_out << "MATRIX rA:\n" << rb;
     }
-    
+    file_out.close();
   }
   /**
    * @brief Allows to get the list of system Dofs

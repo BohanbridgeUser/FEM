@@ -264,6 +264,7 @@ class Linear_Solving_Strategy
                 this->SetSystemDofs();
                 
                 unsigned int sizeofsystem = mpBuilderAndSolver->GetEquationSystemSize();
+                std::cout << "SystemMatrix Size: " << sizeofsystem << std:: endl;
                 (*mpA).resize(sizeofsystem,sizeofsystem);
                 (*mpb).resize(sizeofsystem);
                 (*mpDx).resize(sizeofsystem);

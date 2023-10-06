@@ -179,6 +179,10 @@ class Block_Builder_And_Solver
                                                                 RHS_Contribution, 
                                                                 EquationId, 
                                                                 rCurrentProcessInfo);
+                        std::fstream file_out("Element Stiffness Matrix",std::ios_base::out | std::ios_base::trunc);
+                        file_out << "Element # " << it->Id() << std::endl;
+                        file_out << "Matrix Size: " << LHS_Contribution.rows() << " " << LHS_Contribution.cols() << std::endl;
+                        file_out << LHS_Contribution << std::endl;
                         //assemble the elemental contribution
                         Assemble(rA, rb, LHS_Contribution, RHS_Contribution, EquationId);
                         // clean local elemental memory
