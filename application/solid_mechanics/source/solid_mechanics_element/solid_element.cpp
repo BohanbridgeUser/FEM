@@ -17,6 +17,8 @@ void Solid_Element::InitializeConstitutiveLaw()
     const GeometryType::IntegrationPointsVector& integration_points = GetGeometry().IntegrationPoints( mThisIntegrationMethod );
 
     //Constitutive Law initialisation
+    std::cout << mConstitutiveLawVector.size() << std::endl;
+    std::cout << integration_points.size() << std::endl;
     if ( mConstitutiveLawVector.size() != integration_points.size() )
     {
         mConstitutiveLawVector.resize( integration_points.size() );

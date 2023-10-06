@@ -204,7 +204,8 @@ class Solid_Element : public Element
             Solid_Element(IndexType NewId, GeometryType::Pointer pGeometry, typename PropertiesType::Pointer pProperties)
             :BaseType(NewId,pGeometry,pProperties)
             {
-
+                this->Set(SOLID);
+                mThisIntegrationMethod = GetGeometry().GetDefaultIntegrationMethod();
             }
             ///Copy constructor
             Solid_Element(const Solid_Element& another)
