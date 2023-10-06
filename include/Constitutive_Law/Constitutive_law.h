@@ -1,12 +1,14 @@
 #ifndef _CONSTITUTIVE_LAW_H_
 #define _CONSTITUTIVE_LAW_H_
 #include "../define.h"
+#include "../Variable/variables.h"
 #include "../Container/flags.h"
 #include "../Process/process.h"
 #include "../Geometry/geometry.h"
 #include "../Node/node.h"
 #include "../Linear_Solver/dense_space.h"
 #include "../Linear_Solver/sparse_space.h"
+#include "../Utility/math_utility.h"
 #include "../process_info.h"
 #include "../Property/properties.h"
 #include "initial_state.h"
@@ -36,7 +38,7 @@ class Constitutive_Law : public Flags
                                                         VoigtSizeMatrixType;           // Constitutive Matrix
             typedef typename DenseSpace::Matrix 
                                                DeformationGradientMatrixType; // Def. gradient tensor
-            LOTUS_POINTER_DEFINE(Constitutive_Law)
+            LOTUS_SHARED_POINTER_DEFINE(Constitutive_Law)
 
             enum StrainMeasure
             {
@@ -345,7 +347,7 @@ class Constitutive_Law : public Flags
 
             const double& GetDeterminantF()
             {
-                if(IsSetDeterminantF()) 
+                if(!IsSetDeterminantF()) 
                 {
                     std::cerr << "DeterminantF is not set!" << std::endl;
                     exit(0);
@@ -354,7 +356,7 @@ class Constitutive_Law : public Flags
             }
             const Vector& GetShapeFunctionsValues()
             {
-                if(IsSetShapeFunctionsValues())
+                if(!IsSetShapeFunctionsValues())
                 {
                    std::cerr << "ShapeFunctionsValues is not set!" << std::endl;
                    exit(0);
@@ -363,7 +365,7 @@ class Constitutive_Law : public Flags
             }
             const Matrix& GetShapeFunctionsDerivatives()
             {
-                if(IsSetShapeFunctionsDerivatives())
+                if(!IsSetShapeFunctionsDerivatives())
                 {
                     std::cerr << "ShapeFunctionsDerivatives is not set!" << std::endl;
                     exit(0);
@@ -372,7 +374,7 @@ class Constitutive_Law : public Flags
             }
             const DeformationGradientMatrixType& GetDeformationGradientF()
             {
-                if(IsSetDeformationGradientF())
+                if(!IsSetDeformationGradientF())
                 {
                     std::cerr << "DeformationGradientF is not set!" << std::endl;
                     exit(0);
@@ -484,10 +486,11 @@ class Constitutive_Law : public Flags
              * @brief Clone function (has to be implemented by any derived class)
              * @return a pointer to a new instance of this constitutive law
              * @note implementation scheme:
-             *      ConstitutiveLaw::Pointer p_clone(new ConstitutiveLaw());
+             *      Constitutive_Law::Pointer p_clone(new Constitutive_Law());
              *      return p_clone;
              */
             virtual Constitutive_Law::Pointer Clone() const;
+
 
             /**
              * This is to be called at the very beginning of the calculation
@@ -500,6 +503,15 @@ class Constitutive_Law : public Flags
             virtual void InitializeMaterial(const Properties& rMaterialProperties,
                                             const GeometryType& rElementGeometry,
                                             const Vector& rShapeFunctionsValues);
+             /**
+             * @return The initial state of strains/stresses/F
+             */
+            void SetInitialState(Initial_State::Pointer pInitialState)
+            {
+                mpInitialState = pInitialState;
+            }
+
+
 
             /**
              * Computes the material response in terms of stresses and constitutive tensor
@@ -574,6 +586,482 @@ class Constitutive_Law : public Flags
             virtual int Check(const Properties& rMaterialProperties,
                             const GeometryType& rElementGeometry,
                             const Process_Info& rCurrentProcessInfo) const;
+        
+            /**
+             * @brief Adds the initial stress vector if it is defined in the InitialState
+             */
+            template<typename TVectorType>
+            void AddInitialStressVectorContribution(TVectorType& rStressVector)
+            {
+                if (this->HasInitialState()) {
+                    const auto& r_initial_state = GetInitialState();
+                    noalias(rStressVector) += r_initial_state.GetInitialStressVector();
+                }
+            }
+            /**
+             * @brief Adds the initial strain vector if it is defined in the InitialState
+             */
+            template<typename TVectorType>
+            void AddInitialStrainVectorContribution(TVectorType& rStrainVector)
+            {
+                if (this->HasInitialState()) {
+                    const auto& r_initial_state = GetInitialState();
+                    noalias(rStrainVector) -= r_initial_state.GetInitialStrainVector();
+                }
+            }
+            /**
+             * @brief Adds the initial strain vector if it is defined in the InitialState
+             */
+            template<typename TMatrixType>
+            void AddInitialDeformationGradientMatrixContribution(TMatrixType& rF)
+            {
+                if (this->HasInitialState()) {
+                    const auto& r_initial_state = GetInitialState();
+                    rF = prod(r_initial_state.GetInitialDeformationGradientMatrix(), rF);
+                }
+            }
+
+            /**
+             * @brief Sets the value of a specified variable (boolean)
+             * @param rVariable the variable to be returned
+             * @param Value new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<bool>& rVariable,
+                                const bool& Value,
+                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief Sets the value of a specified variable (integer)
+             * @param rVariable the variable to be returned
+             * @param Value new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<int>& rVariable,
+                                const int& Value,
+                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief Sets the value of a specified variable (double)
+             * @param rVariable the variable to be returned
+             * @param rValue new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<double>& rVariable,
+                                const double& rValue,
+                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief Sets the value of a specified variable (Vector)
+             * @param rVariable the variable to be returned
+             * @param rValue new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<Vector >& rVariable,
+                                const Vector& rValue,
+                    const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief Sets the value of a specified variable (Matrix)
+             * @param rVariable the variable to be returned
+             * @param rValue new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<Matrix >& rVariable,
+                                const Matrix& rValue,
+                    const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief Sets the value of a specified variable (array of 3 components)
+             * @param rVariable the variable to be returned
+             * @param rValue new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<std::array<double, 3 > >& rVariable,
+                                const std::array<double, 3 > & rValue,
+                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief Sets the value of a specified variable (array of 6 components)
+             * @param rVariable the variable to be returned
+             * @param rValue new value of the specified variable
+             * @param rCurrentProcessInfo the process info
+             */
+            virtual void SetValue(const Variable<std::array<double, 6 > >& rVariable,
+                                const std::array<double, 6 > & rValue,
+                                const Process_Info& rCurrentProcessInfo);
+
+            /**
+             * @brief Calculates the value of a specified variable (bool)
+             * @param rParameterValues the needed parameters for the CL calculation
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @param rValue output: the value of the specified variable
+             */
+            virtual bool& CalculateValue(Parameters& rParameterValues,
+                                         const Variable<bool>& rThisVariable, 
+                                         bool& rValue);
+            /**
+             * @brief Calculates the value of a specified variable (int)
+             * @param rParameterValues the needed parameters for the CL calculation
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @param rValue output: the value of the specified variable
+             */
+            virtual int& CalculateValue(Parameters& rParameterValues, 
+                                        const Variable<int>& rThisVariable, 
+                                        int& rValue);
+            /**
+             * @brief Calculates the value of a specified variable (double)
+             * @param rParameterValues the needed parameters for the CL calculation
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @param rValue output: the value of the specified variable
+             */
+            virtual double& CalculateValue(Parameters& rParameterValues,
+                                           const Variable<double>& rThisVariable,
+                                           double& rValue);
+            /**
+             * @brief Calculates the value of a specified variable (Vector)
+             * @param rParameterValues the needed parameters for the CL calculation
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @param rValue output: the value of the specified variable
+             */
+            virtual Vector& CalculateValue(Parameters& rParameterValues,
+                                           const Variable<Vector>& rThisVariable, 
+                                           Vector& rValue);
+            /**
+             * @brief Calculates the value of a specified variable (Matrix)
+             * @param rParameterValues the needed parameters for the CL calculation
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @param rValue output: the value of the specified variable
+             */
+            virtual Matrix& CalculateValue(Parameters& rParameterValues, 
+                                           const Variable<Matrix>& rThisVariable, 
+                                           Matrix& rValue);
+            /**
+             * @brief Calculates the value of a specified variable (array of 3 components)
+             * @param rParameterValues the needed parameters for the CL calculation
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @param rValue output: the value of the specified variable
+             */
+            virtual std::array<double, 3 > & CalculateValue(Parameters& rParameterValues, 
+                                                            const Variable<std::array<double, 3 > >& rVariable,
+                                                            std::array<double, 3 > & rValue);
+            /**
+             * returns the value of a specified variable (array of 6 components)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return the value of the specified variable
+             */
+            virtual std::array<double, 6 > & CalculateValue(Parameters& rParameterValues, 
+                                                            const Variable<std::array<double, 6 > >& rVariable,
+                                                            std::array<double, 6 > & rValue);
+            /**
+             * @brief Calculates derivatives of a given function
+             *
+             * This method calculates derivative of a scalar function (denoted by rFunctionVariable) w.r.t.
+             * rDerivativeVariable and stores the output in rOutput. The rDerivativeVariable represents
+             * a gauss point scalar variable only.
+             *
+             * Eg: Assume following function (gauss point evaluated):
+             *      \[
+             *          \nu = \nu_{fluid} + \nu_t = \nu_{fluid} + \left(\frac{y}{\omega}\right)^2 \frac{\partial k}{\partial x_i}\frac{\partial \omega}{\partial x_i}
+             *      \]
+             *
+             *      Then in here we use rFunctionVariable = EFFECTIVE_VISCOSITY
+             *
+             *      Then if we want to take derivatives w.r.t. $\omega$ (i.e. rDerivativeVariable = OMEGA).
+             *      So following steps needs to be used.
+             *
+             *           1. First calculate derivatives w.r.t. omega (rDerivativeVariable = OMEGA)
+             *              using the call:
+             *                   CalculateDerivative(Values, EFFECTIVE_VISCOSITY, OMEGA, output);
+             *              The output will hold the following:
+             *                   \[
+             *                       \frac{\partial \nu}{\partial \omega} = \frac{\partial \nu_t}{\partial \omega} = -2\frac{y^2}{\omega^3}\frac{\partial k}{\partial x_i}\frac{\partial \omega}{\partial x_i}
+             *                   \]
+             *           2. Then calculate derivatives w.r.t. omega gradients (rDerivativeVariable = OMEGA_GRADIENT_X)
+             *              using the call: (where OMEGA_GRADIENT is a 3D vector with components)
+             *                   CalculateDerivative(Values, EFFECTIVE_VISCOSITY, OMEGA_GRADIENT_X, output);
+             *              The output will hold the following:
+             *                   \[
+             *                       \frac{\partial \nu}{\partial \nabla\omega_x} = \frac{\partial \nu_t}{\partial \nabla\omega_x} =  \left(\frac{y}{\omega}\right)^2 \frac{\partial k}{\partial x_x}
+             *                   \]
+             *              Once you have these outputs, you can transform it to a nodal derivative (eg: discrete adjoint computation)
+             *              within your element by using the chain rule. [Where $c$ is the node index of the geometry.]
+             *                   \[
+             *                       \frac{\partial \nu}{\partial \omega^c} = \frac{\partial \nu}{\partial \omega}\frac{\partial \omega}{\partial \omega^c} + \frac{\partial \nu}{\partial \nabla\omega_i}\frac{\partial \nabla\omega_i}{\partial \omega^c}
+             *                   \]
+             *
+             * @param rParameterValues      Input for the derivative calculation
+             * @param rFunctionVariable     Variable to identify the function for which derivatives are computed
+             * @param rDerivativeVariable   Scalar derivative variable
+             * @param rOutput               Output having the same type as the rFunctionVariable
+             */
+            virtual void CalculateDerivative(Parameters& rParameterValues,
+                                             const Variable<double>& rFunctionVariable,
+                                             const Variable<double>& rDerivativeVariable,
+                                             double& rOutput);
+            /**
+             * @brief Calculates derivatives of a given function
+             *
+             * This method calculates derivative of a Vector function (denoted by rFunctionVariable) w.r.t.
+             * rDerivativeVariable and stores the output in rOutput. The rDerivativeVariable represents
+             * a gauss point scalar variable only.
+             *
+             * @see double overload of this method for more explanations
+             *
+             * @param rParameterValues      Input for the derivative calculation
+             * @param rFunctionVariable     Variable to identify the function for which derivatives are computed
+             * @param rDerivativeVariable   Scalar derivative variable
+             * @param rOutput               Output having the same type as the rFunctionVariable
+             */
+            virtual void CalculateDerivative(Parameters& rParameterValues,
+                                             const Variable<Vector>& rFunctionVariable,
+                                             const Variable<double>& rDerivativeVariable,
+                                             Vector& rOutput);
+            /**
+             * @brief Calculates derivatives of a given function
+             *
+             * This method calculates derivative of a Matrix function (denoted by rFunctionVariable) w.r.t.
+             * rDerivativeVariable and stores the output in rOutput. The rDerivativeVariable represents
+             * a gauss point scalar variable only.
+             *
+             * @see double overload of this method for more explanations
+             *
+             * @param rParameterValues      Input for the derivative calculation
+             * @param rFunctionVariable     Variable to identify the function for which derivatives are computed
+             * @param rDerivativeVariable   Scalar derivative variable
+             * @param rOutput               Output having the same type as the rFunctionVariable
+             */
+            virtual void CalculateDerivative(Parameters& rParameterValues,
+                                             const Variable<Matrix>& rFunctionVariable,
+                                             const Variable<double>& rDerivativeVariable,
+                                             Matrix& rOutput);
+            /**
+             * @brief Calculates derivatives of a given function
+             *
+             * This method calculates derivative of a std::array<double, 3> function (denoted by rFunctionVariable) w.r.t.
+             * rDerivativeVariable and stores the output in rOutput. The rDerivativeVariable represents
+             * a gauss point scalar variable only.
+             *
+             * @see double overload of this method for more explanations
+             *
+             * @param rParameterValues      Input for the derivative calculation
+             * @param rFunctionVariable     Variable to identify the function for which derivatives are computed
+             * @param rDerivativeVariable   Scalar derivative variable
+             * @param rOutput               Output having the same type as the rFunctionVariable
+             */
+            virtual void CalculateDerivative(Parameters& rParameterValues,
+                                             const Variable<std::array<double, 3>>& rFunctionVariable,
+                                             const Variable<double>& rDerivativeVariable,
+                                             std::array<double, 3>& rOutput);
+
+            /**
+             * to be called at the beginning of each solution step
+             * (e.g. from Element::InitializeSolutionStep)
+             * @param rMaterialProperties the Properties instance of the current element
+             * @param rElementGeometry the geometry of the current element
+             * @param rShapeFunctionsValues the shape functions values in the current integration point
+             * @param the current ProcessInfo instance
+             */
+            //("Please do not use this method - Use InitializeMaterialResponse instead\"")
+            virtual void InitializeSolutionStep(const Properties& rMaterialProperties,
+                                                const GeometryType& rElementGeometry, //this is just to give the array of nodes
+                                                const Vector& rShapeFunctionsValues,
+                                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * to be called at the end of each solution step
+             * (e.g. from Element::FinalizeSolutionStep)
+             * @param rMaterialProperties the Properties instance of the current element
+             * @param rElementGeometry the geometry of the current element
+             * @param rShapeFunctionsValues the shape functions values in the current integration point
+             * @param the current ProcessInfo instance
+             */
+            //("Please do not use this method - Use FinalizeMaterialResponse instead\"")
+            virtual void FinalizeSolutionStep(const Properties& rMaterialProperties,
+                                            const GeometryType& rElementGeometry,
+                                            const Vector& rShapeFunctionsValues,
+                                            const Process_Info& rCurrentProcessInfo);
+            /**
+             * to be called at the beginning of each step iteration
+             * (e.g. from Element::InitializeNonLinearIteration)
+             * @param rMaterialProperties the Properties instance of the current element
+             * @param rElementGeometry the geometry of the current element
+             * @param rShapeFunctionsValues the shape functions values in the current integration point
+             * @param the current ProcessInfo instance
+             */
+            //("Please do not use this method - There is no equivalent for this\"")
+            virtual void InitializeNonLinearIteration(const Properties& rMaterialProperties,
+                                const GeometryType& rElementGeometry,
+                                const Vector& rShapeFunctionsValues,
+                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * to be called at the end of each step iteration
+             * (e.g. from Element::FinalizeNonLinearIteration)
+             * @param rMaterialProperties the Properties instance of the current element
+             * @param rElementGeometry the geometry of the current element
+             * @param rShapeFunctionsValues the shape functions values in the current integration point
+             * @param the current ProcessInfo instance
+             */
+            //("Please do not use this method - There is no equivalent for this\"")
+            virtual void FinalizeNonLinearIteration(const Properties& rMaterialProperties,
+                                const GeometryType& rElementGeometry,
+                                const Vector& rShapeFunctionsValues,
+                                const Process_Info& rCurrentProcessInfo);
+            /**
+             * @brief If the CL requires to initialize the material response, called by the element in InitializeSolutionStep.
+             */
+            virtual bool RequiresInitializeMaterialResponse()
+            {
+                return true;
+            }
+            /**
+             * Computes the material response in terms of Cauchy stresses and constitutive tensor, returns internal variables.
+             * @see Parameters
+             */
+            virtual void CalculateStressResponse (Parameters& rValues, Vector& rInternalVariables);
+            /**
+             * @brief Initialize the material response,  called by the element in InitializeSolutionStep.
+             * @see Parameters
+             * @see StressMeasures
+             */
+            void InitializeMaterialResponse (Parameters& rValues,const StressMeasure& rStressMeasure);
+            /**
+             * Initialize the material response in terms of 1st Piola-Kirchhoff stresses
+             * @see Parameters
+             */
+            virtual void InitializeMaterialResponsePK1 (Parameters& rValues);
+            /**
+             * Initialize the material response in terms of 2nd Piola-Kirchhoff stresses
+             * @see Parameters
+             */
+            virtual void InitializeMaterialResponsePK2 (Parameters& rValues);
+            /**
+             * Initialize the material response in terms of Kirchhoff stresses
+             * @see Parameters
+             */
+            virtual void InitializeMaterialResponseKirchhoff (Parameters& rValues);
+            /**
+             * Initialize the material response in terms of Cauchy stresses
+             * @see Parameters
+             */
+
+            virtual void InitializeMaterialResponseCauchy (Parameters& rValues);
+
+            /**
+             * This can be used in order to reset all internal variables of the
+             * constitutive law (e.g. if a model should be reset to its reference state)
+             * @param rMaterialProperties the Properties instance of the current element
+             * @param rElementGeometry the geometry of the current element
+             * @param rShapeFunctionsValues the shape functions values in the current integration point
+             * @param the current ProcessInfo instance
+             */
+            virtual void ResetMaterial(const Properties& rMaterialProperties,
+                                    const GeometryType& rElementGeometry,
+                                    const Vector& rShapeFunctionsValues);
+            /**
+             * Methods to transform strain Vectors:
+             * @param rStrainVector the strain tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStrainInitial the measure of stress of the given  rStrainVector
+             * @param rStrainFinal the measure of stress of the returned rStrainVector
+             */
+            virtual Vector& TransformStrains (Vector& rStrainVector,
+                            const Matrix &rF,
+                            StrainMeasure rStrainInitial,
+                            StrainMeasure rStrainFinal);
+            /**
+             * Methods to transform stress Matrices:
+             * @param rStressMatrix the stress tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStressInitial the measure of stress of the given  rStressMatrix
+             * @param rStressFinal the measure of stress of the returned rStressMatrix
+             */
+            virtual Matrix& TransformStresses (Matrix& rStressMatrix,
+                            const Matrix &rF,
+                            const double &rdetF,
+                            StressMeasure rStressInitial,
+                            StressMeasure rStressFinal);
+            /**
+             * Methods to transform stress Vectors:
+             * @param rStressVector the stress tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStressInitial the measure of stress of the given  rStressVector
+             * @param rStressFinal the measure of stress of the returned rStressVector
+             */
+            virtual Vector& TransformStresses (Vector& rStressVector,
+                            const Matrix &rF,
+                            const double &rdetF,
+                            StressMeasure rStressInitial,
+                            StressMeasure rStressFinal);
+            /**
+             * Methods to transform stress Vectors specialized with the initial stress Measure PK1:
+             * @param rStressVector the stress tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStressFinal the measure of stress of the returned rStressVector
+             */
+            Vector& TransformPK1Stresses (Vector& rStressVector,
+                        const Matrix &rF,
+                        const double &rdetF,
+                        StressMeasure rStressFinal);
+            /**
+             * Methods to transform stress Vectors specialized with the initial stress Measure PK2:
+             * @param rStressVector the stress tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStressFinal the measure of stress of the returned rStressVector
+             */
+            Vector& TransformPK2Stresses (Vector& rStressVector,
+                        const Matrix &rF,
+                        const double &rdetF,
+                        StressMeasure rStressFinal);
+            /**
+             * Methods to transform stress Vectors specialized with the initial stress Measure Kirchhoff:
+             * @param rStressVector the stress tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStressFinal the measure of stress of the returned rStressVector
+             */
+            Vector& TransformKirchhoffStresses (Vector& rStressVector,
+                            const Matrix &rF,
+                            const double &rdetF,
+                            StressMeasure rStressFinal);
+            /**
+             * Methods to transform stress Vectors specialized with the initial stress Measure Cauchy:
+             * @param rStressVector the stress tensor in matrix which its stress measure will be changed
+             * @param rF the DeformationGradientF matrix between the configurations
+             * @param rdetF the determinant of the DeformationGradientF matrix between the configurations
+             * @param rStressFinal the measure of stress of the returned rStressVector
+             */
+            Vector& TransformCauchyStresses (Vector& rStressVector,
+                            const Matrix &rF,
+                            const double &rdetF,
+                            StressMeasure rStressFinal);
+            /**
+             * Methods to transform Constitutive Matrices:
+             * @param rConstitutiveMatrix the constitutive matrix
+             * @param rF the DeformationGradientF matrix between the configurations
+             */
+            /**
+             * This method performs a pull-back of the constitutive matrix
+             */
+            void PullBackConstitutiveMatrix ( Matrix& rConstitutiveMatrix,
+                            const Matrix & rF );
+            /**
+             * This method performs a push-forward of the constitutive matrix
+             */
+            void PushForwardConstitutiveMatrix ( Matrix& rConstitutiveMatrix,
+                            const Matrix & rF );
+
+            virtual void CalculateCauchyStresses(Vector& Cauchy_StressVector,
+                                                 const Matrix& F,
+                                                 const Vector& PK2_StressVector,
+                                                 const Vector& GreenLagrangeStrainVector);
+
+
         /// @}
 
         /// @name Access
@@ -583,24 +1071,16 @@ class Constitutive_Law : public Flags
              * @note This function HAS TO BE IMPLEMENTED by any derived class
              */
             virtual SizeType GetStrainSize() const;
-
             /**
              * @return The working space dimension of the current constitutive law
              * @note This function HAS TO BE IMPLEMENTED by any derived class
              */
             virtual SizeType WorkingSpaceDimension();
-        
             /**
              * This function is designed to be called once to check compatibility with element
              * @param rFeatures
              */
             virtual void GetLawFeatures(Features& rFeatures);
-
-        /// @}
-
-
-        /// @name Inquiry
-        /// @{
             /**
              * @return The initial state of strains/stresses/F
              */
@@ -608,7 +1088,6 @@ class Constitutive_Law : public Flags
             {
                 return mpInitialState;
             }
-
             /**
              * @return The reference to initial state of strains/stresses/F
              */
@@ -617,6 +1096,179 @@ class Constitutive_Law : public Flags
                 return *mpInitialState;
             }
 
+             /**
+             * @brief Returns the value of a specified variable (boolean)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return rValue output: the value of the specified variable
+             */
+            virtual bool& GetValue(const Variable<bool>& rThisVariable, bool& rValue);
+            /**
+             * Returns the value of a specified variable (integer)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return rValue output: the value of the specified variable
+             */
+            virtual int& GetValue(const Variable<int>& rThisVariable, int& rValue);
+            /**
+             * @brief Returns the value of a specified variable (double)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return rValue output: the value of the specified variable
+             */
+            virtual double& GetValue(const Variable<double>& rThisVariable, double& rValue);
+            /**
+             * @brief Returns the value of a specified variable (Vector)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return rValue output: the value of the specified variable
+             */
+            virtual Vector& GetValue(const Variable<Vector>& rThisVariable, Vector& rValue);
+            /**
+             * @brief Returns the value of a specified variable (Matrix)
+             * @param rThisVariable the variable to be returned
+             * @return rValue output: the value of the specified variable
+             */
+            virtual Matrix& GetValue(const Variable<Matrix>& rThisVariable, Matrix& rValue);
+            /**
+             * @brief Returns the value of a specified variable (array of 3 components)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return rValue output: the value of the specified variable
+             */
+            virtual std::array<double, 3 > & GetValue(const Variable<std::array<double, 3 > >& rThisVariable,
+                                                    std::array<double, 3 > & rValue);
+            /**
+             * @brief Returns the value of a specified variable (array of 6 components)
+             * @param rThisVariable the variable to be returned
+             * @param rValue a reference to the returned value
+             * @return the value of the specified variable
+             */
+            virtual std::array<double, 6 > & GetValue(const Variable<std::array<double, 6 > >& rThisVariable,
+                                                    std::array<double, 6 > & rValue);
+
+            
+
+        /// @}  
+
+
+        /// @name Inquiry
+        /// @{
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (boolean)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             */
+            virtual bool Has(const Variable<bool>& rThisVariable);
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (integer)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             */
+            virtual bool Has(const Variable<int>& rThisVariable);
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (double)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             */
+            virtual bool Has(const Variable<double>& rThisVariable);
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (Vector)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             */
+            virtual bool Has(const Variable<Vector>& rThisVariable);
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (Matrix)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             */
+            virtual bool Has(const Variable<Matrix>& rThisVariable);
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (array of 3 components)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             * @note Fixed size array of 3 doubles (e.g. for 2D stresses, plastic strains, ...)
+             */
+            virtual bool Has(const Variable<std::array<double, 3 > >& rThisVariable);
+            /**
+             * @brief Returns whether this constitutive Law has specified variable (array of 6 components)
+             * @param rThisVariable the variable to be checked for
+             * @return true if the variable is defined in the constitutive law
+             * @note Fixed size array of 6 doubles (e.g. for stresses, plastic strains, ...)
+             */
+            virtual bool Has(const Variable<std::array<double, 6 > >& rThisVariable);
+            /**
+             * @return The true if InitialState is defined
+             */
+            bool HasInitialState() const
+            {
+                return mpInitialState != nullptr;
+            }
+             /**
+             * Is called to check whether the provided material parameters in the Properties
+             * match the requirements of current constitutive model.
+             * @param rMaterialProperties the current Properties to be validated against.
+             * @return true, if parameters are correct; false, if parameters are insufficient / faulty
+             * NOTE: this has to be implemented by each constitutive model. Returns false in base class since
+             * no valid implementation is contained here.
+             */
+            virtual bool ValidateInput(const Properties& rMaterialProperties);
+            /**
+             * returns the expected strain measure of this constitutive law (by default linear strains)
+             * @return the expected strain measure
+             */
+            virtual StrainMeasure GetStrainMeasure();
+            /**
+             * returns the stress measure of this constitutive law (by default 1st Piola-Kirchhoff stress in voigt notation)
+             * @return the expected stress measure
+             */
+            virtual StressMeasure GetStressMeasure();
+             /**
+             * returns whether this constitutive model is formulated in incremental strains/stresses
+             * NOTE: by default, all constitutive models should be formulated in total strains
+             * @return true, if formulated in incremental strains/stresses, false otherwise
+             */
+            virtual bool IsIncremental();
+
+            /**
+             * @brief This method is used to check that two Constitutive Laws are the same type (references)
+             * @param rLHS The first argument
+             * @param rRHS The second argument
+             */
+            inline static bool HasSameType(const Constitutive_Law& rLHS, const Constitutive_Law& rRHS) 
+            {
+                return (typeid(rLHS) == typeid(rRHS));
+            }
+            /**
+             * @brief This method is used to check that two Constitutive Laws are the same type (pointers)
+             * @param rLHS The first argument
+             * @param rRHS The second argument
+             */
+            inline static bool HasSameType(const Constitutive_Law* rLHS, const Constitutive_Law* rRHS) 
+            {
+                return Constitutive_Law::HasSameType(*rLHS, *rRHS);
+            }
+
+
+        /// @}
+
+        /// @name Input And Output
+        /// @{
+            std::string Info() const override
+            {
+                std::stringstream buffer;
+                buffer << "ConstitutiveLaw";
+                return buffer.str();
+            }
+            void PrintInfo(std::ostream& rOStream) const override
+            {
+                rOStream << "ConstitutiveLaw";
+            }
+            void PrintData(std::ostream& rOStream) const override
+            {
+            rOStream << "ConstitutiveLaw has no data";
+            }
 
         /// @}
     protected:
@@ -644,6 +1296,52 @@ class Constitutive_Law : public Flags
 
         /// @name Protected Operations
         /// @{
+            /**
+             * This method performs a contra-variant push-forward between to tensors
+             * i.e. 2nd PK stress to Kirchhoff stress
+             */
+            void ContraVariantPushForward( Matrix& rMatrix,
+                                           const Matrix& rF );
+            /**
+             * This method performs a contra-variant pull-back between to tensors
+             * i.e. Kirchhoff stress to 2nd PK stress
+             */
+            void ContraVariantPullBack( Matrix& rMatrix,
+                                        const Matrix& rF );
+            /**
+             * This method performs a co-variant push-forward between to tensors
+             * i.e. Green-Lagrange strain to Almansi strain
+             */
+            void CoVariantPushForward( Matrix& rMatrix,
+                                       const Matrix& rF );
+            /**
+             * This method performs a co-variant pull-back between to tensors
+             * i.e. Almansi strain to Green-Lagrange strain
+             */
+            void CoVariantPullBack( Matrix& rMatrix,
+                                    const Matrix& rF );
+            /**
+             * This method performs a pull-back or a push-forward between two constitutive matrices
+             */
+            void ConstitutiveMatrixTransformation ( Matrix& rConstitutiveMatrix,
+                                                    const Matrix& rOriginalConstitutiveMatrix,
+                                                    const Matrix & rF );
+            /**
+             * This method performs a pull-back or a push-forward between two constitutive tensor components
+             */
+            double& TransformConstitutiveComponent(double & rCabcd,
+                                                   const Matrix & rConstitutiveMatrix,
+                                                   const Matrix & rF,
+                                                   const unsigned int& a, const unsigned int& b,
+                                                   const unsigned int& c, const unsigned int& d);
+            /**
+             * This method gets the constitutive tensor components
+             * from a consitutive matrix supplied in voigt notation
+             */
+            double& GetConstitutiveComponent(double & rCabcd,
+                                             const Matrix& rConstitutiveMatrix,
+                                             const unsigned int& a, const unsigned int& b,
+                                             const unsigned int& c, const unsigned int& d);
 
 
         /// @}
@@ -705,5 +1403,11 @@ class Constitutive_Law : public Flags
 
         /// @}
 };
+extern template class Lotus_Components<Constitutive_Law >;
+extern template class Lotus_Components<Variable<Constitutive_Law::Pointer> >;
+
+void AddComponent(std::string const& Name, Constitutive_Law const& ThisComponent);
+void AddComponent(std::string const& Name, Variable<Constitutive_Law::Pointer> const& ThisComponent);
+
 LOTUS_DEFINE_VARIABLE(Constitutive_Law::Pointer, CONSTITUTIVE_LAW)
 #endif

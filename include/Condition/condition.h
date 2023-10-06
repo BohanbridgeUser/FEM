@@ -36,8 +36,12 @@ class Condition : public Geometry_Object
                                                                         VectorType;
             typedef Properties
                                                                     PropertiesType;
-            typedef Node::DofPointersContainerType
+            typedef Dof<double>
+                                                                           DofType;
+            typedef std::vector<DofType::Pointer> 
                                                                     DofsVectorType;
+            typedef PointerVectorSet<DofType> 
+                                                                     DofsArrayType;
             typedef std::vector<size_t>
                                                               EquationIdVectorType;
             typedef GeometryType::PointsContainerType
@@ -197,11 +201,19 @@ class Condition : public Geometry_Object
             virtual void InitializeNonLinearIteration(const Process_Info& rCurrentProcessInfo)
             {
             }
+
+            
             virtual void FinalizeSolutionStep(const Process_Info& rCurrentProcessInfo)
             {
 
             }
-            
+            /**
+             * this is called for non-linear analysis at the end of the iteration process
+             */
+            virtual void FinalizeNonLinearIteration(const Process_Info& rCurrentProcessInfo)
+            {
+            }
+
             /**
              * this is called during the assembling process in order
              * to calculate all condition contributions to the global system
@@ -579,8 +591,35 @@ class Condition : public Geometry_Object
                 return mpProperties;
             }
         /// @}
+
+        /// @name Input And Output
+        /// @{
+            std::string Info() const override
+            {
+                std::stringstream buffer;
+                buffer << "Condition #" << Id();
+                return buffer.str();
+            }
+            void PrintInfo(std::ostream& rOStream) const override
+            {
+                rOStream << "Condition #" << Id();
+            }
+            void PrintData(std::ostream& rOStream) const override
+            {
+                GetGeometry().PrintData(rOStream);
+            }
+
+        /// @}
     private:
         Properties::Pointer mpProperties;
 };
+inline std::ostream & operator <<(std::ostream& rOStream,
+                                  const Condition& rThis)
+{
+    rThis.PrintInfo(rOStream);
+    rOStream << " : " << std::endl;
+    rThis.PrintData(rOStream);
 
+    return rOStream;
+}
 #endif

@@ -65,7 +65,7 @@ public:
                                                                     IndexType;
     typedef std::size_t 
                                                                      SizeType;
-    typedef Dof 
+    typedef Dof<double>
                                                                       DofType;
     typedef std::vector< DofType::Pointer > 
                                                                DofsVectorType;

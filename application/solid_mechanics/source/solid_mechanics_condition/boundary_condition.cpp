@@ -1,4 +1,6 @@
-#include "../../include/Condition/boundary_condition.h"
+#include "../../include/solid_mechanics_condition/boundary_condition.h"
+#include "../../include/lotus_solid_mechanics_variables.h"
+
 
 /***********************************Define Flags*********************************************/
 LOTUS_CREATE_LOCAL_FLAGS( Boundary_Condition, COMPUTE_RHS_VECTOR, 0 );

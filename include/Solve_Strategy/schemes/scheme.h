@@ -14,12 +14,12 @@ class Scheme : public Flags
         ///@{
             typedef Scheme<TSparseSpace,TDenseSpace> 
                                                                                          schemeType;
-            LOTUS_POINTER_DEFINE(schemeType)                    
+            LOTUS_SHARED_POINTER_DEFINE(schemeType)                    
             typedef Flags                               
                                                                                            BaseType;
             typedef Solver_Local_Flags
                                                                                      LocalFlagType;
-            typedef Dof                                                                     
+            typedef Dof<double>                                                                     
                                                                                             DofType;
             typedef std::vector<DofType>                                          
                                                                                   DofsContainerType;
@@ -41,15 +41,15 @@ class Scheme : public Flags
                                                                            ProcessPointerVectorType;
             typedef typename TSparseSpace::SparseMatrix
                                                                                        SpMatrixType;
-            typedef typename TSparseSpace::SparseVecto  
+            typedef typename TSparseSpace::SparseVector  
                                                                                        SpVectorType;
             typedef SpMatrixType  
                                                                                    GlobalMatrixType;
             typedef SpVectorType                                                     
                                                                                    GlobalVectorType;
-            typedef typename SpMatrixType::Pointe  
+            typedef typename std::shared_ptr<SpMatrixType>
                                                                             GlobalMatrixTypePointer;
-            typedef typename SpVectorType::Pointe  
+            typedef typename std::shared_ptr<SpVectorType>
                                                                             GlobalVectorTypePointer;
             typedef typename TDenseSpace::Matrix
                                                                                     LocalMatrixType;

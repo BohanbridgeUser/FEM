@@ -1,21 +1,22 @@
 #ifndef _LINEAR_SOLVING_STRATEGY_H_
 #define _LINEAR_SOLVING_STRATEGY_H_
 
-#include "solve_strategy.h"
+#include "solution_strategy.h"
 #include "../builder_and_solver/block_builder_and_solver.h"
 
 template<typename TSparseSpace, 
          typename TDenseSpace, 
          typename TLinearSolver>
-class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,TLinearSolver>
+class Linear_Solving_Strategy 
+:public SolutionStrategy<TSparseSpace,TDenseSpace,TLinearSolver>
 {
     public:
         /// @name Type Define
         /// @{
             /* Utility Define */
-            typedef Solve_Strategy<TSparseSpace,TDenseSpace,TLinearSolver>
+            typedef SolutionStrategy<TSparseSpace,TDenseSpace,TLinearSolver>
                                                                                              BaseType;
-            typedef typename BaseType::DofsVectorType
+            typedef typename BaseType::DofsArrayType
                                                                                        DofsVectorType;
             typedef typename BaseType::LocalFlagType
                                                                                         LocalFlagType;
@@ -29,9 +30,9 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
                                                                                      GlobalMatrixType;
             typedef SpVectorType                                                    
                                                                                      GlobalVectorType;
-            typedef typename SpMatrixType::Pointer
+            typedef typename std::shared_ptr<SpMatrixType>
                                                                               GlobalMatrixTypePointer;
-            typedef typename SpVectorType::Pointer
+            typedef typename std::shared_ptr<SpVectorType>
                                                                               GlobalVectorTypePointer;
             /* Linear_Solving_Strategy */
             typedef Linear_Solving_Strategy<TSparseSpace,TDenseSpace,TLinearSolver> 
@@ -70,9 +71,9 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
                 /* Set echolevel of BuilderAndSolver */
                 mpBuilderAndSolver->SetEchoLevel(this->mEchoLevel);
 
-                mpA = new SpMatrixType;
-                mpDx = new SpVectorType;
-                mpb = new SpVectorType;
+                mpA  = std::make_shared<SpMatrixType>();
+                mpDx = std::make_shared<SpVectorType>();
+                mpb  = std::make_shared<SpVectorType>();
             }
 
             ~Linear_Solving_Strategy()
@@ -107,45 +108,95 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
                 this->Predict();
             }
 
-            virtual void FinalizedSolutionStep() override
+            bool SolveSolutionStep() override
             {
-                if (this->mOptions.Is(LocalFlagType::COMPUTE_REACTIONS))
-                    mpBuilderAndSolver->CalculateReactions(mpScheme,this->GetModelPart(),(*mpA),(*mpDx),(*mpb));
-
-                mpScheme->FinalizeSolutionStep(this->GetModelPart);
-                mpBuilderAndSolver->FinalizeSolutionStep(mpScheme,this->GetModelPart(),mpA,mpDx,mpb);
-                
-            }
-
-            virtual void SolveSolutionStep()override
-            {
-                this->SolveIteration();
+                return this->SolveIteration();
             }
             
-            virtual void SolveIteration()override
+            bool SolveIteration() override
             {
-                if (!mpDx->size())
-                {
-                    std::cout << "mpDx is 0 dimension!\n";
+                // Warning info
+                if(!(*mpDx).rows())
+                    std::cout << ("DOFS") << "solution has zero size, no free DOFs" << std::endl;
+
+                // Initialize Iteration
+                mpScheme->InitializeNonLinearIteration(this->GetModelPart());
+
+                //function to perform the building and the solving phase.
+                if(this->mOptions.IsNot(LocalFlagType::CONSTANT_SYSTEM_MATRIX)){
+
+                (*mpA ).setZero();
+                (*mpDx).setZero();
+                (*mpb).setZero();
+
+                mpBuilderAndSolver->BuildAndSolve(mpScheme, this->GetModelPart(), (*mpA), (*mpDx), (*mpb));
+                }
+                else{
+
+                (*mpDx).setZero();
+                (*mpb).setZero();
+
+                mpBuilderAndSolver->BuildRHSAndSolve(mpScheme, this->GetModelPart(), (*mpA), (*mpDx), (*mpb));
                 }
 
-                if (this->mOptions.IsNot(LocalFlagType::CONSTANT_SYSTEM_MATRIX))
-                {
-                    TSparseSpace::Zero(*mpA);
-                    TSparseSpace::Zero(*mpDx);
-                    TSparseSpace::Zero(*mpb);
-                    mpBuilderAndSolver->BuildAndSolve(mpScheme,this->GetModelPart,(*mpA),(*mpDx),(*mpb));
-                }
-                else
-                {
-                    TSparseSpace::Zero(*mpDx);
-                    TSparseSpace::Zero(*mpb);
-                    mpBuilderAndSolver->BuildAndSolve(mpScheme,this->GetModelPart,(*mpA),(*mpDx),(*mpb));
-                }
-                mpBuilderAndSolver->EchoInfo(this->GetModelPart,(*mpA),(*mpDx),(*mpb));
+                // EchoInfo
+                mpBuilderAndSolver->EchoInfo(this->GetModelPart(), (*mpA), (*mpDx), (*mpb));
+
+                // Updating the results
                 this->Update();
+
+                // Finalize Iteration
                 mpScheme->FinalizeNonLinearIteration(this->GetModelPart());
+                return true;
             }
+        
+            void FinalizeSolutionStep() override
+            {
+                //calculate reactions if required
+                if(this->mOptions.Is(LocalFlagType::COMPUTE_REACTIONS))
+                    mpBuilderAndSolver->CalculateReactions(mpScheme, this->GetModelPart(), (*mpA), (*mpDx), (*mpb));
+
+                //finalize scheme anb builder and solver
+                mpScheme->FinalizeSolutionStep(this->GetModelPart());
+                mpBuilderAndSolver->FinalizeSolutionStep(mpScheme, this->GetModelPart(), mpA, mpDx, mpb);
+            }
+
+            /**
+             * @brief Clears the internal storage
+             */
+            void Clear() override
+            {
+                // if the preconditioner is saved between solves, it should be cleared here.
+                mpBuilderAndSolver->GetLinearSystemSolver()->Clear();
+
+                //deallocate the systemvectors
+                if(mpA != nullptr)
+                    mpA = nullptr;
+                if(mpDx != nullptr)
+                    mpDx = nullptr;
+                if(mpb != nullptr)
+                    mpb = nullptr;
+
+                mpBuilderAndSolver->Clear();
+                mpScheme->Clear();
+            }
+
+            /**
+             * @brief Function to perform expensive checks.
+             * @details It is designed to be called ONCE to verify that the input is correct.
+             */
+            int Check() override
+            {
+                //check the model part
+                BaseType::Check();
+                //check the scheme
+                mpScheme->Check(this->GetModelPart());
+                //check the builder and solver
+                mpBuilderAndSolver->Check(this->GetModelPart());
+                return 0;
+
+            }
+
         /// @}
 
         /// @name Access
@@ -211,7 +262,11 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
                     mpScheme->Initialize(this->GetModelPart());
 
                 this->SetSystemDofs();
-
+                
+                unsigned int sizeofsystem = mpBuilderAndSolver->GetEquationSystemSize();
+                (*mpA).resize(sizeofsystem,sizeofsystem);
+                (*mpb).resize(sizeofsystem);
+                (*mpDx).resize(sizeofsystem);
                 this->Set(LocalFlagType::INITIALIZED,true);
             }
 
@@ -236,25 +291,9 @@ class Linear_Solving_Strategy : public Solve_Strategy<TSparseSpace,TDenseSpace,T
                 mpScheme->Predict(this->GetModelPart(), mpBuilderAndSolver->GetDofSet(), (*mpDx));
             }
 
-            void Clear() override
-            {
-                /* Clear preconditioner */
-                mpBuilderAndSolver->GetLinearSolver()->Clear();
-
-                if (mpA != nullptr)
-                    delete mpA;
-                if (mpb != nullptr)
-                    delete mpb;
-                if (mpDx != nullptr)
-                    delete mpDx;
-
-                mpBuilderAndSolver->Clear();
-                mpScheme->Clear();
-            }
-
             void Update()override
             {
-                mpScheme->Update(this->GetModelPart,mpBuilderAndSolver->GetDofSet(),(*mpDx));
+                mpScheme->Update(this->GetModelPart(),mpBuilderAndSolver->GetDofSet(),(*mpDx));
             }
         /// @}
 

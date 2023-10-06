@@ -4,6 +4,9 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include "../define.h"
+#include "../Model/model_part.h"
+#include "dense_space.h"
+#include "sparse_space.h"
 template<typename TSparseSpace, typename TDenseSpace>
 class Linear_Solver
 {
@@ -16,7 +19,7 @@ class Linear_Solver
                                                                  SpMatrixType;
             typedef typename TSparseSpace::SparseVector
                                                                  SpVectorType;
-            LOTUS_POINTER_DEFINE(ClassType)
+            LOTUS_SHARED_POINTER_DEFINE(ClassType)
 
         /// @}
 
@@ -66,6 +69,20 @@ class Linear_Solver
                 }
             }  
             
+            /** Some solvers may require a minimum degree of knowledge of the structure of the matrix. To make an example
+             * when solving a mixed u-p problem, it is important to identify the row associated to v and p.
+             * another example is the automatic prescription of rotation null-space for smoothed-aggregation solvers
+             * which require knowledge on the spatial position of the nodes associated to a given dof.
+             * This function is the place to eventually provide such data
+             */
+            virtual void ProvideAdditionalData(
+                SpMatrixType& rA,
+                SpVectorType& rX,
+                SpVectorType& rB,
+                typename ModelPart::DofsArrayType& rDoFSet,
+                ModelPart& rModelPart
+            )
+            {}
         /// @}
 
 
@@ -171,5 +188,10 @@ class Linear_Solver
 
         /// @}
 };
-
+template<typename TSparseSpace, typename TDenseSpace>
+std::ostream& operator<<(std::ostream& os, Linear_Solver<TSparseSpace,TDenseSpace> const& item)
+{
+    os << "Basic Linear Solver!\n";
+    return os;
+}
 #endif

@@ -1,7 +1,7 @@
 #ifndef _DENSE_SPACE_H_
 #define _DENSE_SPACE_H_
 #include <Eigen/Eigen>
-
+#include "../define.h"
 class DenseSpace
 {
     public:
@@ -9,6 +9,8 @@ class DenseSpace
         /// @{
             typedef Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic> Matrix;
             typedef Eigen::Matrix<double,Eigen::Dynamic, 1> Vector;
+            typedef std::shared_ptr<Matrix> MatrixPointer;
+            typedef std::shared_ptr<Vector> VectorPointer;
         /// @}
 
 

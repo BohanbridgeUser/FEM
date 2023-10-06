@@ -1,4 +1,4 @@
-#include "../../include/Element/solid_element.h"
+#include "../../include/solid_mechanics_element/solid_element.h"
 
 /**********************************************Create Flags**************************************************/
 LOTUS_CREATE_LOCAL_FLAGS(Solid_Element,COMPUTE_RHS_VECTOR ,0)
@@ -17,6 +17,8 @@ void Solid_Element::InitializeConstitutiveLaw()
     const GeometryType::IntegrationPointsVector& integration_points = GetGeometry().IntegrationPoints( mThisIntegrationMethod );
 
     //Constitutive Law initialisation
+    std::cout << mConstitutiveLawVector.size() << std::endl;
+    std::cout << integration_points.size() << std::endl;
     if ( mConstitutiveLawVector.size() != integration_points.size() )
     {
         mConstitutiveLawVector.resize( integration_points.size() );
@@ -469,6 +471,7 @@ int Solid_Element::Check( const Process_Info& rCurrentProcessInfo ) const
     if ( this->GetProperties().Has( CONSTITUTIVE_LAW ) == false )
     {
       std::cerr << "constitutive law not provided for property " << this->GetProperties().Id() << std::endl;
+      exit(0);
     }
     else
     {

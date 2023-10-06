@@ -20,7 +20,8 @@ Lotus_Application::Lotus_Application(const std::string& ApplicationName)
   mpConditions(Lotus_Components<Condition>::pGetComponents())
 {};
 
-void Lotus_Application::RegisterLotusCore() {
+void Lotus_Application::RegisterLotusCore() 
+{
 
     // Registering all the variables
     Lotus_Application::RegisterVariables();

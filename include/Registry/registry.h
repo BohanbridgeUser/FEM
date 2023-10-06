@@ -37,14 +37,16 @@ class Registry
             {
                 auto item_path = String_Utilities::SplitStringByDelimiter(rItemFullName, '.');
                 
-                if(item_path.empty()) {
+                if(item_path.empty()) 
+                {
                     std::cout << "The item full name is empty" << std::endl;
                     exit(0);
                 }
 
                 Registry_Item* p_current_item = &GetRootRegistryItem();
 
-                for(std::size_t i = 0 ; i < item_path.size() - 1 ; i++){
+                for(std::size_t i = 0 ; i < item_path.size() - 1 ; i++)
+                {
                     auto& r_item_name = item_path[i];
                     if(p_current_item->HasItem(r_item_name)){
                         p_current_item = &p_current_item->GetItem(r_item_name);

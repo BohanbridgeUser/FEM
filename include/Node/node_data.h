@@ -53,6 +53,10 @@ class Node_Data
             {
                 return nodeID;
             }
+            IndexType GetId() const
+            {
+                return nodeID;
+            }
             SolutionStepsNodalDataContainerType& GetSolutionStepData()
             {
                 return mSolutionStepsNodalData;

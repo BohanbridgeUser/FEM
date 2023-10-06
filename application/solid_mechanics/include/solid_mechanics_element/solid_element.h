@@ -1,8 +1,8 @@
 #ifndef _SOLID_ELEMENT_H_
 #define _SOLID_ELEMENT_H_
-#include "element.h"
-#include "../Variable/variables.h"
-#include "../Utility/element_utility.h"
+#include "../../../../include/Element/element.h"
+#include "../../../../include/Variable/variables.h"
+#include "../../../../include/Utility/element_utility.h"
 
 #include <Eigen/Eigen>
 class Solid_Element : public Element
@@ -204,7 +204,8 @@ class Solid_Element : public Element
             Solid_Element(IndexType NewId, GeometryType::Pointer pGeometry, typename PropertiesType::Pointer pProperties)
             :BaseType(NewId,pGeometry,pProperties)
             {
-
+                this->Set(SOLID);
+                mThisIntegrationMethod = GetGeometry().GetDefaultIntegrationMethod();
             }
             ///Copy constructor
             Solid_Element(const Solid_Element& another)

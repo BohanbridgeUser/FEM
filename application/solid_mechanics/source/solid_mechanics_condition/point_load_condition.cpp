@@ -1,4 +1,5 @@
-#include "../../include/Condition/point_load_condition.h"
+#include "../../include/solid_mechanics_condition/point_load_condition.h"
+#include "../../include/lotus_solid_mechanics_variables.h"
 
 /********************************Life Circle************************************/
 Point_Load_Condition::Point_Load_Condition()
@@ -133,9 +134,14 @@ void Point_Load_Condition::CalculateConditionSystem(LocalSystemComponents& rLoca
     this->CalculateKinematics(Variable,PointNumber);
     double IntegrationWeight = 1;
 
-    if (rLocalSystem.CalculationFlags.Is(Point_Load_Condition::COMPUTE_LHS_MATRIX))
+    if (rLocalSystem.CalculationFlags.Is(Boundary_Condition::COMPUTE_LHS_MATRIX))
     {
         this->CalculateAndAddLHS(rLocalSystem,Variable,IntegrationWeight);
     }
+    if ( rLocalSystem.CalculationFlags.Is(Boundary_Condition::COMPUTE_RHS_VECTOR) ) //calculation of the vector is required
+    {
+	    this->CalculateAndAddRHS (rLocalSystem, Variable, IntegrationWeight );
+    }
+
 }
 

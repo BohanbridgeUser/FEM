@@ -1,4 +1,8 @@
 #include "../include/lotus_components.h"
+#include "../include/Geometry/geometry.h"
+#include "../include/Element/element.h"
+#include "../include/Condition/condition.h"
+#include "../include/Constitutive_Law/Constitutive_law.h"
 
 void AddComponent(const std::string& rName, const Variable<bool>& rComponent)
 {

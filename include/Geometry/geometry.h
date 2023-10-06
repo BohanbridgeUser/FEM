@@ -11,6 +11,7 @@
 
 #include <array>
 #include <memory>
+#include <bitset>
 template<class TPointType>
 class Geometry 
 {
@@ -210,7 +211,7 @@ class Geometry
                 auto p_geom = this->Create(0, rThisPoints);
 
                 // Generate Id
-                IndexType id = p_geom->GetID();
+                IndexType id = p_geom->Id();
 
                 // Sets second bit to zero.
                 p_geom->SetIdSelfAssigned(id);
@@ -220,7 +221,6 @@ class Geometry
 
                 // Sets Id
                 p_geom->SetIdWithoutCheck(id);
-
                 return p_geom;
             }
             /**
@@ -687,21 +687,26 @@ class Geometry
             }
             virtual std::string Info() const
             {
-                std::stringstream sstream;
-                sstream << "Geometry Class\n";
-                return sstream.str();
+                std::stringstream buffer;
+                buffer << "Geometry # "
+                    << (int)(ID) << ": "
+                    << LocalSpaceDimension() << "-dimensional geometry in "
+                    << WorkingSpaceDimension() << "D space";
+
+                return buffer.str();
             }
             virtual void PrintInfo(std::ostream& os) const
             {
-                os << "Geometry # " << ID << std::endl;
+                os << Info();
             }
-            virtual void PrintData(std::ostream& os) const
+            /// Print object's data.
+            virtual void PrintData(std::ostream& rOStream) const
             {
-                os << "Geometry # " << ID << std::endl;
-                for(auto it=pPoints.begin();it<pPoints.end();++it)
+                for(auto it=pPoints.begin();it!=pPoints.end();++it)
                 {
-                    os << "Point " << it-pPoints.begin() << " " << (*it);
+                    std::cout << *it;
                 }
+                std::cout << std::endl;
             }
         /// @}
     protected:
@@ -800,6 +805,18 @@ class Geometry
             }
         /// @}
 };
+
+template<class TPointType>
+inline std::ostream& operator << ( std::ostream& rOStream,
+                                   const Geometry<TPointType>& rThis )
+{
+    rThis.PrintInfo( rOStream );
+    rOStream << std::endl;
+    rThis.PrintData( rOStream );
+
+    return rOStream;
+}
+
 template<typename TPointType> 
 int Geometry<TPointType>::number = 0;
 template<typename TPointType> 
