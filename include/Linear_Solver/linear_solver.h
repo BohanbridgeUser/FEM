@@ -52,9 +52,10 @@ class Linear_Solver
 
             }
 
-            virtual void Solve(const SpMatrixType& rA, SpVectorType& rDx, const SpVectorType& rb)  
+            virtual void Solve(SpMatrixType& rA, SpVectorType& rDx, const SpVectorType& rb)  
             {
                 Eigen::SparseLU<Eigen::SparseMatrix<double> > LU_Solver;
+                rA.makeCompressed();
                 LU_Solver.compute(rA);
                 if(LU_Solver.info() != Eigen::Success)
                 {

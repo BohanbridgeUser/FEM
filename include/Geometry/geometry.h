@@ -331,9 +331,7 @@ class Geometry
                     {
                         const double value = r_coordinates[k];
                         for(IndexType m = 0; m < local_space_dimension; ++m) 
-                        {
                             rResult(k,m) += value * r_shape_functions_gradient_in_integration_point(i,m);
-                        }
                     }
                 }
                 return rResult;

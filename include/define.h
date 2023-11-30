@@ -1,6 +1,7 @@
 #include <memory>
 #include <mutex>
 #include <omp.h>
+#include <algorithm>
 #include "Utility/string_utilities.h"
 #include "Utility/smart_pointer.h"
 #define LOTUS_POINTER_DEFINE(a) typedef a* Pointer;\

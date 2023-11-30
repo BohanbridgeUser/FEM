@@ -200,13 +200,13 @@ class Dof
              */
             void FixDof()
             {
-                mIsFixed=true;
+                mIsFixed = true;
             }
             /** Frees the degree of freedom
              */
             void FreeDof()
             {
-                mIsFixed=false;
+                mIsFixed = false;
             }
             void SetNodalData(NodalData* pNewNodalData)
             {
@@ -286,13 +286,13 @@ class Dof
         /// @{
             bool IsFree()
             {
-                return mIsFixed != 1;
+                return mIsFixed != false;
             }
             bool IsFixed()
             {
-                return mIsFixed == 1;
+                return mIsFixed == true;
             }
-             bool HasReaction() const
+            bool HasReaction() const
             {
                 return (mpNodalData->GetSolutionStepData().pGetVariablesList()->pGetDofReaction(mIndex) != nullptr);
             }
@@ -342,11 +342,11 @@ class Dof
         /// @name Private Member
         /// @{
             IndexType mIndex : 6;
-            int mIsFixed : 1;
+            unsigned int mIsFixed : 1;
             int mVariableType : 4;
             int mReactionType : 4;
             EquationIdType mEquationId : 48;
-            NodeDataType* mpNodalData;
+            NodeDataType*  mpNodalData;
         /// @}
         
         /// @name Private Operators

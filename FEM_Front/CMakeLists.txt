@@ -1,0 +1,76 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
+SET(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/scripts/buildsystems/vcpkg.cmake")
+MESSAGE(STATUS "CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
+PROJECT (FEM_FRONT)
+
+# Instruct CMake to run moc automatically when needed.
+SET(CMAKE_AUTOMOC ON)
+
+SET(LOTUS_GEO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+SET(LOTUS_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+MESSAGE(STATUS ${LOTUS_GEO_DIR})
+MESSAGE(STATUS ${LOTUS_SRC_DIR})
+
+# Test if compiler has C++17
+LIST(FIND CMAKE_CXX_COMPILE_FEATURES cxx_generalized_initializers has_cpp17)
+IF(has_cpp17 LESS 0)
+  MESSAGE(STATUS "NOTICE: These tests require a C++17 compiler and will not be compiled.")
+  RETURN()
+ENDIF()
+SET(CMAKE_CXX_STANDARD 17)
+
+IF(COMMAND cmake_policy)
+  CMAKE_POLICY(SET CMP0003 NEW)  
+ENDIF()
+
+FIND_PACKAGE(CGAL COMPONENTS Qt5)
+FIND_PACKAGE(Qt5 QUIET COMPONENTS OpenGL)
+FIND_PACKAGE(OpenGL)
+FIND_PACKAGE(Eigen3 3.1.0) #(requires 3.1.0 or greater)
+FIND_PACKAGE(Boost)
+FIND_PACKAGE(Threads REQUIRED)
+FIND_PACKAGE(OpenMP REQUIRED)
+
+INCLUDE(CGAL_Eigen3_support) 
+
+FILE(GLOB SRCS "*.cpp" "src/*.cpp")
+FILE(GLOB_RECURSE INCS "*.h")
+FILE(GLOB_RECURSE LOTUS_SRCS "${LOTUS_SRC_DIR}/*.cpp")
+
+IF(WIN32)
+	ADD_DEFINITIONS( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4503 /nologo" )
+ENDIF(WIN32)
+
+
+if(CGAL_FOUND AND Qt5_FOUND AND OPENGL_FOUND AND EIGEN3_FOUND)
+    INCLUDE_DIRECTORIES(BEFORE . ./include ./ui)
+    INCLUDE(${CGAL_USE_FILE})
+    INCLUDE(${EIGEN3_USE_FILE})
+    INCLUDE_DIRECTORIES(${LOTUS_GEO_DIR})
+
+    SET(MY_BUILD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build) #Variable build path
+    SET(MY_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR})  #Variable src path
+    INCLUDE_DIRECTORIES(${MY_BUILD_PATH})
+    INCLUDE_DIRECTORIES(${MY_SRC_PATH})
+
+    # UI files (Qt Designer files)
+    qt5_wrap_ui(DT_UI_FILES ui/cad2mesh.ui)
+    # The executable itself.
+    ADD_EXECUTABLE(${PROJECT_NAME} ${SRCS} ${MOCS} ${DT_UI_FILES} ${INCS} ${LOTUS_SRCS})
+    qt5_use_modules(${PROJECT_NAME} OpenGL)
+    # Link with Qt libraries
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${QT_LIBRARIES})
+    # Link with  OpenGL
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${OPENGL_LIBRARY})
+    # Link with CGAL
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES})
+    # Link with THREADS
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} Threads::Threads)
+    # Link with Boost
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${Boost_LIBRARIES})
+    # Link with OpenMP
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} OpenMP::OpenMP_CXX )
+
+else()
+  message(STATUS "NOTICE: This program requires CGAL, OpenCascade, Qt5 and Eigen. It will not be compiled.")
+endif()

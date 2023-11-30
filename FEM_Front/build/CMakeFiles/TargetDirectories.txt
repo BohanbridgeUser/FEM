@@ -1,0 +1,4 @@
+I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/CGAL_Qt5_moc_and_resources.dir
+I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/FEM_FRONT.dir
+I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/ALL_BUILD.dir
+I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/ZERO_CHECK.dir

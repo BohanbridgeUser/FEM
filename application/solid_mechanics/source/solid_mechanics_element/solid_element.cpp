@@ -173,11 +173,6 @@ void Solid_Element::CalculateElementalSystem( LocalSystemComponents& rLocalSyste
 
     //reading integration points
     const GeometryType::IntegrationPointsVector& integration_points = GetGeometry().IntegrationPoints( mThisIntegrationMethod );
-    std::cout << "Integration Points :\n";
-    for(auto it = integration_points.begin();it!=integration_points.end();++it)
-    {
-        std::cout << (*it) << " Weight: " << it->Weight() << std::endl;
-    }
     //auxiliary terms
     const SizeType dimension  = GetGeometry().WorkingSpaceDimension();
     Vector VolumeForce(dimension);
@@ -285,13 +280,7 @@ void Solid_Element::CalculateAndAddKuum(MatrixType& rLeftHandSideMatrix,
                                         double& rIntegrationWeight)
 {
     //contributions to stiffness matrix calculated on the reference config
-    std::cout << "Constitutive Matrix:\n";
-    std::cout << rVariables.ConstitutiveMatrix << std::endl;
     rLeftHandSideMatrix += rIntegrationWeight * (rVariables.B.transpose() * (rVariables.ConstitutiveMatrix * rVariables.B) );
-    std::cout << "Matrix B:\n";
-    std::cout << rVariables.B << std::endl;
-    std::cout << "Element Stiffness Matrix in Integration:\n";
-    std::cout << rLeftHandSideMatrix << std::endl;
 }
 void Solid_Element::CalculateAndAddKuug(MatrixType& rLeftHandSideMatrix,
 				                        ElementDataType& rVariables,

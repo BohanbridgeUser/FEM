@@ -343,8 +343,8 @@ class Hexahedron:public Geometry<TPointType>
             double Volume() const override
             {
                 PointsContainerType const& rPoints = this->pPointsVector();
-                Eigen::Vector3d CenterPoint;
-                Eigen::Vector3d AllPoints[rPoints.size()];
+                Eigen::Vector3d CenterPoint = Eigen::Vector3d::Zero();
+                Eigen::Vector3d *AllPoints = new Eigen::Vector3d[rPoints.size()];
                 for(auto it = rPoints.begin();it!=rPoints.end();++it)
                 {
                     CenterPoint.x() += it->x();
@@ -355,16 +355,7 @@ class Hexahedron:public Geometry<TPointType>
                     AllPoints[i].y() = it->y();
                     AllPoints[i].z() = it->z();
                 }
-                for(int i=0;i<rPoints.size();++i)
-                {
-                    std::cout << AllPoints[i].x() << ' '
-                              << AllPoints[i].y() << ' '
-                              << AllPoints[i].z() << std::endl;
-                }
-                
-                CenterPoint = CenterPoint * (1.00 / rPoints.size());
-                std::cout << "CenterPoint :\n" <<  CenterPoint << std::endl;
-                
+                CenterPoint = CenterPoint * (1.00 / static_cast<double>(rPoints.size()));
                 double volume = 0.0f;
                 auto Va = AllPoints[1] - AllPoints[0];
                 auto Vb = AllPoints[3] - AllPoints[0];
@@ -380,6 +371,7 @@ class Hexahedron:public Geometry<TPointType>
                 auto Vd_ = AllPoints[2] - AllPoints[6];
                 volume += abs((Vb_.cross(Vd_)).norm() * Vc.dot(Vb_.cross(Vd_)));
                 volume += abs((Vd_.cross(Va_)).norm() * Vc.dot(Vd_.cross(Va_)));
+                delete AllPoints;
                 return abs(1.00/3.00 * volume);
             }
 

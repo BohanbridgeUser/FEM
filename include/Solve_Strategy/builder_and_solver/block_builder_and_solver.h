@@ -6,6 +6,7 @@
 
 #include <unordered_set>
 #include <fstream>
+#include <string>
 template<class TSparseSpace,
          class TDenseSpace, //= DenseSpace<double>,
          class TLinearSolver //= LinearSolver<TSparseSpace,TDenseSpace>
@@ -107,7 +108,6 @@ class Block_Builder_And_Solver
                 Build(pScheme, rModelPart, rA, rb);
                 // double end_time = OpenMPUtils::GetCurrentTime();
                 ApplyDirichletConditions(pScheme, rModelPart, rA, rDx, rb);
-
                 std::fstream fileoutput("Information Output",std::ios_base::out);
                 if (this->mEchoLevel == 3)
                 {
@@ -179,10 +179,6 @@ class Block_Builder_And_Solver
                                                                 RHS_Contribution, 
                                                                 EquationId, 
                                                                 rCurrentProcessInfo);
-                        std::fstream file_out("Element Stiffness Matrix",std::ios_base::out | std::ios_base::trunc);
-                        file_out << "Element # " << it->Id() << std::endl;
-                        file_out << "Matrix Size: " << LHS_Contribution.rows() << " " << LHS_Contribution.cols() << std::endl;
-                        file_out << LHS_Contribution << std::endl;
                         //assemble the elemental contribution
                         Assemble(rA, rb, LHS_Contribution, RHS_Contribution, EquationId);
                         // clean local elemental memory
@@ -242,7 +238,6 @@ class Block_Builder_And_Solver
                     else
                         scaling_factors[k] = 1.0f;
                 }
-
                 //detect if there is a line of all zeros and set the diagonal to a 1 if this happens
                 for(int k = 0; k < rA.outerSize(); ++k)
                 {
@@ -269,7 +264,7 @@ class Block_Builder_And_Solver
                     {
                         // zero out the whole row, except the diagonal
                         for (Eigen::SparseMatrix<double>::InnerIterator it(rA,k);it;++it)
-                            if (it.col() != k )
+                            if (it.row() != k) 
                                 it.valueRef() = 0.0;
                         // zero out the RHS
                         rb.coeffRef(k) = 0.0;
@@ -401,11 +396,8 @@ class Block_Builder_And_Solver
                 //Gets the array of elements from the modeler
                 ElementsContainerType& rElements = rModelPart.Elements();
                 const int nelements = static_cast<int>(rElements.size());
-
                 Element::DofsVectorType ElementalDofList;
-
                 Process_Info& rCurrentProcessInfo = rModelPart.GetProcessInfo();
-
                 typedef std::unordered_set <Node::DofType::Pointer, dof_iterator_hash>  
                                                                                 set_type;
 
@@ -418,19 +410,13 @@ class Block_Builder_And_Solver
                 std::vector<set_type> dofs_aux_list(nthreads);
 
                 if( this->mEchoLevel > 2)
-                {
                     std::cout <<"setting_dofs" << "Number of threads:" << nthreads << std::endl;
-                }
 
                 for (int i = 0; i < static_cast<int>(nthreads); i++)
-                {
                     dofs_aux_list[i].reserve(nelements);
-                }
 
                 if( this->mEchoLevel > 2)
-                {
                     std::cout <<"setting_dofs" << "initialize_elements" << std::endl;
-                }
 
                 for (int i = 0; i < nelements; i++)
                 {
@@ -834,6 +820,10 @@ class Block_Builder_And_Solver
                           Element::EquationIdVectorType& rEquationId)
             {
                 unsigned int local_size = rLHS_Contribution.rows();
+                static int count = 0;
+                count++;
+                extern std::ofstream file;
+                file << "Element #" << count << std::endl;
                 for (unsigned int i_local = 0; i_local < local_size; i_local++)
                 {
                     /**
@@ -992,9 +982,13 @@ class Block_Builder_And_Solver
                                                 const unsigned int i_local,
                                                 Element::EquationIdVectorType& rEquationId)
             {
+                extern std::ofstream file;
                 for( unsigned int j=0;j<rEquationId.size();++j)
                 {
+                    file << "global row col:" << i << ' ' << rEquationId[j] << std::endl;
+                    file << "local  row col:" << i_local << ' ' << j << std::endl;
                     rA.coeffRef(i,rEquationId[j]) += rAlocal(i_local,j);
+                    file << "Coeff :" << rAlocal(i_local, j) << std::endl;
                 }
             }
 

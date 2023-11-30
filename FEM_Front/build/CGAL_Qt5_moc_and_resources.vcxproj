@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{00BCF8A8-6E31-3E23-ABC8-241685BBAD51}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <VcpkgEnabled>false</VcpkgEnabled>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>CGAL_Qt5_moc_and_resources</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="do_not_import_user.props" Condition="exists('do_not_import_user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CGAL_Qt5_moc_and_resources.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CGAL_Qt5_moc_and_resources</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CGAL_Qt5_moc_and_resources.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CGAL_Qt5_moc_and_resources</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CGAL_Qt5_moc_and_resources.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CGAL_Qt5_moc_and_resources</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CGAL_Qt5_moc_and_resources.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CGAL_Qt5_moc_and_resources</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_Debug;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include" /external:I "D:/vcpkg/installed/x64-windows/include/eigen3" /external:I "D:/vcpkg/installed/x64-windows/include/qt5" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtWidgets" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtGui" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtCore" /external:I "D:/vcpkg/installed/x64-windows/tools/qt5/mkspecs/win32-msvc" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtOpenGL" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtSvg" /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_Debug;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_Debug;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC for target CGAL_Qt5_moc_and_resources</Message>
+      <Command>setlocal
+cd I:\COMPUTER\FEM\FEM_Front\build
+if %errorlevel% neq 0 goto :cmEnd
+I:
+if %errorlevel% neq 0 goto :cmEnd
+D:\CMAKE\CLIENT\bin\cmake.exe -E cmake_autogen I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/CGAL_Qt5_moc_and_resources_autogen.dir/AutogenInfo.json Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_Release;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include" /external:I "D:/vcpkg/installed/x64-windows/include/eigen3" /external:I "D:/vcpkg/installed/x64-windows/include/qt5" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtWidgets" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtGui" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtCore" /external:I "D:/vcpkg/installed/x64-windows/tools/qt5/mkspecs/win32-msvc" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtOpenGL" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtSvg" /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_Release;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_Release;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC for target CGAL_Qt5_moc_and_resources</Message>
+      <Command>setlocal
+cd I:\COMPUTER\FEM\FEM_Front\build
+if %errorlevel% neq 0 goto :cmEnd
+I:
+if %errorlevel% neq 0 goto :cmEnd
+D:\CMAKE\CLIENT\bin\cmake.exe -E cmake_autogen I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/CGAL_Qt5_moc_and_resources_autogen.dir/AutogenInfo.json Release
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_MinSizeRel;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include" /external:I "D:/vcpkg/installed/x64-windows/include/eigen3" /external:I "D:/vcpkg/installed/x64-windows/include/qt5" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtWidgets" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtGui" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtCore" /external:I "D:/vcpkg/installed/x64-windows/tools/qt5/mkspecs/win32-msvc" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtOpenGL" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtSvg" /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_MinSizeRel;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_MinSizeRel;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC for target CGAL_Qt5_moc_and_resources</Message>
+      <Command>setlocal
+cd I:\COMPUTER\FEM\FEM_Front\build
+if %errorlevel% neq 0 goto :cmEnd
+I:
+if %errorlevel% neq 0 goto :cmEnd
+D:\CMAKE\CLIENT\bin\cmake.exe -E cmake_autogen I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/CGAL_Qt5_moc_and_resources_autogen.dir/AutogenInfo.json MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_RelWithDebInfo;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/vcpkg/installed/x64-windows/include" /external:I "D:/vcpkg/installed/x64-windows/include/eigen3" /external:I "D:/vcpkg/installed/x64-windows/include/qt5" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtWidgets" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtGui" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtCore" /external:I "D:/vcpkg/installed/x64-windows/tools/qt5/mkspecs/win32-msvc" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtOpenGL" /external:I "D:/vcpkg/installed/x64-windows/include/qt5/QtSvg" /bigobj</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4503</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;CGAL_EIGEN3_ENABLED;CGAL_USE_GMPXX=1;BOOST_ALL_DYN_LINK=1;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_NO_DEBUG;QT_OPENGL_LIB;QT_SVG_LIB;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_RelWithDebInfo;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\include_RelWithDebInfo;I:\COMPUTER\FEM\FEM_Front\.\ui;I:\COMPUTER\FEM\FEM_Front\.\include;I:\COMPUTER\FEM\FEM_Front\.;I:\COMPUTER\FEM\FEM_Front\build;I:\COMPUTER\FEM\FEM_Front\..\include;I:\COMPUTER\FEM\FEM_Front;D:\vcpkg\installed\x64-windows\include;D:\vcpkg\installed\x64-windows\include\eigen3;D:\vcpkg\installed\x64-windows\include\qt5;D:\vcpkg\installed\x64-windows\include\qt5\QtWidgets;D:\vcpkg\installed\x64-windows\include\qt5\QtGui;D:\vcpkg\installed\x64-windows\include\qt5\QtCore;D:\vcpkg\installed\x64-windows\tools\qt5\mkspecs\win32-msvc;D:\vcpkg\installed\x64-windows\include\qt5\QtOpenGL;D:\vcpkg\installed\x64-windows\include\qt5\QtSvg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PreBuildEvent>
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message>Automatic MOC for target CGAL_Qt5_moc_and_resources</Message>
+      <Command>setlocal
+cd I:\COMPUTER\FEM\FEM_Front\build
+if %errorlevel% neq 0 goto :cmEnd
+I:
+if %errorlevel% neq 0 goto :cmEnd
+D:\CMAKE\CLIENT\bin\cmake.exe -E cmake_autogen I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/CGAL_Qt5_moc_and_resources_autogen.dir/AutogenInfo.json RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PreBuildEvent>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\ImageInterface.ui">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ui_ImageInterface.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\uic.exe -o I:/COMPUTER/FEM/FEM_Front/build/ui_ImageInterface.h D:/vcpkg/installed/x64-windows/include/CGAL/Qt/ImageInterface.ui
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\ui_ImageInterface.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ui_ImageInterface.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\uic.exe -o I:/COMPUTER/FEM/FEM_Front/build/ui_ImageInterface.h D:/vcpkg/installed/x64-windows/include/CGAL/Qt/ImageInterface.ui
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\ui_ImageInterface.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating ui_ImageInterface.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\uic.exe -o I:/COMPUTER/FEM/FEM_Front/build/ui_ImageInterface.h D:/vcpkg/installed/x64-windows/include/CGAL/Qt/ImageInterface.ui
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\ui_ImageInterface.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating ui_ImageInterface.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\uic.exe -o I:/COMPUTER/FEM/FEM_Front/build/ui_ImageInterface.h D:/vcpkg/installed/x64-windows/include/CGAL/Qt/ImageInterface.ui
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\ui_ImageInterface.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating qrc_CGAL.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name CGAL --output I:/COMPUTER/FEM/FEM_Front/build/qrc_CGAL.cpp I:/COMPUTER/FEM/FEM_Front/build/resources/CGAL.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\resources\about_CGAL.html;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo_ipe_2013.png;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo.xpm;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_CGAL.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating qrc_CGAL.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name CGAL --output I:/COMPUTER/FEM/FEM_Front/build/qrc_CGAL.cpp I:/COMPUTER/FEM/FEM_Front/build/resources/CGAL.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\resources\about_CGAL.html;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo_ipe_2013.png;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo.xpm;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_CGAL.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating qrc_CGAL.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name CGAL --output I:/COMPUTER/FEM/FEM_Front/build/qrc_CGAL.cpp I:/COMPUTER/FEM/FEM_Front/build/resources/CGAL.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\resources\about_CGAL.html;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo_ipe_2013.png;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo.xpm;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_CGAL.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating qrc_CGAL.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name CGAL --output I:/COMPUTER/FEM/FEM_Front/build/qrc_CGAL.cpp I:/COMPUTER/FEM/FEM_Front/build/resources/CGAL.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\resources\about_CGAL.html;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo_ipe_2013.png;I:\COMPUTER\FEM\FEM_Front\build\resources\cgal_logo.xpm;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_CGAL.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating qrc_Input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Input --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Input.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Input.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\inputPoint.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fit-page-32.png;I:\COMPUTER\FEM\FEM_Front\build\icons\inputPolyline.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Input.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating qrc_Input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Input --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Input.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Input.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\inputPoint.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fit-page-32.png;I:\COMPUTER\FEM\FEM_Front\build\icons\inputPolyline.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Input.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating qrc_Input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Input --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Input.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Input.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\inputPoint.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fit-page-32.png;I:\COMPUTER\FEM\FEM_Front\build\icons\inputPolyline.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Input.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating qrc_Input.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Input --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Input.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Input.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\inputPoint.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fit-page-32.png;I:\COMPUTER\FEM\FEM_Front\build\icons\inputPolyline.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Input.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating qrc_File.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name File --output I:/COMPUTER/FEM/FEM_Front/build/qrc_File.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/File.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\fileNew.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileOpen.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileSave.png;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_File.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating qrc_File.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name File --output I:/COMPUTER/FEM/FEM_Front/build/qrc_File.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/File.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\fileNew.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileOpen.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileSave.png;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_File.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating qrc_File.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name File --output I:/COMPUTER/FEM/FEM_Front/build/qrc_File.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/File.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\fileNew.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileOpen.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileSave.png;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_File.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating qrc_File.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name File --output I:/COMPUTER/FEM/FEM_Front/build/qrc_File.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/File.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\fileNew.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileOpen.png;I:\COMPUTER\FEM\FEM_Front\build\icons\fileSave.png;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_File.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating qrc_Triangulation_2.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Triangulation_2 --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Triangulation_2.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Triangulation_2.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\Delaunay_triangulation_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Voronoi_diagram_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Triangulation_2.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating qrc_Triangulation_2.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Triangulation_2 --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Triangulation_2.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Triangulation_2.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\Delaunay_triangulation_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Voronoi_diagram_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Triangulation_2.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating qrc_Triangulation_2.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Triangulation_2 --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Triangulation_2.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Triangulation_2.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\Delaunay_triangulation_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Voronoi_diagram_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Triangulation_2.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating qrc_Triangulation_2.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\vcpkg\installed\x64-windows\tools\qt5\bin\rcc.exe --name Triangulation_2 --output I:/COMPUTER/FEM/FEM_Front/build/qrc_Triangulation_2.cpp I:/COMPUTER/FEM/FEM_Front/build/icons/Triangulation_2.qrc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\icons\Delaunay_triangulation_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Voronoi_diagram_2.png;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc.depends;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\qrc_Triangulation_2.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\COMPUTER\FEM\FEM_Front\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule I:/COMPUTER/FEM/FEM_Front/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\CMAKE\CLIENT\bin\cmake.exe -SI:/COMPUTER/FEM/FEM_Front -BI:/COMPUTER/FEM/FEM_Front/build --check-stamp-file I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeDependentOption.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseArguments.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeRCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckCSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckIncludeFile.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckLibraryExists.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindBoost.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenGL.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenMP.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageHandleStandardArgs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageMessage.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindThreads.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Internal\CheckSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;D:\vcpkg\installed\x64-windows\share\boost\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig-installation-dirs.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigBuildVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Common.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_CreateSingleSourceCGALProgram.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Eigen3_support.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_GeneratorSpecificSettings.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Macros.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Qt5_moc_and_resource_files.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SCM.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGALDependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGAL_Qt5Dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupVLD.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_TweakFindBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_VersionUtils.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_add_test.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_display_flags.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_enable_end_of_configuration_hook.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_setup_target_dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_target_use_TBB.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMPXX.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindMPFR.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseCGAL.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5Config.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ModuleLocation.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeSystem.cmake;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule I:/COMPUTER/FEM/FEM_Front/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\CMAKE\CLIENT\bin\cmake.exe -SI:/COMPUTER/FEM/FEM_Front -BI:/COMPUTER/FEM/FEM_Front/build --check-stamp-file I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeDependentOption.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseArguments.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeRCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckCSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckIncludeFile.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckLibraryExists.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindBoost.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenGL.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenMP.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageHandleStandardArgs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageMessage.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindThreads.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Internal\CheckSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;D:\vcpkg\installed\x64-windows\share\boost\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig-installation-dirs.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigBuildVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Common.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_CreateSingleSourceCGALProgram.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Eigen3_support.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_GeneratorSpecificSettings.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Macros.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Qt5_moc_and_resource_files.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SCM.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGALDependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGAL_Qt5Dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupVLD.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_TweakFindBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_VersionUtils.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_add_test.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_display_flags.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_enable_end_of_configuration_hook.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_setup_target_dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_target_use_TBB.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMPXX.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindMPFR.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseCGAL.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5Config.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ModuleLocation.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeSystem.cmake;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule I:/COMPUTER/FEM/FEM_Front/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\CMAKE\CLIENT\bin\cmake.exe -SI:/COMPUTER/FEM/FEM_Front -BI:/COMPUTER/FEM/FEM_Front/build --check-stamp-file I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeDependentOption.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseArguments.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeRCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckCSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckIncludeFile.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckLibraryExists.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindBoost.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenGL.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenMP.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageHandleStandardArgs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageMessage.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindThreads.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Internal\CheckSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;D:\vcpkg\installed\x64-windows\share\boost\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig-installation-dirs.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigBuildVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Common.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_CreateSingleSourceCGALProgram.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Eigen3_support.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_GeneratorSpecificSettings.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Macros.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Qt5_moc_and_resource_files.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SCM.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGALDependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGAL_Qt5Dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupVLD.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_TweakFindBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_VersionUtils.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_add_test.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_display_flags.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_enable_end_of_configuration_hook.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_setup_target_dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_target_use_TBB.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMPXX.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindMPFR.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseCGAL.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5Config.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ModuleLocation.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeSystem.cmake;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule I:/COMPUTER/FEM/FEM_Front/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\CMAKE\CLIENT\bin\cmake.exe -SI:/COMPUTER/FEM/FEM_Front -BI:/COMPUTER/FEM/FEM_Front/build --check-stamp-file I:/COMPUTER/FEM/FEM_Front/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeDependentOption.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseArguments.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeParseImplicitLinkInfo.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeRCInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckCSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckIncludeFile.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\CheckLibraryExists.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Compiler\MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindBoost.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenGL.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindOpenMP.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageHandleStandardArgs.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindPackageMessage.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\FindThreads.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Internal\CheckSourceCompiles.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\Windows.cmake;D:\CMAKE\CLIENT\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;D:\vcpkg\installed\x64-windows\share\boost\vcpkg-cmake-wrapper.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig-installation-dirs.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfig.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigBuildVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGALConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Common.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_CreateSingleSourceCGALProgram.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Eigen3_support.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_GeneratorSpecificSettings.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Macros.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_Qt5_moc_and_resource_files.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SCM.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGALDependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupCGAL_Qt5Dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_SetupVLD.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_TweakFindBoost.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_VersionUtils.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_add_test.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_display_flags.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_enable_end_of_configuration_hook.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_setup_target_dependencies.cmake;D:\vcpkg\installed\x64-windows\share\cgal\CGAL_target_use_TBB.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMP.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindGMPXX.cmake;D:\vcpkg\installed\x64-windows\share\cgal\FindMPFR.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseCGAL.cmake;D:\vcpkg\installed\x64-windows\share\cgal\UseEigen3.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5Config.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5\Qt5ModuleLocation.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigExtrasMkspecDir.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Core\Qt5CoreMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5GuiConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QGifPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICNSPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QICOPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QJpegPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QMinimalIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QOffscreenIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgIconPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QSvgPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTgaPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTiffPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QTuioTouchPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWbmpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWebpPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QWindowsIntegrationPlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Gui\Qt5Gui_QXdgDesktopPortalThemePlugin.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5OpenGL\Qt5OpenGLConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Svg\Qt5SvgConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfig.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigExtras.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsConfigVersion.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5WidgetsMacros.cmake;D:\vcpkg\installed\x64-windows\share\cmake\Qt5Widgets\Qt5Widgets_QWindowsVistaStylePlugin.cmake;D:\vcpkg\scripts\buildsystems\vcpkg.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\3.25.3\CMakeSystem.cmake;I:\COMPUTER\FEM\FEM_Front\build\icons\File.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Input.qrc;I:\COMPUTER\FEM\FEM_Front\build\icons\Triangulation_2.qrc;I:\COMPUTER\FEM\FEM_Front\build\resources\CGAL.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">I:\COMPUTER\FEM\FEM_Front\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\mocs_compilation_Debug.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\GraphicsViewNavigation.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\DemosMainWindow.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\GraphicsItem.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\GraphicsViewInput.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\camera.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\frame.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\keyFrameInterpolator.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\manipulatedCameraFrame.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\manipulatedFrame.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\qglviewer.h" />
+    <ClInclude Include="D:\vcpkg\installed\x64-windows\include\CGAL\Qt\image_interface.h" />
+    <ClInclude Include="I:\COMPUTER\FEM\FEM_Front\build\ui_ImageInterface.h" />
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\qrc_CGAL.cpp" />
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\qrc_Input.cpp" />
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\qrc_File.cpp" />
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\qrc_Triangulation_2.cpp" />
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\mocs_compilation_Release.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\mocs_compilation_MinSizeRel.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="I:\COMPUTER\FEM\FEM_Front\build\CGAL_Qt5_moc_and_resources_autogen\mocs_compilation_RelWithDebInfo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="I:\COMPUTER\FEM\FEM_Front\build\ZERO_CHECK.vcxproj">
+      <Project>{12BD2F0D-C43C-39F6-9FE7-24CCA57F9EA2}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

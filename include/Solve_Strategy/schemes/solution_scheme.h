@@ -372,7 +372,7 @@ class Solution_Scheme : public Flags
     #endif
 
     // Update of displacement (by DOF)
-    std::vector<int> DofPartition(NumThreads);
+    std::vector<int> DofPartition(NumThreads+1);
     DofPartition[0] = 0;
     DofPartition[NumThreads] = DofPartition[0] + rDofSet.size();
 
@@ -421,7 +421,7 @@ class Solution_Scheme : public Flags
         const unsigned int NumThreads = omp_get_num_threads();
       #endif
 
-      std::vector<int> NodePartition(NumThreads);
+      std::vector<int> NodePartition(NumThreads+1);
       NodePartition[0] = 0;
       NodePartition[NumThreads] = NodePartition[0] + rModelPart.Nodes().size();
 
@@ -446,10 +446,10 @@ class Solution_Scheme : public Flags
     #ifndef _OPENMP
       const unsigned int NumThreads = 1;
     #else
-      const unsigned int NumThreads = omp_get_num_threads();
+      const unsigned int NumThreads = 1;// omp_get_num_threads();
     #endif
 
-    std::vector<int> NodePartition(NumThreads);
+    std::vector<int> NodePartition(NumThreads+1);
     NodePartition[0] = 0;
     NodePartition[NumThreads] = NodePartition[0] + rModelPart.Nodes().size();
 

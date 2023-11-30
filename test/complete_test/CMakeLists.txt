@@ -11,9 +11,13 @@ ELSE(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     FIND_PACKAGE(Boost REQUIRED)
 ENDIF()
 
-SET(CMAKE_CXX_STANDARD 17)
+FIND_PACKAGE(eigen3 REQUIRED)
 
-FILE(GLOB_RECURSE SRC_DIR_LIST "../../src/*.cpp" "../../src/*.c" "*.cpp" "../../application/*.cpp" "../../application/*.c")	#遍历获取source/路径下所有的*.cpp和*.c文件列表
+SET(CMAKE_CXX_STANDARD 20)
+FILE(
+    GLOB_RECURSE SRC_DIR_LIST 
+    "../../src/*.cpp" "../../src/*.c" "*.cpp" "../../application/*.cpp" "../../application/*.c"
+)	#遍历获取source/路径下所有的*.cpp和*.c文件列表
 
 IF(${Boost_FOUND})
     MESSAGE(STATUS "BOOST FOUND!")
@@ -40,9 +44,12 @@ IF(${OpenMP_FOUND})
     INCLUDE_DIRECTORIES(${OpenMP_INCLUDE_DIRS})
 ENDIF()
 
+FIND_PATH(EIGEN3_INCLUDE_DIRS "Eigen")
+
 MESSAGE(STATUS "SRC_DIR_LIST = ${SRC_DIR_LIST}")	
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRC_DIR_LIST})
+target_include_directories(${PROJECT_NAME} PRIVATE ${EIGEN3_INCLUDE_DIRS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE Threads::Threads)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX )

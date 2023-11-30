@@ -6,6 +6,7 @@
 #include "../Container/data_value_container.h"
 
 #include <vector>
+#include <algorithm>
 class Node : public Point<3> , public Flags
 {
     public:
